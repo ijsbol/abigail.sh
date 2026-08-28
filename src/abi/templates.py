@@ -4,6 +4,7 @@ import os
 from pathlib import Path
 import random
 import shutil
+import subprocess
 from typing import Final
 
 from fastapi import Response
@@ -24,9 +25,22 @@ SPECIFICALLY_INCLDUED_FILES: Final[list[str]] = [
 ]
 
 
+def _get_most_recent_commit_hash() -> str:
+    try:
+        return subprocess.run(
+            ["git", "rev-parse", "--short", "HEAD"],
+            capture_output=True,
+            text=True,
+            check=True,
+        ).stdout.strip() or "unknown"
+    except (subprocess.CalledProcessError, FileNotFoundError):
+        return "unknown"
+
+
 class TemplateServer(Jinja2Templates):
     def __init__(self, directory: str) -> None:
         self._served_files: dict[str, str] = {}
+        self._most_recent_commit_hash = _get_most_recent_commit_hash()
         super().__init__(directory=directory)
         self.env.filters["intcomma"] = lambda x: f"{int(x):,}"
 
@@ -161,6 +175,7 @@ class TemplateServer(Jinja2Templates):
         template.globals.update({
             "get_file": self._get_file,
             "get_file_type": self._get_file_type,
+            "most_recent_commit_hash": self._most_recent_commit_hash,
             "hotlink_domain": random.choice(["abigail", "phoebe", "abigail.phoebe", "murph", "abigail.phoebe.murph"]),
             "media_proxy_url": media_proxy_url,
             "avatar_url": avatar_url,

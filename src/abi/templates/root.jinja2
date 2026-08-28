@@ -12,6 +12,7 @@
 ] %}
 
 {% set current_page = current_page|default('home') -%}
+{% set most_recent_commit_hash = most_recent_commit_hash|default('unknown') %}
 
 <html lang="en" data-theme="dark">
     <head>
@@ -172,6 +173,7 @@
                             <a href="{{ href }}" class="{% if id == current_page %}selected{% endif %}">{{ label }}</a>
                         {% endfor %}
                     </div>
+                    <div class="commit-info">commit [<a href="https://github.com/ijsbol/abigail.sh" target="_blank" rel="noopener noreferrer">{{ most_recent_commit_hash }}</a>]</div>
                     <div class="header-toggles">
                         <button type="button" aria-label="toggle light / dark mode" class="theme-toggle">
                             <span class="theme-toggle__moon" aria-hidden="true"

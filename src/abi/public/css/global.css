@@ -808,6 +808,22 @@ strong {
     transition: color var(--colorTransitionTime);
 }
 
+.commit-info {
+    font-size: 12px;
+    opacity: 0.6;
+    text-align: center;
+    margin-top: 6px;
+    letter-spacing: 0.02em;
+    color: var(--duck);
+    transition: color var(--colorTransitionTime);
+}
+
+
+.commit-info a {
+    color: var(--duck);
+    transition: color var(--colorTransitionTime);
+}
+
 @media (prefers-reduced-motion: reduce) {
     .remote-cursor {
         transition: none;
