@@ -34,6 +34,8 @@ class TemplateServer(Jinja2Templates):
         image_dir = "src/abi/public/images"
         for dirpath, _, filenames in os.walk(image_dir):
             rel_dir = os.path.relpath(dirpath, image_dir)
+            if rel_dir == "writing":
+                continue
             out_dir = os.path.normpath(os.path.join("_served/static/images", rel_dir))
             os.makedirs(out_dir, exist_ok=True)
 
@@ -117,6 +119,17 @@ class TemplateServer(Jinja2Templates):
                     continue
                 shutil.copyfile(f"{data_dir}/{file}", f"_served/static/data/{file}")
                 self._served_files["public/data/" + file] = f"static/data/{file}"
+
+        # serve the raw public/images/writing directory
+        writing_dir = "src/abi/public/images/writing"
+        if os.path.isdir(writing_dir):
+            os.makedirs("_served/static/images/writing", exist_ok=True)
+            for file in os.listdir(writing_dir):
+                if not file.endswith((".png", ".jpg", ".jpeg", ".gif")):
+                    continue
+                shutil.copyfile(f"{writing_dir}/{file}", f"_served/static/images/writing/{file}")
+                self._served_files["public/images/writing/" + file] = f"static/images/writing/{file}"
+
 
     def load(self) -> None:
         print("[templates:start] loading templates and serving static files...")

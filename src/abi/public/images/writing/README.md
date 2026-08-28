@@ -1,0 +1,1 @@
+blog / note images intentionally not uploaded to git.
