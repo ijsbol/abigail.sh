@@ -8,6 +8,9 @@ server {
     client_body_timeout 120s;
     add_header Strict-Transport-Security 'max-age=31536000; includeSubDomains' always;
 
+    client_header_buffer_size 4k;
+    large_client_header_buffers 4 16k;
+
     location / {
         proxy_pass http://127.0.0.1:7867;
         proxy_http_version 1.1;
