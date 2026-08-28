@@ -21,15 +21,15 @@
         {% set anchor = group.category.name.replace(' ', '_') %}
         <a href="#{{ anchor }}">
             {{ group.category.name }}
-            <span class="watch-nav-count">{{ group.items|length }}</span>
+            <span class="watch-nav-count">{{ group['items']|length }}</span>
         </a>
         {% endfor %}
     </nav>
 
     {% for group in data.reminders %}
     {% set anchor = group.category.name.replace(' ', '_') %}
-    {% set pinned = group.items|selectattr('isPinned', 'equalto', true)|list %}
-    {% set regular = group.items|selectattr('isPinned', 'equalto', false)|list %}
+    {% set pinned = group['items']|selectattr('isPinned', 'equalto', true)|list %}
+    {% set regular = group['items']|selectattr('isPinned', 'equalto', false)|list %}
     <section id="{{ anchor }}" class="watch-category">
         <a href="#{{ anchor }}" class="watch-category-title">{{ group.category.name }}</a>
         {% if group.category.description %}
