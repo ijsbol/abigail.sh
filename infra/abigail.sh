@@ -8,8 +8,10 @@ server {
     client_body_timeout 120s;
     add_header Strict-Transport-Security 'max-age=31536000; includeSubDomains' always;
 
-    client_header_buffer_size 4k;
-    large_client_header_buffers 4 16k;
+    # legacy versions of the site set multi-MB cookies; allow oversized request
+    # headers so browsers still holding them don't get 400/431 rejected.
+    client_header_buffer_size 64k;
+    large_client_header_buffers 8 1m;
 
     gzip on;
     gzip_types text/css application/javascript application/json image/svg+xml application/font-woff font/woff2;
@@ -28,7 +30,7 @@ server {
         }
     }
 
-    # WebSocket endpoint needs the upgrade handshake and a long idle timeout,
+    # webSocket endpoint needs the upgrade handshake and a long idle timeout,
     # otherwise nginx tears the connection down after proxy_read_timeout.
     location /ws/ {
         proxy_pass http://127.0.0.1:7867;
@@ -39,6 +41,10 @@ server {
         proxy_set_header X-Forwarded-Proto $scheme;
         proxy_set_header Upgrade $http_upgrade;
         proxy_set_header Connection "upgrade";
+        # the cursors WS is anonymous and reads no cookies. Strip the Cookie
+        # header so a large cookie can't blow past the websockets handshake
+        # header-size limit (surfaces as 431 Request Header Fields Too Large).
+        proxy_set_header Cookie "";
         proxy_read_timeout 3600s;
         proxy_send_timeout 3600s;
     }
