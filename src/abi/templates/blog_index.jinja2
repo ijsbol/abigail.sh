@@ -2,6 +2,10 @@
 {% set title = "blog" %}
 {% set description = "long and short form writing - technical breakdowns, research, and informal brain babble." %}
 
+{% block head %}
+    <link rel="stylesheet" href="{{ get_file('public/css/blog.css') }}" />
+{% endblock %}
+
 {% block page_content %}
 <p>
     long and short form writing - technical breakdowns of projects and
