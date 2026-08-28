@@ -1,0 +1,1 @@
+blog / note media intentionally not uploaded to git.
