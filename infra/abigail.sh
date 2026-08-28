@@ -9,7 +9,7 @@ server {
     add_header Strict-Transport-Security 'max-age=31536000; includeSubDomains' always;
 
     location / {
-        proxy_pass http://127.0.0.1:7869;
+        proxy_pass http://127.0.0.1:7867;
         proxy_http_version 1.1;
         proxy_set_header Host $host;
         proxy_set_header X-Real-IP $remote_addr;
