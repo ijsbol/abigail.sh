@@ -6,7 +6,7 @@ After=network.target
 User=root
 Group=www-data
 WorkingDirectory=/opt/websites/abigail.sh
-ExecStart=/opt/websites/abigail.sh/venv/bin/uvicorn src.abi:app --host 127.0.0.1 --port 7869
+ExecStart=/opt/websites/abigail.sh/.venv/bin/uvicorn src.abi:app --host 127.0.0.1 --port 7869
 
 [Install]
 WantedBy=multi-user.target
