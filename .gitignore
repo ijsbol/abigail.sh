@@ -1,3 +1,11 @@
+# abigail.sh gitignore
+src/abi/public/images/buttons/friends/*
+!src/abi/public/images/buttons/friends/.gitkeep
+!src/abi/public/images/buttons/friends/README.md
+src/abi/data/friend-buttons.json
+/data/
+/_served
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]

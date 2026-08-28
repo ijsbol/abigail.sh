@@ -1,0 +1,173 @@
+{% extends "root.jinja2" %}
+{% set title = "admin" %}
+
+{% block head %}
+<meta name="robots" content="noindex, nofollow" />
+<link rel="stylesheet" href="{{ get_file('public/css/admin.css') }}" />
+{% endblock %}
+
+{% block page_content %}
+<div class="admin admin-editor">
+    <div class="admin-header split-div">
+        <h2>{% if post %}edit post{% else %}new post{% endif %}</h2>
+        <a class="external" href="/blog/admin">back to admin</a>
+    </div>
+
+    <p id="admin-error" class="admin-error" style="display:none"></p>
+
+    <label class="admin-field">
+        <span>title</span>
+        <input type="text" id="f-title" placeholder="post title" value="{{ post.title if post else '' }}" />
+    </label>
+
+    <label class="admin-field">
+        <span>slug {% if post %}(fixed){% endif %}</span>
+        <input type="text" id="f-slug" placeholder="auto-generated from title if left blank"
+            value="{{ post.slug if post else '' }}" {% if post %}disabled{% endif %} />
+    </label>
+
+    <label class="admin-field">
+        <span>description (og / meta)</span>
+        <input type="text" id="f-description" placeholder="defaults to the title"
+            value="{{ post.description if post else '' }}" />
+    </label>
+
+    <div class="admin-field-row">
+        <label class="admin-field">
+            <span>kind</span>
+            <select id="f-kind">
+                <option value="note" {% if not post or post.kind == 'note' %}selected{% endif %}>note</option>
+                <option value="writing" {% if post and post.kind == 'writing' %}selected{% endif %}>writing</option>
+            </select>
+        </label>
+
+        <label class="admin-field">
+            <span>sort date</span>
+            <input type="date" id="f-sort-date"
+                value="{{ post.sort_date if post else '' }}" />
+        </label>
+
+        <label class="admin-field">
+            <span>display date</span>
+            <input type="text" id="f-date" placeholder="auto from sort date"
+                value="{{ post.date if post else '' }}" />
+        </label>
+    </div>
+
+    <div class="admin-field-row">
+        <label class="admin-field">
+            <span>duration</span>
+            <input type="text" id="f-duration" placeholder="5 minute read"
+                value="{{ post.duration if post else '2 minute read' }}" />
+        </label>
+
+        <label class="admin-field">
+            <span>tags (comma-separated)</span>
+            <input type="text" id="f-tags" placeholder="introspection, movies and tv"
+                value="{{ post.tags | join(', ') if post else '' }}" />
+        </label>
+    </div>
+
+    <label class="admin-field">
+        <span>og image path</span>
+        <input type="text" id="f-og-image" placeholder="/static/images/… (optional)"
+            value="{{ post.og_image if post and post.og_image else '' }}" />
+    </label>
+
+    <label class="admin-field">
+        <span>content (html)</span>
+        <textarea id="f-content" rows="20" placeholder="<h2>title</h2><p>body…</p>">{{ post.content if post else '' }}</textarea>
+    </label>
+
+    <div class="admin-toggles">
+        <label class="admin-toggle">
+            <input type="checkbox" id="f-published" {% if not post or post.published %}checked{% endif %} />
+            <span>published (uncheck to keep as a draft)</span>
+        </label>
+        <label class="admin-toggle">
+            <input type="checkbox" id="f-unlisted" {% if post and post.unlisted %}checked{% endif %} />
+            <span>unlisted (reachable by direct link, hidden from the index)</span>
+        </label>
+    </div>
+
+    <div class="admin-actions">
+        <button type="button" id="save-btn" class="admin-save">
+            {% if post %}save changes{% else %}create post{% endif %}
+        </button>
+    </div>
+</div>
+
+<script>
+(function() {
+    var editing = {{ 'true' if post else 'false' }};
+    var existingSlug = {{ ('"' + post.slug + '"') if post else 'null' }};
+
+    var btn = document.getElementById('save-btn');
+    var errEl = document.getElementById('admin-error');
+
+    // default sort date to today on new posts
+    if (!editing) {
+        var sd = document.getElementById('f-sort-date');
+        if (!sd.value) sd.value = new Date().toISOString().slice(0, 10);
+    }
+
+    btn.addEventListener('click', async function() {
+        var title = document.getElementById('f-title').value.trim();
+        var content = document.getElementById('f-content').value.trim();
+        if (!title || !content) {
+            showError('title and content are required.');
+            return;
+        }
+        btn.disabled = true;
+        btn.textContent = 'saving…';
+        errEl.style.display = 'none';
+
+        var payload = {
+            slug: document.getElementById('f-slug').value.trim(),
+            title: title,
+            description: document.getElementById('f-description').value.trim(),
+            content: content,
+            kind: document.getElementById('f-kind').value,
+            tags: document.getElementById('f-tags').value,
+            sortDate: document.getElementById('f-sort-date').value,
+            date: document.getElementById('f-date').value.trim(),
+            duration: document.getElementById('f-duration').value.trim(),
+            ogImage: document.getElementById('f-og-image').value.trim(),
+            published: document.getElementById('f-published').checked,
+            unlisted: document.getElementById('f-unlisted').checked,
+        };
+
+        try {
+            var res = editing
+                ? await fetch('/api/blog/posts/' + existingSlug, {
+                    method: 'PUT',
+                    headers: { 'content-type': 'application/json' },
+                    body: JSON.stringify(payload),
+                })
+                : await fetch('/api/blog/posts', {
+                    method: 'POST',
+                    headers: { 'content-type': 'application/json' },
+                    body: JSON.stringify(payload),
+                });
+
+            if (!res.ok) {
+                var data = await res.json().catch(function() { return {}; });
+                showError(data.error || ('request failed (' + res.status + ')'));
+                return;
+            }
+            window.location.href = '/blog/admin';
+        } catch(e) {
+            showError('network error while saving.');
+        } finally {
+            btn.disabled = false;
+            btn.textContent = editing ? 'save changes' : 'create post';
+        }
+    });
+
+    function showError(msg) {
+        errEl.textContent = msg;
+        errEl.style.display = '';
+    }
+})();
+</script>
+{% endblock %}

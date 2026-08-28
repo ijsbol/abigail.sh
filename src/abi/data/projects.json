@@ -1,0 +1,188 @@
+{
+  "tags": ["web", "library", "tool", "discord", "dns / domains", "desktop", "security", "art"],
+  "projects": [
+    {
+      "name": "discord anti-scam bot",
+      "href": "https://docs.scrumpbot.com/features/block-scams",
+      "language": "Python",
+      "blurb": "an extension to scrump that detects common image-based crypto currency scams in discord and automatically blocks them.",
+      "tags": ["discord", "tool", "security"]
+    },
+    {
+      "name": "scrump",
+      "href": "https://scrumpbot.com",
+      "language": "Python",
+      "blurb": "a feature-packed discord bot with hundreds of utilities - my longest-running discord project.",
+      "tags": ["discord", "tool"]
+    },
+    {
+      "name": "signal translate",
+      "href": "https://github.com/ijsbol/signal-translate",
+      "language": "TypeScript",
+      "blurb": "a fork of signal that adds inline translation of messages in any language.",
+      "tags": ["desktop", "tool"]
+    },
+    {
+      "name": "88x31 button editor",
+      "href": "https://abigail.sh/buttons",
+      "language": "TypeScript",
+      "blurb": "a tiny 88x31 button editor, completely local in your browser.",
+      "tags": ["web", "tool", "art"]
+    },
+    {
+      "name": "calascii",
+      "href": "https://calascii.uwu.gal",
+      "repo": "https://github.com/ijsbol/calascii",
+      "language": "Python",
+      "blurb": "an infinitely scrollable, collaborative ascii art board - draw with strangers on an endless canvas.",
+      "tags": ["web", "art"]
+    },
+    {
+      "name": "asciicam",
+      "href": "https://ijsbol.github.io/asciicam/",
+      "repo": "https://github.com/ijsbol/asciicam",
+      "language": "HTML",
+      "blurb": "turns your webcam feed into live ascii art, rendered entirely in the browser.",
+      "tags": ["web", "art"]
+    },
+    {
+      "name": "svglang",
+      "href": "https://github.com/ijsbol/svglang",
+      "repo": "https://github.com/ijsbol/svglang",
+      "language": "svglang",
+      "blurb": "a fully complete programming language that compiles to svg - make art with code!",
+      "tags": ["library", "art"]
+    },
+    {
+      "name": "podns_py",
+      "href": "https://pypi.org/project/podns",
+      "repo": "https://github.com/ijsbol/podns_py",
+      "language": "Python",
+      "blurb": "a python api implementing the pronouns-over-dns (podns) spec - resolve someone's pronouns straight from a dns record.",
+      "tags": ["library", "dns / domains"]
+    },
+    {
+      "name": "spotify-now-playing-api",
+      "href": "https://github.com/ijsbol/spotify-now-playing-api",
+      "language": "Python",
+      "blurb": "a small api for surfacing your spotify now-playing status on your website, complete with live synced lyrics.",
+      "tags": ["tool", "web"]
+    },
+    {
+      "name": "short-domains",
+      "href": "https://git.uwu.gal/short-domains",
+      "repo": "https://github.com/ijsbol/short-domains",
+      "language": "Python",
+      "blurb": "tracks which short domains are (and aren't) registered - ~125k domains across 140 (cc)TLDs, updated continuously.",
+      "tags": ["tool", "dns / domains"]
+    },
+    {
+      "name": "httpcord",
+      "href": "https://pypi.org/project/httpcord/",
+      "repo": "https://github.com/ijsbol/httpcord",
+      "language": "Python",
+      "blurb": "a python library for building discord bots over http interactions - no gateway, no persistent connection, just stateless webhooks.",
+      "tags": ["library", "discord"]
+    },
+    {
+      "name": "steam-readme-stats",
+      "href": "https://steam-readme-stats.uwu.gal/",
+      "repo": "https://github.com/ijsbol/steam-readme-stats",
+      "language": "Python",
+      "blurb": "embed your steam stats straight into a github readme or any webpage.",
+      "tags": ["tool", "web"]
+    },
+    {
+      "name": "anonymous-discord-polls",
+      "href": "https://git.uwu.gal/anonymous-discord-polls",
+      "repo": "https://github.com/ijsbol/anonymous-discord-polls",
+      "language": "Python",
+      "blurb": "a dead-simple bot for running genuinely anonymous polls in discord.",
+      "tags": ["discord", "tool"]
+    },
+    {
+      "name": "icloud-reminders-viewer",
+      "href": "https://github.com/ijsbol/icloud-reminders-viewer",
+      "language": "Python",
+      "blurb": "view your icloud reminders online in a customisable format.",
+      "tags": ["web", "tool"]
+    },
+    {
+      "name": "cloudflare-worker-pricing-calculator",
+      "href": "https://cloudflare-worker-pricing-calculator.uwu.gal",
+      "repo": "https://github.com/ijsbol/cloudflare-worker-pricing-calculator",
+      "language": "HTML",
+      "blurb": "estimates what cloudflare workers will actually cost you based on your expected usage.",
+      "tags": ["web", "tool"]
+    },
+    {
+      "name": "discord-data-package-analysis",
+      "href": "https://github.com/ijsbol/discord-data-package-analysis",
+      "language": "Python",
+      "blurb": "turns your discord data package into nice analytics graphs charting your activity over time.",
+      "tags": ["discord", "tool"]
+    },
+    {
+      "name": "osmium-chat",
+      "href": "https://osmium-chat.readthedocs.io/en/latest/",
+      "repo": "https://github.com/ijsbol/osmium-chat",
+      "language": "Python",
+      "blurb": "a python api wrapper for osmium, the chat platform.",
+      "tags": ["library"]
+    },
+    {
+      "name": "youtube-music-desktop-python-sdk",
+      "href": "https://pypi.org/project/ytmdpy/",
+      "repo": "https://github.com/ijsbol/youtube-music-desktop-python-sdk",
+      "language": "Python",
+      "blurb": "a python wrapper (ytmdpy) around the youtube music desktop companion server api.",
+      "tags": ["library"]
+    },
+    {
+      "name": "lol.uwu.gal",
+      "href": "https://lol.uwu.gal/",
+      "repo": "https://github.com/ijsbol/lol.uwu.gal",
+      "language": "Python",
+      "blurb": "a playful ip-geolocation site that sneaks web security awareness in through memes.",
+      "tags": ["web", "tool"]
+    },
+    {
+      "name": "id.uwu.gal",
+      "href": "https://id.uwu.gal/docs",
+      "repo": "https://github.com/ijsbol/id.uwu.gal",
+      "language": "Python",
+      "blurb": "generates unique, deterministic identicons for any string you throw at it.",
+      "tags": ["web", "tool"]
+    },
+    {
+      "name": "what-tld",
+      "href": "https://git.uwu.gal/what-tld",
+      "repo": "https://github.com/ijsbol/what-tld",
+      "language": "Python",
+      "blurb": "checks which TLDs are available for a domain name you have in mind.",
+      "tags": ["tool", "dns / domains"]
+    },
+    {
+      "name": "discord-avatar-collage-maker",
+      "href": "https://github.com/ijsbol/discord-avatar-collage-maker",
+      "language": "Python",
+      "blurb": "generates big collage images out of the avatars of discord users.",
+      "tags": ["discord", "tool"]
+    },
+    {
+      "name": "pygeolocate",
+      "href": "https://git.uwu.gal/pygeolocate",
+      "repo": "https://github.com/ijsbol/pygeolocate",
+      "language": "Python",
+      "blurb": "look up a country's geolocation from its name or country code.",
+      "tags": ["library"]
+    },
+    {
+      "name": "BrightIntosh-NoPremium",
+      "href": "https://github.com/ijsbol/BrightIntosh-NoPremium",
+      "language": "Swift",
+      "blurb": "unlocks the full brightness of a macbook pro's XDR display, without the premium paywall.",
+      "tags": ["desktop"]
+    }
+  ]
+}

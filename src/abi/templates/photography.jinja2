@@ -1,0 +1,42 @@
+{% extends "root.jinja2" %}
+
+{% set title = "photography" %}
+{% set description = "i like photography! i initially started exploring this hobby to experiment with astrophotography, but nowadays i enjoy capturing a wide range of subjects!" %}
+{% set current_page = "photography" %}
+
+{% block head %}
+    <link rel="stylesheet" href="{{ get_file('public/css/photography.css') }}" />
+{% endblock %}
+
+{% block page_content %}
+<p>
+    i like photography! i initially started exploring this hobby to
+    experiment with astrophotography, but nowadays i enjoy capturing a wide
+    range of subjects!
+</p>
+<p>
+    i don&apos;t edit my photos after taking them, so below is exactly what
+    my camera displayed after taking each shot. my enjoyment from
+    photography is getting my camera to do funky things without
+    post-processing,
+    <i>i swear it has nothing to do with me not knowing how to edit photos...</i>
+</p>
+<p>
+    i use a nikon D3500 with a nikon 18-55mm 1:3.5-5.6G and a nikon
+    70-300mm 1:4.5-6.3G lense in case you were wondering.
+</p>
+<div class="gallery">
+    {% for src, caption in shots %}
+    <div class="capture">
+        <img
+            src="{{ get_file(src) }}"
+            alt="{{ caption }}"
+            loading="lazy"
+            width="1200"
+            height="900"
+        />
+        {{ caption }}
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

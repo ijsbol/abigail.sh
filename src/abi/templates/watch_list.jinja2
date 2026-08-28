@@ -1,0 +1,71 @@
+{% extends "root.jinja2" %}
+
+{% set title = "watch list" %}
+{% set description = "an ever-growing list of things i want to (or already did) watch - synced from my icloud reminders." %}
+{% set current_page = "watch-list" %}
+
+{% block head %}
+    <link rel="stylesheet" href="{{ get_file('public/css/watch_list.css') }}" />
+{% endblock %}
+
+{% block page_content %}
+<div class="watch-list">
+{% if not data or not data.reminders %}
+    <p>{{ description }}</p>
+    <p class="watch-empty">nothing here yet - my reminders haven&apos;t synced across. check back soon!</p>
+{% else %}
+    <p>{{ data.site.aboutText }}</p>
+
+    <nav class="watch-nav" aria-label="jump to a category">
+        {% for group in data.reminders %}
+        {% set anchor = group.category.name.replace(' ', '_') %}
+        <a href="#{{ anchor }}">
+            {{ group.category.name }}
+            <span class="watch-nav-count">{{ group.items|length }}</span>
+        </a>
+        {% endfor %}
+    </nav>
+
+    {% for group in data.reminders %}
+    {% set anchor = group.category.name.replace(' ', '_') %}
+    {% set pinned = group.items|selectattr('isPinned', 'equalto', true)|list %}
+    {% set regular = group.items|selectattr('isPinned', 'equalto', false)|list %}
+    <section id="{{ anchor }}" class="watch-category">
+        <a href="#{{ anchor }}" class="watch-category-title">{{ group.category.name }}</a>
+        {% if group.category.description %}
+        <p class="watch-category-desc">{{ group.category.description }}</p>
+        {% endif %}
+
+        {% if pinned %}
+        <div class="watch-pinned-group">
+            <span class="watch-pinned-label">pinned</span>
+            <ul class="watch-items">
+                {% for item in pinned %}
+                {% set item_anchor = anchor + ':' + item.title.replace(' ', '_') %}
+                <li id="{{ item_anchor }}" class="watch-item{% if item.isCompleted %} watched{% endif %} pinned">
+                    <span class="watch-item-title">{{ item.title }}</span>
+                    {% if item.isCompleted %}<span class="watch-badge">watched</span>{% endif %}
+                    {% if item.notes %}<span class="watch-item-notes">{{ item.notes }}</span>{% endif %}
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+        {% endif %}
+
+        {% if regular %}
+        <ul class="watch-items">
+            {% for item in regular %}
+            {% set item_anchor = anchor + ':' + item.title.replace(' ', '_') %}
+            <li id="{{ item_anchor }}" class="watch-item{% if item.isCompleted %} watched{% endif %}">
+                <span class="watch-item-title">{{ item.title }}</span>
+                {% if item.isCompleted %}<span class="watch-badge">watched</span>{% endif %}
+                {% if item.notes %}<span class="watch-item-notes">{{ item.notes }}</span>{% endif %}
+            </li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+    </section>
+    {% endfor %}
+{% endif %}
+</div>
+{% endblock %}

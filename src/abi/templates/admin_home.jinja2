@@ -1,0 +1,31 @@
+{% extends "root.jinja2" %}
+{% set title = "admin" %}
+
+{% block head %}
+<meta name="robots" content="noindex, nofollow" />
+<link rel="stylesheet" href="{{ get_file('public/css/admin.css') }}" />
+{% endblock %}
+
+{% block page_content %}
+<div class="admin site-admin">
+    <div class="admin-header split-div">
+        <h2>site admin</h2>
+        <div class="admin-whoami">
+            {{ username }} · <a class="external" href="/api/blog/auth/logout">log out</a>
+        </div>
+    </div>
+
+    <div class="site-admin-sections">
+        <a href="/blog/admin" class="site-admin-section">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
+                <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
+            </svg>
+            <span>
+                <strong>blog</strong>
+                <small>{{ post_count }} post{{ 's' if post_count != 1 else '' }}</small>
+            </span>
+        </a>
+    </div>
+</div>
+{% endblock %}

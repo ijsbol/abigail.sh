@@ -1,0 +1,134 @@
+.project-filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 18px 0 22px;
+}
+
+.project-filter {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 6px;
+    background-color: var(--geko);
+    color: inherit;
+    border: 1px solid transparent;
+    border-radius: 999px;
+    padding: 5px 12px;
+    font: inherit;
+    font-size: 12px;
+    text-transform: lowercase;
+    letter-spacing: 0.02em;
+    cursor: pointer;
+    transition: background-color var(--colorTransitionTime), border-color var(--colorTransitionTime), color var(--colorTransitionTime);
+}
+
+.project-filter:hover {
+    border-color: var(--goose);
+}
+
+.project-filter.selected {
+    background-color: var(--goose);
+    color: var(--geko);
+}
+
+.project-filter:focus-visible {
+    outline: 2px solid var(--goose);
+    outline-offset: 2px;
+}
+
+.project-filter-count {
+    font-size: 11px;
+    opacity: 0.6;
+}
+
+.project-filter.selected .project-filter-count {
+    opacity: 0.85;
+}
+
+.project-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.project {
+    background-color: var(--geko);
+    border-radius: 8px;
+    padding: 13px 15px;
+    transition: background-color var(--colorTransitionTime), box-shadow 0.18s ease, transform 0.18s ease;
+}
+
+.project:hover {
+    box-shadow: 0 4px 12px var(--boxShadow);
+    transform: translateY(-1px);
+}
+
+.project-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.project-name {
+    font-size: 15px;
+    font-weight: 600;
+}
+
+.project-lang {
+    flex-shrink: 0;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    opacity: 0.55;
+}
+
+.project-blurb {
+    margin: 6px 0 10px;
+    font-size: 13px;
+    line-height: 19px;
+    opacity: 0.85;
+}
+
+.project-foot {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.project-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.project-tag {
+    background: transparent;
+    border: 1px solid var(--goose);
+    border-radius: 999px;
+    padding: 2px 9px;
+    font: inherit;
+    font-size: 11px;
+    color: var(--dove);
+    text-transform: lowercase;
+    cursor: pointer;
+    transition: background-color var(--colorTransitionTime), color var(--colorTransitionTime);
+}
+
+.project-tag:hover {
+    background-color: var(--goose);
+    color: var(--geko);
+}
+
+.project-tag:focus-visible {
+    outline: 2px solid var(--goose);
+    outline-offset: 2px;
+}
+
+.project-repo {
+    flex-shrink: 0;
+    font-size: 12px;
+    color: var(--dove);
+}

@@ -1,0 +1,29 @@
+{% extends "root.jinja2" %}
+{% set title = "admin" %}
+
+{% block head %}
+<meta name="robots" content="noindex, nofollow" />
+<link rel="stylesheet" href="{{ get_file('public/css/admin.css') }}" />
+{% endblock %}
+
+{% block page_content %}
+<div class="admin-login">
+    <h2>admin login</h2>
+    <p>sign in with an approved discord account to manage this site.</p>
+
+    {% if error_msg %}
+    <p class="admin-error">{{ error_msg }}</p>
+    {% endif %}
+
+    {% if configured %}
+    <a class="admin-discord-button" href="/api/blog/auth/login">continue with discord</a>
+    {% else %}
+    <p class="admin-error">
+        discord login isn't configured. set DISCORD_CLIENT_ID,
+        DISCORD_CLIENT_SECRET, DISCORD_APPROVED_USER_IDS and SESSION_SECRET.
+    </p>
+    {% endif %}
+
+    <p><a class="external" href="/blog">back to the blog</a></p>
+</div>
+{% endblock %}

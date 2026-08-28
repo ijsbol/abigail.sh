@@ -1,0 +1,22 @@
+#friendButtons {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    align-items: flex-start;
+    align-content: flex-start;
+    gap: 10px 20px;
+    background-color: var(--geko);
+    padding: 10px;
+}
+
+#friendButtons a {
+    text-decoration: none;
+    font-weight: bold;
+    color: var(--duck);
+    transition: color var(--colorTransitionTime);
+}
+
+.pronouns {
+    font-weight: bold;
+}

@@ -1,0 +1,310 @@
+{% extends "root.jinja2" %}
+
+
+{% set title = "profile" %}
+{% set description = "live profile pulled from discord, anilist, and last.fm." %}
+{% set current_page = "profile" %}
+
+{% block head %}
+    <link rel="stylesheet" href="{{ get_file('public/css/profile.css') }}" />
+{% endblock %}
+
+{% block page_content %}
+{# ----- gradient helper ----- #}
+{% set _grad_start = '#e84b5f' %}
+{% set _grad_end = '#ff8296' %}
+{% if lanyard and lanyard.user %}
+  {% set _luser = lanyard.user %}
+  {% set _lcolors = (_luser.display_name_styles or {}).get('colors', []) %}
+  {% if _lcolors | length >= 2 %}
+    {% set _grad_start = int_to_hex(_lcolors[0]) %}
+    {% set _grad_end = int_to_hex(_lcolors[1]) %}
+  {% elif _lcolors | length == 1 %}
+    {% set _grad_start = int_to_hex(_lcolors[0]) %}
+    {% set _grad_end = int_to_hex(_lcolors[0]) %}
+  {% elif _luser.accent_color is not none %}
+    {% set _grad_start = int_to_hex(_luser.accent_color) %}
+    {% set _grad_end = int_to_hex(_luser.accent_color) %}
+  {% endif %}
+{% endif %}
+<div class="profile-page" id="profilePage">
+    <script>window.__PROFILE__ = {{ profile_data | safe }};</script>
+    <style id="profileGradientStyle">.profile-page .lanyard-card{--lanyard-start:{{ _grad_start }};--lanyard-end:{{ _grad_end }}}</style>
+
+    <div id="profileLanyard">
+    {% if lanyard and lanyard.user %}
+      {% set _u = lanyard.user %}
+      {% set _av = media_proxy_url(avatar_url(_u, 256)) %}
+      {% set _dec = media_proxy_url(avatar_decoration_url(_u)) %}
+      {% set _direct_banner = banner_url(_u, 600) %}
+      {% set _banner = media_proxy_url(_direct_banner) or media_proxy_url('https://dcdn.dstn.to/banners/' ~ _u.id ~ '?size=1024') %}
+      {% set _badge = media_proxy_url(guild_badge_url(_u)) %}
+      {% set _display = _u.display_name or _u.global_name or _u.username %}
+      {% set _status_colors = {'online': '#3ba55d', 'idle': '#faa61a', 'dnd': '#ed4245', 'offline': '#747f8d'} %}
+      {% set _status_labels = {'online': 'online', 'idle': 'idle', 'dnd': 'do not disturb', 'offline': 'offline'} %}
+      {% set _sc = _status_colors.get(lanyard.status, '#747f8d') %}
+      {% set _sl = _status_labels.get(lanyard.status, lanyard.status) %}
+      <div class="lanyard-card">
+        <div class="lanyard-banner">
+          {% if _banner %}
+            <img src="{{ _banner }}" alt="" aria-hidden="true" class="lanyard-banner-media" onerror="this.style.display='none'">
+          {% endif %}
+        </div>
+        <div class="lanyard-body">
+          <div class="lanyard-avatar-wrap">
+            {% if _av %}
+              <img src="{{ _av }}" alt="{{ _u.username }}" class="lanyard-avatar">
+            {% endif %}
+            {% if _dec %}
+              <img src="{{ _dec }}" alt="" aria-hidden="true" class="lanyard-decoration">
+            {% endif %}
+            <span class="lanyard-status-dot">
+              <span class="status-dot" style="background-color:{{ _sc }}" aria-label="{{ _sl }}"></span>
+            </span>
+          </div>
+          <div class="lanyard-info">
+            <h2 class="lanyard-name">{{ _display }}</h2>
+            <div class="lanyard-handle">
+              <span>@{{ _u.username }}</span>
+              {% if _u.primary_guild %}
+                <span class="lanyard-tag">
+                  {% if _badge %}<img src="{{ _badge }}" alt="" aria-hidden="true">{% endif %}
+                  {{ _u.primary_guild.tag }}
+                </span>
+              {% endif %}
+            </div>
+            <div class="lanyard-status-line">
+              <span class="status-dot" style="background-color:{{ _sc }}" aria-label="{{ _sl }}"></span>
+              <span>{{ _sl }}</span>
+              {% if lanyard.customStatus and lanyard.customStatus.state %}
+                <span class="dot-sep">·</span>
+                <span>{{ lanyard.customStatus.state }}</span>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+        {% set _other_acts = lanyard.activities | rejectattr('type', 'equalto', 4) | rejectattr('name', 'equalto', 'Spotify') | list %}
+        {% if _other_acts %}
+          <div class="lanyard-activities">
+            {% for act in _other_acts %}
+              {% set _large = media_proxy_url(activity_asset_url(act, 'large_image')) %}
+              {% set _small = media_proxy_url(activity_asset_url(act, 'small_image')) %}
+              {% set _verb_map = {1: 'streaming', 2: 'listening to', 3: 'watching', 5: 'competing in'} %}
+              {% set _verb = _verb_map.get(act.type, 'playing') %}
+              <div class="activity-card">
+                <div class="activity-art">
+                  {% if _large %}
+                    <img src="{{ _large }}" alt="{{ (act.assets or {}).get('large_text', act.name) }}" loading="lazy">
+                  {% else %}
+                    <div class="activity-art placeholder" aria-hidden="true"></div>
+                  {% endif %}
+                  {% if _small %}
+                    <img src="{{ _small }}" alt="{{ (act.assets or {}).get('small_text', '') }}" class="activity-art-small" loading="lazy">
+                  {% endif %}
+                </div>
+                <div class="activity-text">
+                  <div class="activity-verb">{{ _verb }}</div>
+                  <div class="activity-name">{{ act.name }}</div>
+                  {% if act.details %}<div class="activity-detail">{{ act.details }}</div>{% endif %}
+                  {% if act.state %}<div class="activity-detail">{{ act.state }}</div>{% endif %}
+                </div>
+              </div>
+            {% endfor %}
+          </div>
+        {% endif %}
+      </div>
+    {% else %}
+      <p class="muted">couldn't load discord presence right now.</p>
+    {% endif %}
+    </div>
+
+    <br />
+
+    <div class="subtitle">elsewhere on the web</div>
+    <div class="profile-links">
+        {% set contact_links = [
+            ('/r/github',      'github',       '@ijsbol'),
+            ('/r/instagram',   'instagram',    '@abitriptyline'),
+            ('/r/twitter',     'twitter',      '@SQNG'),
+            ('/r/linkedin',    'linkedin',     'in/abigailphoebe'),
+            ('/r/bluesky',     'bluesky',      '@ijsbol.dev'),
+            ('/r/mastodon',    'mastodon',     '@scrumpy'),
+            ('/r/hackernews',  'hackernews',   'abigailphoebe'),
+            ('/r/lastfm',      'last.fm',      'uwugal'),
+            ('/r/codeberg',    'codeberg',     '@dyke'),
+            ('/r/youtube',     'youtube',      '@uwugal'),
+        ] %}
+        {% for href, label, hint in contact_links %}
+            <a class="profile-link" href="{{ href }}" target="_blank" rel="noreferrer">
+                <span class="profile-link-label">{{ label }}</span>
+                <span class="profile-link-hint">{{ hint }}</span>
+            </a>
+        {% endfor %}
+    </div>
+
+    <br />
+
+    <div class="subtitle">currently listening to</div>
+
+    <div id="profileNowPlaying">
+    {% if lanyard and lanyard.listeningToSpotify and lanyard.spotify %}
+      {% set _sp = lanyard.spotify %}
+      {% set _art = media_proxy_url(_sp.album_art_url) %}
+      <a href="https://open.spotify.com/track/{{ _sp.track_id }}" target="_blank" rel="noreferrer" class="lanyard-card now-playing now-playing-spotify">
+        <div class="activity-art large">
+          {% if _art %}
+            <img src="{{ _art }}" alt="{{ _sp.album }}" loading="lazy">
+          {% else %}
+            <div class="activity-art placeholder" aria-hidden="true"></div>
+          {% endif %}
+        </div>
+        <div class="activity-text">
+          <div class="activity-verb">now playing · spotify</div>
+          <div class="activity-name-row">
+            <div class="activity-name">{{ _sp.song }}</div>
+          </div>
+          <div class="activity-detail">by {{ _sp.artist }}</div>
+          {% if _sp.album %}<div class="activity-detail dim">on {{ _sp.album }}</div>{% endif %}
+        </div>
+      </a>
+    {% else %}
+      {% if tracks %}
+        {% set _np_list = tracks | selectattr('nowPlaying', 'equalto', true) | list %}
+      {% else %}
+        {% set _np_list = [] %}
+      {% endif %}
+      {% set _np = _np_list[0] if _np_list else none %}
+      {% if _np is not none %}
+        {% set _art = media_proxy_url(_np.image) %}
+        <div class="lanyard-card now-playing">
+          <div class="activity-art large">
+            {% if _art %}
+              <img src="{{ _art }}" alt="{{ _np.album }}" loading="lazy">
+            {% else %}
+              <div class="activity-art placeholder" aria-hidden="true"></div>
+            {% endif %}
+          </div>
+          <div class="activity-text">
+            <div class="activity-verb">now playing · last.fm</div>
+            <div class="activity-name-row">
+              <a href="{{ _np.url }}" target="_blank" rel="noreferrer" class="activity-name">{{ _np.name }}</a>
+            </div>
+            <div class="activity-detail">by {{ _np.artist }}</div>
+            {% if _np.album %}<div class="activity-detail dim">on {{ _np.album }}</div>{% endif %}
+          </div>
+        </div>
+      {% else %}
+        <p class="muted">nothing playing right now.</p>
+      {% endif %}
+    {% endif %}
+    </div>
+
+    <br />
+
+    <div class="subtitle">anilist</div>
+    {% if anilist %}
+        <div class="lanyard-card stats-card">
+            <div class="stats-row">
+                <a href="{{ anilist.siteUrl }}" target="_blank" rel="noreferrer" class="stats-cell stats-head">
+                    <strong>@{{ anilist.name }}</strong>
+                    <span class="dim">on anilist</span>
+                </a>
+                <div class="stats-cell">
+                    <span class="stats-value">{{ anilist.anime.count }}</span>
+                    <span class="stats-label">titles</span>
+                </div>
+                <div class="stats-cell">
+                    <span class="stats-value">{{ anilist.anime.episodesWatched }}</span>
+                    <span class="stats-label">episodes</span>
+                </div>
+                <div class="stats-cell">
+                    <span class="stats-value">{{ (anilist.anime.minutesWatched / 60)|round|int|intcomma }}</span>
+                    <span class="stats-label">hours</span>
+                </div>
+                <div class="stats-cell">
+                    <span class="stats-value">{{ "%.1f"|format(anilist.anime.meanScore) }}</span>
+                    <span class="stats-label">mean score</span>
+                </div>
+            </div>
+        </div>
+    {% else %}
+        <p class="muted">couldn't load anilist stats right now.</p>
+    {% endif %}
+
+    {% if watch_history %}
+        <div class="subtitle min" style="margin-top:16px">recent watch history</div>
+        <div class="watch-grid" id="watchGrid">
+            {% for entry in watch_history %}
+                {% set title = entry.media.title.english or entry.media.title.romaji or entry.media.title.native or 'untitled' %}
+                {% set accent = entry.media.coverColor or 'var(--lanyard-end)' %}
+                <a class="watch-tile"
+                   href="{{ entry.media.siteUrl }}"
+                   target="_blank"
+                   rel="noreferrer"
+                   style="border-color: {{ accent }}">
+                    {% if entry.media.coverImage %}
+                        <img src="{{ media_proxy_url(entry.media.coverImage) }}" alt="{{ title }}" loading="lazy" />
+                    {% else %}
+                        <div class="watch-tile-placeholder" aria-hidden="true"></div>
+                    {% endif %}
+                    <div class="watch-tile-overlay">
+                        <div class="watch-tile-title">{{ title }}</div>
+                        <div class="watch-tile-meta">
+                            {{ entry.status.lower() }} · ep {{ entry.progress }}{% if entry.media.episodes %} / {{ entry.media.episodes }}{% endif %}{% if entry.score %} · {{ entry.score }}/10{% endif %}
+                        </div>
+                    </div>
+                </a>
+            {% endfor %}
+        </div>
+        {% if watch_history|length > 6 %}
+            <div class="load-more-wrap">
+                <button type="button" class="load-more" id="loadMoreWatch" data-initial-visible="6">
+                    load more ({{ watch_history|length - 6 }} left)
+                </button>
+            </div>
+        {% endif %}
+    {% endif %}
+
+    <br />
+
+    <div class="subtitle">more detailed listening history</div>
+
+    <div id="profileTrackList">
+    {% if tracks %}
+      {% set _past = tracks | rejectattr('nowPlaying', 'equalto', true) | list %}
+      {% if _past %}
+        <ul class="track-list">
+          {% for track in _past[:6] %}
+            {% set _art = media_proxy_url(track.image) %}
+            <li class="track-row">
+              <div class="track-cover">
+                {% if _art %}
+                  <img src="{{ _art }}" alt="{{ track.album }}" loading="lazy">
+                {% else %}
+                  <div class="track-cover-placeholder" aria-hidden="true"></div>
+                {% endif %}
+              </div>
+              <div class="track-meta">
+                <div class="track-name-row">
+                  <a href="{{ track.url }}" target="_blank" rel="noreferrer" class="track-name">{{ track.name }}</a>
+                </div>
+                <div class="track-artist">{{ track.artist }}{% if track.album %} · {{ track.album }}{% endif %}</div>
+              </div>
+              <div class="track-when"{% if track.playedAt %} data-unix="{{ track.playedAt }}"{% endif %}></div>
+            </li>
+          {% endfor %}
+        </ul>
+      {% else %}
+        <p class="muted">no recent listens.</p>
+      {% endif %}
+    {% else %}
+      <p class="muted">couldn't load last.fm history right now.</p>
+    {% endif %}
+    </div>
+    <div class="load-more-wrap" id="loadMoreTracksWrap" style="display:none">
+        <button type="button" class="load-more" id="loadMoreTracks"></button>
+    </div>
+</div>
+
+<script src="{{ get_file('public/js/profile.js') }}"></script>
+{% endblock %}

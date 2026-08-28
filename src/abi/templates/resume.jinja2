@@ -1,0 +1,37 @@
+{% extends "root.jinja2" %}
+
+{% set title = "resume / cv" %}
+{% set description = "my resume" %}
+{% set current_page = "resume" -%}
+
+{% block head %}
+    <meta name="robots" content="index, follow" />
+{% endblock %}
+
+{% block page_content %}
+    <p>hello !</p>
+    <p>
+        if you are on this page, i assume you would like to hire me. that&apos;s
+        great! i&apos;d love to work with you.
+    </p>
+    <p>
+        i am always looking for exciting opportunities - if you think i&apos;d be
+        a good fit for your team, feel free to reach out ^-^
+    </p>
+    <p>
+        at present, i am available for part-time and contract work only.
+        i will be doing full-time only after my masters degree concludes in 2027.
+        i much prefer remote work, but i am open to hybrid opportunities in the
+        netherlands (±2h train ride from utrecht), provided a significant
+        enough incentive is provided.
+    </p>
+    <p>
+        my contact information can be found at the top of this page.
+        {% if resume_url %}
+            my resumé can be <a class="download external" href="{{ resume_url }}">downloaded as a PDF</a>.
+        {% endif %}
+    </p>
+    {% if resume_url %}
+    <embed src="{{ resume_url }}" width="800" height="700" type="application/pdf" />
+    {% endif %}
+{% endblock %}

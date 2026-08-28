@@ -1,0 +1,27 @@
+{% extends "root.jinja2" %}
+{% set title = post.title %}
+{% set description = post.description %}
+
+{% block head %}
+{% if post.unlisted or not post.published %}
+<meta name="robots" content="noindex, nofollow" />
+<link rel="stylesheet" href="{{ get_file('public/css/admin.css') }}" />
+{% endif %}
+{% if post.og_image %}
+<meta property="og:image" content="{{ post.og_image }}" />
+<meta property="og:image:secure_url" content="{{ post.og_image }}" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:image" content="{{ post.og_image }}" />
+{% endif %}
+{% endblock %}
+
+{% block page_content %}
+{% if not post.published or post.unlisted %}
+<div class="blog-unlisted-note">
+    {% if not post.published %}this is a draft preview - only signed-in admins can see it.{% endif %}
+    {% if not post.published and post.unlisted %}<br />{% endif %}
+    {% if post.unlisted %}this post is unlisted - it won't appear on the blog index.{% endif %}
+</div>
+{% endif %}
+{{ post.content | safe }}
+{% endblock %}

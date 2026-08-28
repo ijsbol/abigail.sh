@@ -1,0 +1,1 @@
+fonts are distributed under their own license(s) and do not fall under the MIT license that the wider repository is licensed under.

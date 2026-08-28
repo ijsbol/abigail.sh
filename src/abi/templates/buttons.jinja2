@@ -1,0 +1,13 @@
+{% extends "root.jinja2" %}
+
+{% set title = "88x31 maker" %}
+{% set description = "make an 88x31 button entirely in ur browser" %}
+
+{% block head %}
+    <link rel="stylesheet" href="{{ get_file('public/css/buttons.css') }}" />
+{% endblock %}
+
+{% block page_content %}
+<div class="btn-page"></div>
+<script src="{{ get_file('public/js/buttons.js') }}" defer></script>
+{% endblock %}

@@ -1,0 +1,41 @@
+{% extends "root.jinja2" %}
+{% set title = "blog" %}
+{% set description = "long and short form writing - technical breakdowns, research, and informal brain babble." %}
+
+{% block page_content %}
+<p>
+    long and short form writing - technical breakdowns of projects and
+    research alongside shorter, more informal notes. this merges what used
+    to live under <code>/writing</code> and <code>/notes</code>; old links
+    to either still resolve here.
+</p>
+<p>new posts coming soon:</p>
+<ul>
+    <li>From Hobby Project to 30 Million User Reach</li>
+    <li>Writing an RFC for Specifying Pronouns Over DNS</li>
+    <li>Creating a Simple Image Model to Remove JPEG Artifacts</li>
+    <li>(research project) Developing Brain Tractograph Trace Filtering</li>
+    <li>(research project) Datamining My Own Health</li>
+</ul>
+<br />
+<div class="post-gallery">
+    {% for post in posts %}
+    <a href="/blog/{{ post.slug }}">
+        <div class="post-entry">
+            <div class="title split-div">
+                <div>{{ post.title }}</div>
+            </div>
+            <div class="duration split-div">
+                <div>{{ post.duration }}</div>
+                <div>{{ post.date }}</div>
+            </div>
+            <div class="tags">
+                {% for tag in post.tags %}
+                <div class="tag">{{ tag }}</div>
+                {% endfor %}
+            </div>
+        </div>
+    </a>
+    {% endfor %}
+</div>
+{% endblock %}

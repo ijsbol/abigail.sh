@@ -1,0 +1,21 @@
+.gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 16px;
+    margin-top: 16px;
+}
+
+.capture {
+    font-size: 12px;
+    opacity: 0.8;
+    font-style: italic;
+    margin-top: 4px;
+}
+
+.capture img {
+    display: block;
+    width: 100%;
+    height: auto;
+    border-radius: 6px;
+    margin-bottom: 6px;
+}

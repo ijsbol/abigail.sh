@@ -1,0 +1,88 @@
+{% extends "root.jinja2" %}
+
+{% set title = "projects" %}
+{% set description = "a collection of things i've built - libraries, web apps, discord bots, and assorted tools." %}
+{% set current_page = "projects" %}
+
+{% block head %}
+    <link rel="stylesheet" href="{{ get_file('public/css/projects.css') }}" />
+{% endblock %}
+
+{% block page_content %}
+<p>
+    i build a lot of small things, and sometimes big things. below is a selection of {{ projects|length }}
+    projects i've made - a mix of python libraries, little web apps,
+    discord bots, and tools i wanted to exist. most are open source.
+</p>
+
+<div class="project-filters" role="group" aria-label="filter projects by tag" id="project-filters">
+    <button type="button" class="project-filter selected" data-tag="" aria-pressed="true">
+        all
+        <span class="project-filter-count">{{ projects|length }}</span>
+    </button>
+    {% for tag in tags %}
+    {% if tag_counts.get(tag, 0) > 0 %}
+    <button type="button" class="project-filter" data-tag="{{ tag }}" aria-pressed="false">
+        {{ tag }}
+        <span class="project-filter-count">{{ tag_counts[tag] }}</span>
+    </button>
+    {% endif %}
+    {% endfor %}
+</div>
+
+<div class="project-list" id="project-list">
+    {% for project in projects %}
+    <article class="project" data-tags="{{ project.tags|join(',') }}">
+        <div class="project-head">
+            <a class="project-name external" href="{{ project.href }}" target="_blank" rel="noreferrer">{{ project.name }}</a>
+            <span class="project-lang">{{ project.language }}</span>
+        </div>
+        <p class="project-blurb">{{ project.blurb }}</p>
+        <div class="project-foot">
+            <div class="project-tags" aria-hidden="true">
+                {% for tag in project.tags %}
+                <button type="button" class="project-tag" data-filter-tag="{{ tag }}">{{ tag }}</button>
+                {% endfor %}
+            </div>
+            {% if project.repo %}
+            <a class="project-repo external" href="{{ project.repo }}" target="_blank" rel="noreferrer">source</a>
+            {% endif %}
+        </div>
+    </article>
+    {% endfor %}
+</div>
+
+<script>
+(function() {
+    var active = null;
+    var filters = document.querySelectorAll('.project-filter');
+    var projects = document.querySelectorAll('.project');
+
+    function setFilter(tag) {
+        active = tag || null;
+        filters.forEach(function(btn) {
+            var match = (btn.dataset.tag === (tag || ''));
+            btn.classList.toggle('selected', match);
+            btn.setAttribute('aria-pressed', match ? 'true' : 'false');
+        });
+        projects.forEach(function(p) {
+            var tags = p.dataset.tags ? p.dataset.tags.split(',') : [];
+            var show = !active || tags.indexOf(active) >= 0;
+            p.style.display = show ? '' : 'none';
+        });
+    }
+
+    filters.forEach(function(btn) {
+        btn.addEventListener('click', function() {
+            setFilter(btn.dataset.tag);
+        });
+    });
+
+    document.querySelectorAll('.project-tag').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+            setFilter(btn.dataset.filterTag);
+        });
+    });
+})();
+</script>
+{% endblock %}

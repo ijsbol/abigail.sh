@@ -1,0 +1,50 @@
+{% extends "root.jinja2" %}
+
+{% set title = "guestbook" %}
+{% set description = "a tiny pixel-art guestbook" %}
+{% set current_page = "guestbook" %}
+
+{% block head %}
+    <link rel="stylesheet" href="{{ get_file('public/css/guestbook.css') }}" />
+{% endblock %}
+
+{% block page_content %}
+<div class="guestbook-page">
+
+    {% if site_admin %}
+    <div class="guestbook-admin-mode" style="display:none">
+        <span>site admin: {{ site_admin.username }}</span>
+        <button type="button" class="admin-toggle-btn guestbook-command">enter admin mode</button>
+    </div>
+
+    <div class="guestbook-admin-editor" style="display:none">
+        <div class="guestbook-admin-editor-heading">
+            <h3>editing entry</h3>
+        </div>
+    </div>
+    {% endif %}
+
+    <div class="guestbook-signing-area"></div>
+
+    <div class="guestbook-gallery">
+        <h3>entries <span>{{ entries|length }} entries</span></h3>
+        {% if not entries %}
+        <p class="guestbook-empty">no entries yet. be the first to sign!</p>
+        {% else %}
+        <div class="guestbook-grid"></div>
+        {% endif %}
+    </div>
+
+    {% if site_admin %}
+    <div class="guestbook-ban-list" style="display:none">
+        <h3>bans <span></span></h3>
+        <div></div>
+    </div>
+    {% endif %}
+</div>
+
+<script>
+window.__GUESTBOOK_DATA__ = {{ guestbook_data|safe }};
+</script>
+<script src="{{ get_file('public/js/guestbook.js') }}" defer></script>
+{% endblock %}

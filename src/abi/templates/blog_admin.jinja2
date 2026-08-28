@@ -1,0 +1,75 @@
+{% extends "root.jinja2" %}
+{% set title = "admin" %}
+
+{% block head %}
+<meta name="robots" content="noindex, nofollow" />
+<link rel="stylesheet" href="{{ get_file('public/css/admin.css') }}" />
+{% endblock %}
+
+{% block page_content %}
+<div class="admin">
+    <div class="admin-header split-div">
+        <h2>site admin / blog</h2>
+        <div class="admin-whoami">
+            {{ username }} · <a class="external" href="/api/blog/auth/logout">log out</a>
+        </div>
+    </div>
+
+    <p>
+        <a class="external" href="/admin">admin home</a>
+    </p>
+
+    <p>
+        <a class="admin-new-button" href="/blog/admin/new">+ new post</a>
+    </p>
+
+    <div class="admin-list">
+        {% if not posts %}
+        <p>no posts yet.</p>
+        {% endif %}
+        {% for post in posts %}
+        <div class="admin-row">
+            <div class="admin-row-main">
+                <div class="admin-row-title">
+                    {{ post.title }}
+                    {% if not post.published %}<span class="admin-badge draft">draft</span>{% endif %}
+                    {% if post.unlisted %}<span class="admin-badge unlisted">unlisted</span>{% endif %}
+                    <span class="admin-badge kind">{{ post.kind }}</span>
+                </div>
+                <div class="admin-row-meta">/blog/{{ post.slug }} · {{ post.date }}</div>
+            </div>
+            <div class="admin-row-actions">
+                <a class="external" href="/blog/{{ post.slug }}">view</a>
+                <a class="external" href="/blog/admin/edit/{{ post.slug }}">edit</a>
+                <button
+                    type="button"
+                    class="admin-delete"
+                    data-slug="{{ post.slug }}"
+                    data-title="{{ post.title | e }}"
+                >delete</button>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<script>
+document.querySelectorAll('.admin-delete').forEach(function(btn) {
+    btn.addEventListener('click', async function() {
+        var slug = btn.dataset.slug;
+        var title = btn.dataset.title;
+        if (!confirm('delete "' + title + '"? this can\'t be undone.')) return;
+        btn.disabled = true;
+        btn.textContent = 'deleting…';
+        var res = await fetch('/api/blog/posts/' + slug, { method: 'DELETE' });
+        if (!res.ok) {
+            alert('failed to delete post.');
+            btn.disabled = false;
+            btn.textContent = 'delete';
+            return;
+        }
+        btn.closest('.admin-row').remove();
+    });
+});
+</script>
+{% endblock %}

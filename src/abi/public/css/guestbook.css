@@ -1,0 +1,496 @@
+.guestbook-page {
+    --guestbook-panel: rgba(255, 255, 255, 0.32);
+    --guestbook-border: rgba(42, 26, 38, 0.28);
+    --guestbook-control: rgba(42, 26, 38, 0.07);
+    --guestbook-control-hover: rgba(165, 76, 122, 0.2);
+    min-width: 0;
+}
+
+[data-theme="dark"] .guestbook-page {
+    --guestbook-panel: rgba(255, 255, 255, 0.035);
+    --guestbook-border: rgba(240, 230, 238, 0.28);
+    --guestbook-control: rgba(255, 255, 255, 0.06);
+    --guestbook-control-hover: rgba(232, 75, 95, 0.2);
+}
+
+.guestbook-heading {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 18px;
+}
+
+.guestbook-heading p {
+    margin: 4px 0 0;
+    opacity: 0.72;
+}
+
+.guestbook-account {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 8px;
+    min-width: 0;
+    text-align: right;
+}
+
+.guestbook-account span {
+    overflow-wrap: anywhere;
+}
+
+.guestbook-account form {
+    display: flex;
+    margin: 0;
+}
+
+.guestbook-command,
+.guestbook-icon-button {
+    appearance: none;
+    border: 1px solid var(--guestbook-border);
+    border-radius: 4px;
+    color: var(--duck);
+    background-color: var(--guestbook-control);
+    font: inherit;
+    cursor: pointer;
+    transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+
+.guestbook-command:hover:not(:disabled),
+.guestbook-icon-button:hover:not(:disabled) {
+    background-color: var(--guestbook-control-hover);
+    border-color: var(--goose);
+}
+
+.guestbook-command:focus-visible,
+.guestbook-icon-button:focus-visible,
+.guestbook-swatch:focus-visible,
+.guestbook-drawing-canvas:focus-visible {
+    outline: 2px solid var(--dove);
+    outline-offset: 2px;
+}
+
+.guestbook-command:disabled,
+.guestbook-icon-button:disabled {
+    cursor: not-allowed;
+    opacity: 0.42;
+}
+
+.guestbook-command {
+    min-height: 36px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    padding: 7px 11px;
+    text-decoration: none;
+    font-weight: 600;
+    box-sizing: border-box;
+}
+
+.guestbook-icon-button {
+    width: 34px;
+    height: 34px;
+    flex: 0 0 34px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+}
+
+.guestbook-icon-button[aria-pressed="true"] {
+    color: var(--flightless-bird);
+    background-color: var(--duck);
+    border-color: var(--duck);
+}
+
+[data-theme="dark"] .guestbook-icon-button[aria-pressed="true"] {
+    color: rgb(30, 25, 46);
+    background-color: var(--duck);
+}
+
+.guestbook-login {
+    flex: 0 0 auto;
+    background-color: #5865f2;
+    border-color: #5865f2;
+    color: #ffffff;
+}
+
+.guestbook-login:hover {
+    background-color: #4752c4;
+    border-color: #4752c4;
+}
+
+.guestbook-notice {
+    padding: 8px 10px;
+    margin: 0 0 14px;
+    border-left: 3px solid var(--goose);
+    background-color: var(--guestbook-control);
+}
+
+.guestbook-admin-mode {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin: 0 0 14px;
+    padding: 7px 0;
+    border-top: 1px solid var(--guestbook-border);
+    border-bottom: 1px solid var(--guestbook-border);
+    font-size: 11px;
+}
+
+.guestbook-admin-mode span {
+    font-weight: 600;
+    color: var(--dove);
+}
+
+.guestbook-admin-mode a {
+    color: var(--dove);
+    font-weight: 600;
+}
+
+.guestbook-admin-editor {
+    margin: 0 0 24px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--guestbook-border);
+}
+
+.guestbook-admin-editor-heading {
+    width: min(100%, 480px);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 8px;
+}
+
+.guestbook-admin-editor-heading h3 {
+    min-width: 0;
+    overflow-wrap: anywhere;
+    font-size: 13px;
+}
+
+.guestbook-banned-self {
+    margin-bottom: 22px;
+    padding: 10px 12px;
+    border-left: 3px solid #b4233f;
+    background-color: var(--guestbook-control);
+}
+
+.guestbook-banned-self p {
+    margin: 0;
+}
+
+.guestbook-signing-area {
+    margin-bottom: 26px;
+}
+
+.guestbook-editor {
+    width: min(100%, 480px);
+    padding: 10px;
+    border: 1px solid var(--guestbook-border);
+    border-radius: 6px;
+    background-color: var(--guestbook-panel);
+    box-sizing: border-box;
+}
+
+.guestbook-toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 9px;
+}
+
+.guestbook-tool-group {
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: center;
+    gap: 3px;
+}
+
+.guestbook-size-control {
+    min-height: 34px;
+    display: grid;
+    grid-template-columns: auto minmax(64px, 100px) 1.5ch;
+    align-items: center;
+    gap: 6px;
+    font-size: 11px;
+}
+
+.guestbook-size-control input {
+    min-width: 0;
+    accent-color: var(--goose);
+}
+
+.guestbook-size-control output {
+    font-variant-numeric: tabular-nums;
+    text-align: right;
+}
+
+.guestbook-palette {
+    width: min(100%, 360px);
+    display: grid;
+    grid-template-columns: repeat(8, minmax(24px, 1fr));
+    gap: 4px;
+    margin-bottom: 10px;
+}
+
+.guestbook-swatch {
+    width: 100%;
+    min-width: 0;
+    aspect-ratio: 1;
+    padding: 0;
+    border: 2px solid transparent;
+    border-radius: 3px;
+    cursor: pointer;
+    box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.22);
+    box-sizing: border-box;
+}
+
+.guestbook-swatch[aria-pressed="true"] {
+    border-color: var(--flightless-bird);
+    outline: 2px solid var(--duck);
+    outline-offset: 0;
+}
+
+.guestbook-drawing-canvas {
+    display: block;
+    width: min(100%, 448px);
+    height: auto;
+    aspect-ratio: 1;
+    border: 1px solid var(--duck);
+    background-color: #fff1e8;
+    image-rendering: pixelated;
+    image-rendering: crisp-edges;
+    cursor: crosshair;
+    touch-action: none;
+    box-sizing: border-box;
+}
+
+.guestbook-save {
+    width: 100%;
+    margin-top: 10px;
+    color: var(--flightless-bird);
+    background-color: var(--goose);
+    border-color: var(--goose);
+}
+
+.guestbook-save:hover:not(:disabled) {
+    color: var(--flightless-bird);
+    background-color: var(--dove);
+}
+
+.guestbook-delete {
+    margin-top: 8px;
+    color: #a01836;
+    border-color: rgba(160, 24, 54, 0.4);
+}
+
+[data-theme="dark"] .guestbook-delete {
+    color: #ff94aa;
+    border-color: rgba(255, 148, 170, 0.45);
+}
+
+.guestbook-gallery {
+    margin-top: 22px;
+    padding-top: 14px;
+    border-top: 1px solid var(--guestbook-border);
+}
+
+.guestbook-gallery h3 {
+    display: flex;
+    align-items: baseline;
+    gap: 7px;
+    margin-bottom: 12px;
+    font-size: 15px;
+}
+
+.guestbook-gallery h3 span {
+    font-size: 11px;
+    font-weight: normal;
+    opacity: 0.62;
+}
+
+.guestbook-empty {
+    margin: 0;
+    opacity: 0.68;
+    font-style: italic;
+}
+
+.guestbook-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(142px, 1fr));
+    gap: 10px;
+}
+
+.guestbook-entry {
+    min-width: 0;
+    overflow: hidden;
+    border: 1px solid var(--guestbook-border);
+    border-radius: 5px;
+    background-color: var(--guestbook-panel);
+}
+
+.guestbook-entry.is-mine {
+    border-color: var(--goose);
+}
+
+.guestbook-entry.is-banned {
+    border-color: #b4233f;
+}
+
+.guestbook-preview-canvas {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1;
+    background-color: #fff1e8;
+    image-rendering: pixelated;
+    image-rendering: crisp-edges;
+}
+
+.guestbook-entry-meta {
+    min-height: 58px;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 1px 6px;
+    align-items: baseline;
+    padding: 7px 8px 8px;
+    box-sizing: border-box;
+}
+
+.guestbook-entry-meta strong,
+.guestbook-entry-meta span {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.guestbook-entry-meta strong {
+    grid-column: 1 / 3;
+    font-size: 12px;
+}
+
+.guestbook-entry-meta span,
+.guestbook-entry-meta time {
+    font-size: 9px;
+    opacity: 0.65;
+}
+
+.guestbook-entry-meta time {
+    white-space: nowrap;
+}
+
+.guestbook-admin-entry-actions {
+    height: 34px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    border-top: 1px solid var(--guestbook-border);
+}
+
+.guestbook-admin-entry-actions button {
+    min-width: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    border: 0;
+    border-right: 1px solid var(--guestbook-border);
+    color: var(--duck);
+    background-color: transparent;
+    cursor: pointer;
+}
+
+.guestbook-admin-entry-actions button:last-child {
+    border-right: 0;
+}
+
+.guestbook-admin-entry-actions button:hover:not(:disabled) {
+    color: var(--flightless-bird);
+    background-color: var(--goose);
+}
+
+.guestbook-admin-entry-actions button:focus-visible {
+    position: relative;
+    z-index: 1;
+    outline: 2px solid var(--dove);
+    outline-offset: -2px;
+}
+
+.guestbook-admin-entry-actions button:disabled {
+    cursor: not-allowed;
+    opacity: 0.42;
+}
+
+.guestbook-ban-list {
+    margin-top: 22px;
+    padding-top: 14px;
+    border-top: 1px solid var(--guestbook-border);
+}
+
+.guestbook-ban-list h3 {
+    display: flex;
+    align-items: baseline;
+    gap: 7px;
+    margin-bottom: 8px;
+    font-size: 13px;
+}
+
+.guestbook-ban-list h3 span {
+    font-size: 10px;
+    font-weight: normal;
+    opacity: 0.62;
+}
+
+.guestbook-ban-list > div {
+    display: flex;
+    flex-direction: column;
+}
+
+.guestbook-ban-row {
+    min-width: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--guestbook-border);
+}
+
+.guestbook-ban-row > span {
+    min-width: 0;
+    overflow-wrap: anywhere;
+}
+
+@media (max-width: 540px) {
+    .guestbook-heading {
+        align-items: stretch;
+        flex-direction: column;
+    }
+    .guestbook-login {
+        align-self: flex-start;
+    }
+    .guestbook-account {
+        justify-content: space-between;
+        text-align: left;
+    }
+    .guestbook-ban-row {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+    .guestbook-editor {
+        padding: 8px;
+    }
+}
+
+@media (max-width: 330px) {
+    .guestbook-palette {
+        grid-template-columns: repeat(4, minmax(24px, 1fr));
+    }
+    .guestbook-grid {
+        grid-template-columns: 1fr;
+    }
+}

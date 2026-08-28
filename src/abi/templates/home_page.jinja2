@@ -1,0 +1,219 @@
+{% extends "root.jinja2" %}
+
+{% set title = "home" %}
+{% set description = "hello, world! my name is abigail, i use she/they pronouns. i'm a computer scientist and scientific researcher." %}
+{% set current_page = "home" -%}
+
+{% block head %}
+    <link rel="stylesheet" href="{{ get_file('public/css/home_page.css') }}" />
+{% endblock %}
+
+{% block page_content %}
+    <p>hello, world!</p>
+    <p>
+        my name is abigail<sup><a
+            class="muted tooltip"
+            href="/~/my-name"
+            aria-label="Occasionally known as Isabelle"
+        >[※]</a></sup>,
+        i use
+        <a
+            class="muted tooltip"
+            href="https://en.wikipedia.org/wiki/Singular_they"
+            target="_blank"
+            aria-label="See: Singular they / them pronouns"
+        ><span class="pronouns" aria-label="they them">she / they</span></a>
+        pronouns. i&apos;m a computer scientist and scientific researcher.
+        i have been programming as a hobby since i was 6 years old, and
+        professionally since i was 14.
+    </p>
+    <p>
+        i'm a masters student in computer science and engineering at
+        <a
+            class="external tooltip"
+            href="https://tue.nl/"
+            target="_blank"
+        >eindhoven university of technology</a>,
+        where i focus on visual computing, big data, and machine learning.
+        i completed my bachelors in computer science and mathematics at
+        <a
+            class="external tooltip"
+            href="https://www.swansea.ac.uk/"
+            target="_blank"
+            aria-label="Prifysgol Abertawe"
+        >swansea university</a>,
+        and previously studied quantum computing with a scholarship from IBM.
+    </p>
+    <p>
+        my thesis is in collaboration with the
+        <a
+            class="external tooltip"
+            href="https://esa.int/"
+            target="_blank"
+        >european space agency</a>
+        and the
+        <a
+            class="external tooltip"
+            href="https://www.euclid-ec.org/"
+            target="_blank"
+        >euclid consortium</a>,
+        where i will be creating renderings of large-scale cosmic super structure
+        ("<a
+            class="muted tooltip"
+            href="https://science.nasa.gov/mission/hubble/science/science-highlights/mapping-the-cosmic-web/"
+            target="_blank"
+        >the cosmic web</a>"),
+        as mapped by the
+        <a
+            class="external tooltip"
+            href="https://www.esa.int/Science_Exploration/Space_Science/Euclid"
+            target="_blank"
+            aria-label="Euclid: Exploring the Dark Universe"
+        >euclid space telescope</a>,
+        as well as improving red-shift calculation algorithms for the telescope&apos;s data pipeline.
+    </p>
+    <p>
+        outside of direct education, i&apos;m also a navigation engineer for
+        <a
+            class="external tooltip"
+            href="https://exploreabyss.org/"
+            target="_blank"
+        >TU/e&apos;s Abyss student submarine engineering team</a>.
+        i also build a lot of things in my own time, with one of my most popular
+        <a
+            class="external"
+            href="/projects"
+        >projects</a>
+        being
+        <a
+            class="external tooltip"
+            href="https://scrumpbot.com/"
+            target="_blank"
+        >scrumpbot</a>,
+        a discord utility bot with ~40M user combined reach across ~30K servers.
+    </p>
+    <p>
+        as you can probably tell based on my thesis topic and ongoing projects, i hugely enjoy
+        astrophysics, and more generally anything science-related. it should therefore come as
+        no surprise that <a
+            class="muted"
+            href="/blog/its-the-stars-im-after"
+            aria-label="Writing/Note: It's the stars I'm after."
+        >my long-term goal is to be an astronaut</a> :)
+    </p>
+    <p>
+        for more information on my academics and work experience, please find my
+        <a
+            class="external tooltip"
+            href="/resume"
+        >resumé / cv</a>.
+    </p>
+    <p>
+        as for
+        <span class="highlight-block">¬(work ∨ academic)</span>-things:
+        i have lived in 4 different countries (i currently live in The Netherlands
+        <span aria-hidden="true">🇳🇱</span>), have <a class="external tooltip" href="/travel" >
+        visited {{ visited_count }}</a>, and have been to 3 continents. i enjoy <a class="external tooltip" href="/travel" >
+        travelling</a>, experiencing new cultures, and meeting people.
+    </p>
+    <p>
+        i fell in love with the ocean and swimming when i lived in Cyprus;
+        competing in some swimming competitions. outside of swimming,
+        i&apos;ve also completed the ssi open water diving certification;  which allows me to dive
+        up to 18 meters into the depths of the ocean, experiencing a pressure of 281.8kPA!
+    </p>
+    <p>
+        i do archery once a week, and occasionally go on dives with my local dive club. i've also made a
+        <a href="/watch-list" class="external" >watch list</a>
+        of anime&apos;s, movies, and tv shows that i enjoy or plan on watching, it
+        includes reviews for some of them.
+    </p>
+    <p>
+        if you want to get in touch & chat, please feel free to do so! e-mail is probably your best
+        bet if we don&apos;t know each other in some capacity already
+        (<a
+            href="mailto:abigail@phoebe.sh"
+            class="external"
+            aria-label="abigail at phoebe dot s h"
+        >abigail@phoebe.sh</a>)!
+        i am happy for anyone to reach out :)
+    </p>
+    <p>
+        if email is too archaic for you, you can find me at various places online; see my
+        <a class="external" href="/profile" >profile</a>
+        for the full list.
+    </p>
+
+    <div class="subtitle">88x31px buttons</div>
+    <p>
+        if you don&apos;t know what 88x31px buttons are, check out
+        <a
+            class="external tooltip"
+            href="https://en.wikipedia.org/wiki/Web_badge"
+        >this wikipedia article</a> :p
+    </p>
+    <p>
+        you can <a class="external" href="/buttons">create your own</a> on this website :3
+    </p>
+    <div id="friendButtons">
+        <img
+            src="{{ get_file("public/images/button.png") }}"
+            alt="friends 88x31px button"
+            width="88"
+            height="31"
+            loading="lazy"
+            style="image-rendering:pixelated"
+        />
+        <a href="https://tilde.town" target="_blank">
+            <img
+            src="{{ get_file("public/images/buttons/vanity/tildetown.gif") }}"
+            alt="tilde.town 88x31px button"
+            width="88"
+            height="31"
+            loading="lazy"
+            style="image-rendering:pixelated"
+        /></a>
+
+        {% for url, image in friend_buttons.items() %}
+            <a href="{{ url }}" target="_blank">
+                <img
+                    src="{{ get_file(image) }}"
+                    alt="friends 88x31px button"
+                    width="88"
+                    height="31"
+                    loading="lazy"
+                    style="image-rendering:pixelated"
+                />
+            </a>
+        {% endfor %}
+
+        {% for url, image in vanity_buttons.items() %}
+            {% if url != None %}
+            <a href="{{ url }}" target="_blank">
+                <img
+                    src="{{ get_file(image) }}"
+                    alt="vanity 88x31px button"
+                    width="88"
+                    height="31"
+                    loading="lazy"
+                    style="image-rendering:pixelated"
+                />
+            </a>
+            {% else %}
+                <img
+                    src="{{ get_file(image) }}"
+                    alt="vanity 88x31px button"
+                    width="88"
+                    height="31"
+                    loading="lazy"
+                    style="image-rendering:pixelated"
+                />
+            {% endif %}
+        {% endfor %}
+    </div>
+    <div class="subtitle">page views</div>
+    <div class="page-views">
+        <img src="https://counter.abigail.sh/@abigail.sh:views?theme=moebooru&padding=0&offset=0&align=top&scale=1&pixelated=1&darkmode=0" alt="page views" />
+    </div>
+
+{% endblock %}

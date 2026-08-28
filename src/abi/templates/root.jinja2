@@ -1,0 +1,227 @@
+{% set pages = [
+    ('/', 'home', 'home'),
+    ('/profile', 'profile', 'profile'),
+    ('/resume', 'resume', 'resume / cv'),
+    ('/blog', 'blog', 'blog'),
+    ('/projects', 'projects', 'projects'),
+    ('/photography', 'photography', 'photography'),
+    ('/travel', 'travel', 'travel'),
+    ('/watch-list', 'watch-list', 'watch list'),
+    ('/guestbook', 'guestbook', 'guestbook'),
+    ('/buttons', 'buttons', '88x31 maker')
+] %}
+
+{% set current_page = current_page|default('home') -%}
+
+<html lang="en" data-theme="dark">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta name="theme-color" content="#a54c7a" />
+        <link rel="preload" href="{{ get_file('public/images/icon.png') }}" as="image" />
+        <link rel="preload" href="{{ get_file('public/images/hugs.png') }}" as="image" />
+        <link rel="icon" href="{{ get_file('public/images/icon.png') }}" type="{{ get_file_type('public/images/icon.png') }}" sizes="256x256" />
+        <link rel="stylesheet" href="{{ get_file('public/css/global.css') }}" />
+        <script>try{var t=localStorage.getItem('theme');if(t)document.documentElement.setAttribute('data-theme',t);}catch(e){}</script>
+        <title>abigail // {{ title }}</title>
+        <meta name="description" content="{{ description }}" />
+        <meta name="author" content="abigail phoebe" />
+        <meta name="keywords" content="abigail phoebe,software engineer,masters student,computer science,computational astrophysics,open source,contact" />
+        <meta name="robots" content="index, follow" />
+        <meta property="og:title" content="abigail // {{ title }}" />
+        <meta property="og:description" content="{{ description }}" />
+        <meta property="og:url" content="https://abigail.sh" />
+        <meta property="og:locale" content="en_US" />
+        <meta property="og:image" content="{{ get_file('public/images/icon.png') }}" />
+        <meta property="og:image:secure_url" content="{{ get_file('public/images/icon.png') }}" />
+        <meta property="og:image:type" content="{{ get_file_type('public/images/icon.png') }}" />
+        <meta property="og:image:width" content="512" />
+        <meta property="og:image:height" content="512" />
+        <meta property="og:image:alt" content="abigail phoebe's avatar" />
+        <meta property="og:type" content="website" />
+        <meta name="twitter:card" content="summary" />
+        <meta name="twitter:title" content="abigail phoebe // {{ title }}" />
+        <meta name="twitter:description" content="{{ description }}" />
+        <meta name="twitter:image" content="{{ get_file('public/images/icon.png') }}" />
+        {% block head %}{% endblock %}
+        <script src="{{ get_file('public/js/cursor.js') }}" defer></script>
+    </head>
+    <body>
+        <div class="content">
+            <div class="spaced-container" aria-hidden="true">
+                <div class="spacer"></div>
+                <div class="spaced-content hotlink">
+                    <div class="domain" id="hotlinkDomain">{{ hotlink_domain }}</div>
+                    <div class="tld">.sh</div>
+                </div>
+                <div class="spacer"></div>
+            </div>
+            <div class="primary-container">
+                <div class="avatar" aria-hidden="true">
+                    <img
+                        src="{{ get_file('public/images/icon.png') }}"
+                        alt=""
+                        width="125"
+                        height="125"
+                        draggable="false"
+                        class="avatar"
+                    />
+                </div>
+                <div class="information">
+                    <h1 class="letter-effect" aria-label="abigail phoebe">
+                        abigail phoebe
+                    </h1>
+                    <div class="tagline-container">
+                        <h3 aria-label="software engineer &amp; scientific researcher">
+                            software engineer &amp; scientific researcher
+                        </h3>
+                    </div>
+                    <div id="largeContactTable">
+                        <table class="contact">
+                            <tbody>
+                                <tr>
+                                    <td class="td-name">e-mail</td>
+                                    <td class="td-value">
+                                        <a
+                                            href="mailto:abigail@phoebe.sh"
+                                            class="external"
+                                            aria-label="abigail at phoebe dot s h"
+                                            >abigail@phoebe.sh</a
+                                        >
+                                        <a
+                                            href="/~/pgp"
+                                            target="_blank"
+                                            class="external pgp-fingerprint"
+                                            aria-label="pgp key fingerprint"
+                                            >[PGP]</a
+                                        >
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="td-name" aria-label="git hub">github</td>
+                                    <td class="td-value">
+                                        <a href="/r/github" target="_blank" class="external" aria-label="at ijsbol"
+                                            >@ijsbol</a
+                                        >
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="td-name" aria-label="linked in">linkedin</td>
+                                    <td class="td-value">
+                                        <a
+                                            href="/r/linkedin"
+                                            target="_blank"
+                                            class="external"
+                                            aria-label="abigail phoebe"
+                                            >in/abigailphoebe</a
+                                        >
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div id="smallContactTable">
+                <table class="contact">
+                    <tbody>
+                        <tr>
+                            <td class="td-name">e-mail</td>
+                            <td class="td-value">
+                                <a
+                                    href="mailto:abigail@phoebe.sh"
+                                    class="external"
+                                    aria-label="abigail at phoebe dot s h"
+                                    >abigail@phoebe.sh</a
+                                >
+                                <a
+                                    href="/~/pgp"
+                                    target="_blank"
+                                    class="external pgp-fingerprint"
+                                    aria-label="pgp key fingerprint"
+                                    >[PGP]</a
+                                >
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="td-name" aria-label="git hub">github</td>
+                            <td class="td-value">
+                                <a href="/r/github" target="_blank" class="external" aria-label="at ijsbol">@ijsbol</a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="td-name" aria-label="linked in">linkedin</td>
+                            <td class="td-value">
+                                <a href="/r/linkedin" target="_blank" class="external" aria-label="abigail phoebe"
+                                    >in/abigailphoebe</a
+                                >
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <hr />
+            <div class="page">
+                <div class="focused-area">
+                    {% block page_content %} {% endblock %}
+                </div>
+                <div class="meta-column">
+                    <div class="hugs"><img src="{{ get_file('public/images/hugs.png') }}" alt="Hug icon" /></div>
+                    <div class="pages">
+                        {% for href, id, label in pages %}
+                            <a href="{{ href }}" class="{% if id == current_page %}selected{% endif %}">{{ label }}</a>
+                        {% endfor %}
+                    </div>
+                    <div class="header-toggles">
+                        <button type="button" aria-label="toggle light / dark mode" class="theme-toggle">
+                            <span class="theme-toggle__moon" aria-hidden="true"
+                                ><svg
+                                    width="24"
+                                    height="24"
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    aria-hidden="true"
+                                >
+                                    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79Z" fill="currentColor"></path></svg></span
+                            ><span class="theme-toggle__sakura" aria-hidden="true"
+                                ><svg
+                                    width="26"
+                                    height="26"
+                                    viewBox="0 0 64 64"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    aria-hidden="true"
+                                    fill="currentColor"
+                                >
+                                    <ellipse cx="32" cy="16" rx="8" ry="12" transform="rotate(0 32 32)"></ellipse>
+                                    <ellipse cx="32" cy="16" rx="8" ry="12" transform="rotate(72 32 32)"></ellipse>
+                                    <ellipse cx="32" cy="16" rx="8" ry="12" transform="rotate(144 32 32)"></ellipse>
+                                    <ellipse cx="32" cy="16" rx="8" ry="12" transform="rotate(216 32 32)"></ellipse>
+                                    <ellipse cx="32" cy="16" rx="8" ry="12" transform="rotate(288 32 32)"></ellipse>
+                                    <circle cx="32" cy="32" r="4" fill="#ffd1e0"></circle></svg
+                            ></span></button
+                        ><button type="button" aria-label="disable cursor sharing" class="presence-toggle">
+                            <svg
+                                width="22"
+                                height="22"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                xmlns="http://www.w3.org/2000/svg"
+                                aria-hidden="true"
+                            >
+                                <path
+                                    d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"
+                                    stroke="currentColor"
+                                    stroke-width="2"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                ></path>
+                                <circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="2"></circle>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

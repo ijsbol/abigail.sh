@@ -1,0 +1,203 @@
+{% extends "root.jinja2" %}
+
+{% set title = "travel" %}
+{% set description = "i love travelling - a goal of mine is to visit every country." %}
+{% set current_page = "travel" %}
+
+{% block head %}
+    <link rel="stylesheet" href="{{ get_file('public/css/travel.css') }}" />
+{% endblock %}
+
+{% block page_content %}
+<div class="travel-page">
+<p>
+    i love travelling, a goal of mine is to visit every country (though that may prove difficult for some countries xd).
+</p>
+<p>
+    so far, i&apos;ve visited the following countries (listed by endonym,
+    non-latin scripts first, then alphabetical, with wherever i currently am
+    pinned to the top);
+</p>
+
+{% if next_trip %}
+<div class="next-trip">
+    <div class="next-trip-head">
+        <span class="country-dot {% if next_trip.status == 'current' %}c-current{% else %}c-next{% endif %}" aria-hidden="true"></span>
+        <span class="next-trip-label">{% if next_trip.status == 'current' %}currently in{% else %}up next{% endif %}</span>
+        <span class="next-trip-place">{{ next_trip.endonym or next_trip.name }}</span>
+    </div>
+    <div class="next-trip-countdowns"></div>
+    {% if next_trip.note %}
+    <p class="next-trip-note">{{ next_trip.note }}</p>
+    {% endif %}
+</div>
+{% endif %}
+
+<div class="map-legend" aria-hidden="true">
+    {% for status in status_order %}
+    <div class="map-legend-item">
+        <span class="country-dot c-{{ status }}"></span>
+        <span class="map-legend-count">{{ status_counts[status] }}</span>
+        <span class="map-legend-label">{{ status_labels[status] }}</span>
+    </div>
+    {% endfor %}
+</div>
+
+<div class="world-map" role="img" aria-label="a world map highlighting the countries abigail has visited, passed through, or is currently in">
+    <svg class="world-map-svg" viewBox="0 0 1000 520" id="world-map-svg">
+        <g id="world-map-group">
+        </g>
+    </svg>
+    <div class="map-zoom" aria-hidden="false">
+        <button type="button" class="map-zoom-in" aria-label="zoom in" title="zoom in">+</button>
+        <button type="button" class="map-zoom-out" aria-label="zoom out" title="zoom out">–</button>
+        <button type="button" class="map-reset-btn" aria-label="reset zoom" title="reset" disabled>&#10686;</button>
+    </div>
+    <div class="map-tooltip" style="display:none"></div>
+</div>
+
+<div class="travel-stats">
+    <div class="travel-stat">
+        <span class="travel-stat-num">{{ visited_count }}</span>
+        <span class="travel-stat-label">countries</span>
+    </div>
+    <div class="travel-stat">
+        <span class="travel-stat-num">{{ city_count }}</span>
+        <span class="travel-stat-label">cities &amp; regions</span>
+    </div>
+    <div class="travel-stat">
+        <span class="travel-stat-num">{{ passed_count }}</span>
+        <span class="travel-stat-label">passed through</span>
+    </div>
+</div>
+
+<div class="country-list">
+    {% for country in countries %}
+    {% set primary = country.endonym or country.name %}
+    {% set secondary = country.name if (country.endonym and country.endonym != country.name) else None %}
+    {% if country.cities %}
+    <div class="country" data-num="{{ country.num }}">
+        <div class="country-summary-row">
+            <button
+                type="button"
+                class="country-summary"
+                aria-expanded="false"
+            >
+                <span class="country-dot c-{{ country.status }}" aria-hidden="true"></span>
+                <span class="country-name">{{ primary }}</span>
+                {% if secondary %}<span class="country-endonym">{{ secondary }}</span>{% endif %}
+            </button>
+            <button type="button" class="country-zoom" data-num="{{ country.num }}" title="zoom to on map" aria-label="zoom to {{ primary }} on the map">
+                <svg viewBox="0 0 16 16" aria-hidden="true" width="15" height="15">
+                    <circle cx="7" cy="7" r="4.5" fill="none" stroke="currentColor" stroke-width="1.6"/>
+                    <line x1="10.5" y1="10.5" x2="14" y2="14" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+                </svg>
+            </button>
+        </div>
+        <div class="country-panel">
+            <div class="country-panel-inner">
+                <ul class="country-cities">
+                    {% for city in country.cities %}
+                    <li>{{ city }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+    {% else %}
+    <div class="country-static" data-num="{{ country.num }}">
+        <span class="country-dot c-{{ country.status }}" aria-hidden="true"></span>
+        <span class="country-name">{{ primary }}</span>
+        {% if secondary %}<span class="country-endonym">{{ secondary }}</span>{% endif %}
+        <button type="button" class="country-zoom" data-num="{{ country.num }}" title="zoom to on map" aria-label="zoom to {{ primary }} on the map">
+            <svg viewBox="0 0 16 16" aria-hidden="true" width="15" height="15">
+                <circle cx="7" cy="7" r="4.5" fill="none" stroke="currentColor" stroke-width="1.6"/>
+                <line x1="10.5" y1="10.5" x2="14" y2="14" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+            </svg>
+        </button>
+    </div>
+    {% endif %}
+    {% endfor %}
+</div>
+</div>
+
+<script>
+window.__TRAVEL_STATUS_BY_NUM__ = {{ status_by_num_json|safe }};
+window.__TRAVEL_NEXT_TRIP__ = {{ next_trip_json|safe }};
+</script>
+<script>
+(function() {
+    var statusByNum = window.__TRAVEL_STATUS_BY_NUM__;
+    var STATUS_CLASS = {next:'c-next',current:'c-current',visited:'c-visited',passed:'c-passed'};
+    var OCEAN_FONT = 11;
+
+    fetch('/static/data/world-geo.json')
+        .then(function(r) { return r.json(); })
+        .then(function(geo) {
+            window.__TRAVEL_GEO__ = geo;
+            buildMap(geo, statusByNum);
+            var script = document.createElement('script');
+            script.src = '{{ get_file("public/js/travel.js") }}';
+            document.head.appendChild(script);
+        })
+        .catch(function(e) { console.error('failed to load world map', e); });
+
+    function buildMap(geo, statusByNum) {
+        var g = document.getElementById('world-map-group');
+        if (!g) return;
+        var W = geo.width, H = geo.height;
+        var svg = document.querySelector('.world-map-svg');
+        svg.setAttribute('viewBox', '0 0 ' + W + ' ' + H);
+
+        var sphere = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+        sphere.setAttribute('class', 'map-sphere');
+        sphere.setAttribute('d', geo.sphere);
+        g.appendChild(sphere);
+
+        var grat = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+        grat.setAttribute('class', 'map-graticule');
+        grat.setAttribute('d', geo.graticule);
+        grat.setAttribute('vector-effect', 'non-scaling-stroke');
+        grat.style.pointerEvents = 'none';
+        g.appendChild(grat);
+
+        if (geo.oceans) {
+            geo.oceans.forEach(function(o) {
+                var txt = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+                txt.setAttribute('x', o.x);
+                txt.setAttribute('y', o.y);
+                txt.setAttribute('class', 'map-ocean-label' + (o.minScale > 1 ? ' is-hidden' : ''));
+                txt.style.fontSize = (OCEAN_FONT * o.size) + 'px';
+                txt.textContent = o.name;
+                g.appendChild(txt);
+            });
+        }
+
+        geo.countries.forEach(function(c) {
+            var status = statusByNum[c.id];
+            var path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+            path.setAttribute('d', c.d);
+            path.setAttribute('vector-effect', 'non-scaling-stroke');
+            path.setAttribute('class', 'map-country ' + (status ? STATUS_CLASS[status] : 'c-none'));
+            path.dataset.num = c.id;
+            g.appendChild(path);
+        });
+
+        if (geo.markers) {
+            Object.keys(geo.markers).forEach(function(numStr) {
+                var xy = geo.markers[numStr];
+                var status = statusByNum[parseInt(numStr, 10)];
+                var circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+                circle.setAttribute('cx', xy[0]);
+                circle.setAttribute('cy', xy[1]);
+                circle.setAttribute('r', 4);
+                circle.setAttribute('vector-effect', 'non-scaling-stroke');
+                circle.setAttribute('class', 'map-marker ' + (status ? STATUS_CLASS[status] : 'c-none'));
+                circle.dataset.num = numStr;
+                g.appendChild(circle);
+            });
+        }
+    }
+})();
+</script>
+{% endblock %}

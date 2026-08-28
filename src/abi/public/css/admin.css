@@ -1,0 +1,258 @@
+.blog-unlisted-note {
+    background-color: var(--geko);
+    border: 1px dashed var(--goose);
+    border-radius: 6px;
+    padding: 8px 12px;
+    margin-bottom: 16px;
+    font-size: 0.85em;
+    opacity: 0.85;
+}
+
+.admin {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.admin-header {
+    align-items: center;
+}
+
+.admin-header h2 {
+    margin: 0;
+}
+
+.admin-whoami {
+    font-size: 0.85em;
+    opacity: 0.85;
+}
+
+.admin-error {
+    background-color: var(--geko);
+    border-left: 3px solid var(--goose);
+    padding: 8px 12px;
+    border-radius: 4px;
+    color: var(--dove);
+}
+
+.admin-new-button,
+.admin-discord-button {
+    display: inline-block;
+    background-color: var(--goose);
+    color: var(--geko);
+    padding: 8px 16px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.admin-new-button:hover,
+.admin-discord-button:hover {
+    filter: brightness(1.08);
+}
+
+.admin-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.admin-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    background-color: var(--geko);
+    padding: 12px 14px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px var(--boxShadow);
+}
+
+.admin-row-title {
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.admin-row-meta {
+    font-size: 0.8em;
+    opacity: 0.7;
+    margin-top: 3px;
+}
+
+.admin-row-actions {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    flex-shrink: 0;
+}
+
+.admin-badge {
+    font-size: 0.7em;
+    font-weight: 600;
+    padding: 2px 6px;
+    border-radius: 3px;
+    background-color: var(--goose);
+    color: var(--geko);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+.admin-badge.draft {
+    background-color: #9a6b00;
+    color: #fff;
+}
+
+.admin-badge.unlisted {
+    background-color: var(--dove);
+    color: #fff;
+}
+
+.admin-delete {
+    background: none;
+    border: none;
+    color: var(--dove);
+    cursor: pointer;
+    font: inherit;
+    text-decoration: underline;
+    padding: 0;
+}
+
+.admin-delete:disabled {
+    opacity: 0.5;
+    cursor: default;
+}
+
+.admin-field {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.admin-field > span {
+    font-size: 0.8em;
+    font-weight: 600;
+    opacity: 0.8;
+}
+
+.admin-field input,
+.admin-field select,
+.admin-field textarea {
+    background-color: var(--flightless-bird);
+    color: var(--duck);
+    border: 1px solid var(--goose);
+    border-radius: 6px;
+    padding: 8px 10px;
+    font: inherit;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.admin-field textarea {
+    font-family: monospace;
+    resize: vertical;
+    line-height: 1.5;
+}
+
+.admin-field input:disabled {
+    opacity: 0.6;
+}
+
+.admin-field-row {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.admin-field-row .admin-field {
+    flex: 1;
+    min-width: 140px;
+}
+
+.admin-toggles {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.admin-toggle {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.9em;
+}
+
+.admin-toggle input {
+    width: auto;
+}
+
+.admin-actions {
+    margin-top: 4px;
+}
+
+.admin-save {
+    background-color: var(--goose);
+    color: var(--geko);
+    border: none;
+    border-radius: 6px;
+    padding: 10px 20px;
+    font: inherit;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.admin-save:disabled {
+    opacity: 0.5;
+    cursor: default;
+}
+
+.admin-login {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    align-items: flex-start;
+}
+
+.site-admin-sections {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+    gap: 10px;
+}
+
+.site-admin-section {
+    min-width: 0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px;
+    border: 1px solid var(--geko);
+    border-radius: 6px;
+    color: var(--duck);
+    background-color: rgba(0, 0, 0, 0.025);
+    text-decoration: none;
+}
+
+[data-theme="dark"] .site-admin-section {
+    background-color: rgba(255, 255, 255, 0.035);
+}
+
+.site-admin-section:hover {
+    border-color: var(--goose);
+}
+
+.site-admin-section > span {
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.site-admin-section strong {
+    color: var(--dove);
+}
+
+.site-admin-section small {
+    margin-top: 2px;
+    opacity: 0.7;
+}

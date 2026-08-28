@@ -1,0 +1,233 @@
+{
+  "default_current_country_num": 528,
+  "next_up_trips": [
+    {
+      "num": 208,
+      "iso3": "DNK",
+      "name": "denmark",
+      "endonym": "danmark",
+      "status": "next",
+      "depart": "2026-09-04T13:00:00Z",
+      "note": "meeting up with some friends in copenhagen, lmk if you're around and wanna meetup :3"
+    }
+  ],
+  "countries": [
+    {
+      "num": 392,
+      "iso3": "JPN",
+      "name": "japan",
+      "endonym": "日本 (nihon)",
+      "status": "visited",
+      "cities": ["tokyo", "kyoto", "osaka", "nara", "aomori", "sendai", "sapporo", "wakkanai"]
+    },
+    {
+      "num": 528,
+      "iso3": "NLD",
+      "name": "the netherlands",
+      "endonym": "nederland / nederlân",
+      "status": "current",
+      "cities": ["amsterdam", "rotterdam", "the hague", "utrecht", "eindhoven", "breda", "tilburg"]
+    },
+    {
+      "num": -5,
+      "iso3": "GB-SCT",
+      "name": "scotland",
+      "endonym": "alba",
+      "status": "visited",
+      "cities": ["edinburgh", "glasgow", "inverness", "aberdeen", "kingussie"]
+    },
+    {
+      "num": -6,
+      "iso3": "GB-ENG",
+      "name": "england",
+      "endonym": "england",
+      "status": "visited",
+      "cities": ["bristol", "london", "southhampton", "reading", "cambridge", "oxford", "coventry", "birmingham", "manchester", "plymouth"]
+    },
+    {
+      "num": -7,
+      "iso3": "GB-WLS",
+      "name": "wales",
+      "endonym": "cymru",
+      "status": "visited",
+      "cities": ["st davids", "camarthen", "swansea", "cardiff", "newport", "aberystwyth", "abergavenny", "brecon", "carmarthen", "neath", "llansteffan"]
+    },
+    {
+      "num": 250,
+      "iso3": "FRA",
+      "name": "france",
+      "endonym": "france",
+      "status": "visited",
+      "cities": ["paris", "corsica", "annemasse"]
+    },
+    {
+      "num": 276,
+      "iso3": "DEU",
+      "name": "germany",
+      "endonym": "deutschland",
+      "status": "visited",
+      "cities": ["berlin", "munich", "frankfurt"]
+    },
+    {
+      "num": 380,
+      "iso3": "ITA",
+      "name": "italy",
+      "endonym": "italia",
+      "status": "visited",
+      "cities": ["rome", "milan", "venice", "pisa", "cagliari", "naples"]
+    },
+    {
+      "num": 724,
+      "iso3": "ESP",
+      "name": "spain",
+      "endonym": "españa",
+      "status": "next",
+      "cities": ["madrid", "barcelona", "🇮🇨 lanzarote", "mallorca"]
+    },
+    {
+      "num": 620,
+      "iso3": "PRT",
+      "name": "portugal",
+      "endonym": "portugal / portuguesa",
+      "status": "visited",
+      "cities": ["lisbon", "albufeira", "faro"]
+    },
+    {
+      "num": 56,
+      "iso3": "BEL",
+      "name": "belgium",
+      "endonym": "belgië / belgique / belgien",
+      "status": "visited",
+      "cities": ["brussels", "antwerp"]
+    },
+    {
+      "num": 442,
+      "iso3": "LUX",
+      "name": "luxembourg",
+      "endonym": "lëtzebuerg / luxemburg / luxembourg",
+      "status": "visited"
+    },
+    {
+      "num": 756,
+      "iso3": "CHE",
+      "name": "switzerland",
+      "endonym": "schweiz / suisse / svizzera / svizra",
+      "status": "visited",
+      "cities": ["zurich", "geneva", "veyrier", "saint-genis-puilly"]
+    },
+    {
+      "num": 336,
+      "iso3": "VAT",
+      "name": "the vatican",
+      "endonym": "civitas vaticana / città del vaticano",
+      "status": "visited"
+    },
+    {
+      "num": 492,
+      "iso3": "MCO",
+      "name": "monaco",
+      "endonym": "múnegu",
+      "status": "visited"
+    },
+    {
+      "num": 470,
+      "iso3": "MLT",
+      "name": "malta",
+      "endonym": "malta",
+      "status": "visited"
+    },
+    {
+      "num": 191,
+      "iso3": "HRV",
+      "name": "croatia",
+      "endonym": "hrvatska",
+      "status": "visited"
+    },
+    {
+      "num": 300,
+      "iso3": "GRC",
+      "name": "greece",
+      "endonym": "hellas / ελλάς (ellada) / ελλάδα",
+      "status": "visited",
+      "cities": ["athens", "crete", "volos"]
+    },
+    {
+      "num": 352,
+      "iso3": "ISL",
+      "name": "iceland",
+      "endonym": "ísland",
+      "status": "visited",
+      "cities": ["reyjavik", "gullfoss", "vík í mýrdal", "thingavellir", "grindavík"]
+    },
+    {
+      "num": 203,
+      "iso3": "CZE",
+      "name": "czechia",
+      "endonym": "česká republika / česko",
+      "status": "visited",
+      "cities": ["prague", "teplice"]
+    },
+    {
+      "num": 196,
+      "iso3": "CYP",
+      "name": "cyprus",
+      "endonym": "κύπρος (kypros) / kıbrıs",
+      "status": "visited",
+      "cities": ["pafos", "limassol", "larnaca", "famagusta", "nicosia", "kyrenia"]
+    },
+    {
+      "num": 792,
+      "iso3": "TUR",
+      "name": "türkiye",
+      "endonym": "türkiye",
+      "status": "visited",
+      "cities": ["antalya"]
+    },
+    {
+      "num": 764,
+      "iso3": "THA",
+      "name": "thailand",
+      "endonym": "ประเทศไทย (prathet thai)",
+      "status": "visited",
+      "cities": ["bangkok", "phuket", "krabi", "koh samui", "koh tao", "phi phi islands", "tao islands", "lau yu island", "wao yai island", "lim island", "sam sao island", "ang thong islands", "wua ta lab island", "songkhram", "damneon saduak"]
+    },
+    {
+      "num": 48,
+      "iso3": "BHR",
+      "name": "bahrain",
+      "endonym": "البحرين (al-baḥrayn)",
+      "status": "visited"
+    },
+    {
+      "num": 840,
+      "iso3": "USA",
+      "name": "united states",
+      "endonym": "united states / estados unidos / 'amelika hui pū 'ia",
+      "status": "visited",
+      "cities": ["florida", "new york"]
+    },
+    {
+      "num": 156,
+      "iso3": "CHN",
+      "name": "china",
+      "endonym": "中国 (zhōngguó)",
+      "status": "passed",
+      "cities": ["上海 (shànghǎi) - layover"]
+    },
+    {
+      "num": 356,
+      "iso3": "IND",
+      "name": "india",
+      "endonym": "भारत (bharat)",
+      "status": "passed",
+      "cities": ["दिल्ली (dilli) / delhi - layover"]
+    },
+    {
+      "num": 40,
+      "iso3": "AUT",
+      "name": "austria",
+      "endonym": "österreich",
+      "status": "passed"
+    }
+  ]
+}

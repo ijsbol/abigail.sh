@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>abigail phoebe - resume</title>
+    <meta name="robots" content="noindex,follow" />
+    <style>
+        @font-face {
+            font-family: 'JMH Typewriter';
+            src: url('{{ get_file("public/fonts/JMH-Typewriter-mono.woff2") }}') format('woff2');
+        }
+        body {
+            font-family: 'JMH Typewriter', sans-serif;
+            color: #2a1a26;
+            background-color: rgb(251, 240, 244);
+            padding: 0px;
+            margin: 0px;
+        }
+        .about {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .resume {
+            padding: 20px;
+            background-color: rgb(251, 240, 244);
+            height: 1074px;
+            width: 754px;
+        }
+        .skill {
+            font-size: 12px;
+            display: inline-block;
+            background-color: rgb(238, 215, 225);
+            color: #2a1a26;
+            padding: 5px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+        }
+        .hr {
+            border: none;
+            border-top: 2px solid rgba(42, 26, 38, 0.7);
+            margin: 0px;
+        }
+        .zone {
+            display: flex;
+            margin-top: 15px;
+            height: 105px;
+        }
+        .zone .leftarea {
+            width: 60px;
+            padding-top: 10px;
+            padding-right: 10px;
+            text-align: right;
+            white-space: nowrap;
+        }
+        .zone .rightarea {
+            padding-top: 10px;
+            padding-left: 5px;
+        }
+        .education-entry {
+            font-weight: 600;
+            display: flex;
+            flex-direction: row;
+            flex-wrap: nowrap;
+            justify-content: space-between;
+            align-items: stretch;
+            align-content: stretch;
+        }
+        .work {
+            margin-top: 10px;
+        }
+        .experience {
+            margin-bottom: 10px;
+        }
+        .experience .details {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .experience .name {
+            font-weight: 600;
+            font-size: 16px;
+        }
+        .experience .role {
+            font-weight: 600;
+            font-size: 14px;
+            margin-top: 3px;
+        }
+        .experience .duration {
+            font-weight: 500;
+            font-size: 12px;
+            color: rgba(42, 26, 38, 0.7);
+            margin-top: 6px;
+        }
+        .experience .description {
+            font-weight: 400;
+            font-size: 11px;
+            margin-top: 5px;
+            text-align: justify;
+        }
+        .thi1 {
+            margin-left: -5px;
+        }
+        .award .meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 5px;
+        }
+        .award .name {
+            font-weight: 600;
+            font-size: 12px;
+            margin-top: 3px;
+        }
+        .award .info {
+            font-weight: 400;
+            font-size: 11px;
+            margin-top: 5px;
+            text-align: justify;
+            margin-bottom: 10px;
+        }
+        .thi2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            padding-left: 10px;
+        }
+        .project {
+            padding: 10px;
+            border-radius: 5px;
+            background-color: rgba(165, 76, 122, 0.12);
+        }
+        .project .name {
+            font-weight: 600;
+            font-size: 16px;
+        }
+        .project .link {
+            font-weight: 500;
+            font-size: 10px;
+            color: rgba(150, 30, 90, 0.85);
+            margin-top: 6px;
+        }
+        .project .information {
+            font-weight: 400;
+            font-size: 11px;
+            margin-top: 5px;
+            text-align: justify;
+        }
+    </style>
+</head>
+<body>
+    <div class="resume">
+        <div class="about">
+            <div class="left">
+                <div style="font-size: 24px; font-weight: bolder; padding-bottom: 5px;">abigail phoebe</div>
+                <div style="font-size: 16px; font-weight: normal; margin-bottom: 5px;">senior developer & research scientist</div>
+                <div style="font-size: 13px; font-weight: normal; margin-bottom: 10px;">based in the netherlands</div>
+            </div>
+            <div class="right">
+                <div style="font-size: 14px; font-weight: bold; margin-bottom: 5px;">mail: <a style="text-decoration: underline; color: inherit" href="mailto:abigail@phoebe.sh">abigail@phoebe.sh</a></div>
+                <div style="font-size: 14px; font-weight: bold; margin-left: -41px; margin-bottom: 5px">linkedin: <a style="text-decoration: underline; color: inherit" href="https://www.linkedin.com/in/abigailphoebe">in/abigailphoebe</a></div>
+                <div style="font-size: 14px; font-weight: bold; margin-left: -20px; margin-bottom: 5px">github: <a style="text-decoration: underline; color: inherit" href="https://github.com/ijsbol">@ijsbol</a></div>
+            </div>
+        </div>
+        <div class="skills" style="margin-top: 0px;">
+            <div class="skill">javascript</div>
+            <div class="skill">python</div>
+            <div class="skill">docker</div>
+            <div class="skill">java</div>
+            <div class="skill">back-end</div>
+            <div class="skill">stripe</div>
+            <div class="skill">leadership</div>
+            <div class="skill">mysql</div>
+            <div class="skill">research</div>
+            <div class="skill">postgresql</div>
+            <div class="skill">redis</div>
+            <div class="skill">cloud computing</div>
+            <div class="skill">fastapi</div>
+            <div class="skill">linux</div>
+            <div class="skill">git</div>
+            <div class="skill">aws</div>
+            <div class="skill">ci/cd</div>
+            <div class="skill">rust</div>
+            <div class="skill">full stack</div>
+            <div class="skill">mathematics</div>
+            <div class="skill">ai</div>
+            <div class="skill">mongodb</div>
+            <div class="skill">startups</div>
+            <div class="skill">rest apis</div>
+            <div class="skill">scalability</div>
+            <div class="skill">gcp</div>
+        </div>
+        <div style="font-size: 20px; font-weight: 600; padding-top: 5px; display: flex">
+            <div>education</div>
+            <div style="border-top: 2px rgba(42, 26, 38, 0.7) solid; width: 100%; margin-top: 9px; margin-left: 10px;"></div>
+        </div>
+        <div class="zone" style="margin: 0px; padding-top: 5px;">
+            <div class="leftarea">
+                2025-'27
+                <div style="padding-top: 54px; border-right: 2px rgba(42, 26, 38, 0.7) solid; margin: 5px 0px; width: 51px"></div>
+                2022-'25
+                <div style="padding-top: 52px; border-right: 2px rgba(42, 26, 38, 0.7) solid; margin: 5px 0px; width: 51px"></div>
+                2021-'22
+            </div>
+            <div class="rightarea" style="padding-left: 51px; width: 800px">
+                <div class="education">
+                    <div class="education-entry">
+                        <div>Masters Degree</div>
+                        <div>Eindhoven University of Technology</div>
+                    </div>
+                    <div style="padding-top: 5px;"></div>
+                    <div style="font-weight: 400; font-size: 12px">Master of Science in Computer Science and Mathematics</div>
+                    <div style="font-weight: 400; font-size: 12px"><b>Thesis topic</b>: Computational astronomy on Euclid data in collaboration with the European Space Agency.</div>
+                </div>
+                <div style="padding-top: 15px;"></div>
+                    <div class="education-entry">
+                        <div>Bachelors Degree</div>
+                        <div>Swansea University</div>
+                    </div>
+                    <div style="padding-top: 5px;"></div>
+                    <div style="font-weight: 400; font-size: 12px">First with Honours; Bachelor of Science in Computer Science and Mathematics</div>
+                    <div style="font-weight: 400; font-size: 12px"><b>Thesis topic</b>: Visual computational astronomy</div>
+
+                <div style="padding-top: 15px;"></div>
+                <div class="education">
+                    <div class="education-entry">
+                        <div>IBM Scholarship</div>
+                        <div>Qubit by Qubit</div>
+                    </div>
+                    <div style="padding-top: 5px;"></div>
+                    <div style="font-weight: 400; font-size: 12px">Quantum Computing and Advanced Mathematics scholarship awarded by IBM</div>
+                </div>
+            </div>
+        </div>
+        <div style="font-size: 20px; font-weight: 600; padding-top: 120px; display: flex; padding-bottom: 8px;">
+            <div>experience</div>
+            <div style="border-top: 2px rgba(42, 26, 38, 0.7) solid; width: 100%; margin-top: 9px; margin-left: 10px;"></div>
+        </div>
+        <div class="container" style="display: flex;">
+            <div class="art" style="width: 5%; border-left: 2px rgba(42, 26, 38, 0.7) solid; margin: 5px 0px; border-style: none none none dotted; margin-left: 5px; margin-top: -5px"></div>
+            <div class="work" style="margin: 0px 2px; padding-top: 5px;">
+                <div class="experience">
+                    <div class="details">
+                        <div class="name">Scrump</div>
+                        <div class="role">Founder, Sole Developer</div>
+                    </div>
+                    <div class="duration">March 2020 - Present</div>
+                    <div class="description">
+                        Founded a large scale high integrity system for inter-community relationship management tooling using asynchronous Python, Stripe, Redis, MySQL & Docker. 30,000,000 cumulative users across 30,000 communities.
+                    </div>
+                </div>
+                <div class="experience">
+                    <div class="details">
+                        <div class="name">Abyss (Student Team)</div>
+                        <div class="role">Navigation Engineer</div>
+                    </div>
+                    <div class="duration">March 2026 - Present</div>
+                    <div class="description">
+                        Designing and developing the navigation system for the Abyss submarine. Part-time, hybrid in Eindhoven, Netherlands.
+                    </div>
+                </div>
+                <div class="experience">
+                    <div class="details">
+                        <div class="name">Ascending AI</div>
+                        <div class="role">Research & Sr. Developer (RnD)</div>
+                    </div>
+                    <div class="duration">November 2025 - May 2026</div>
+                    <div class="description">
+                        Doing research and development at an AI startup as a senior developer on multiple disciplines including (but not limited to): autonomous AI agents, large scale systems design, high performance computing, data modeling, and low-level database engineering, development & design.
+                    </div>
+                </div>
+                <div class="experience">
+                    <div class="details">
+                        <div class="name">Maki</div>
+                        <div class="role">Senior Software Developer</div>
+                    </div>
+                    <div class="duration">March 2024 - November 2025</div>
+                    <div class="description">
+                        Working on large scale community management tooling with 150 million users across 1.5M communities. Heavily utilising tools such as MongoDB, Redis, Docker & Python. Built out several APIs, CRMs & CI/CD pipelines.
+                    </div>
+                </div>
+                <div class="experience">
+                    <div class="details">
+                        <div class="name">Swansea University</div>
+                        <div class="role">Laboratory Technician</div>
+                    </div>
+                    <div class="duration">September 2024 - July 2025</div>
+                    <div class="description">
+                        Worked as a laboratory technician, assisting students with lab assignments and contributing to grading responsibilities.
+                    </div>
+                </div>
+                <div class="experience">
+                    <div class="details">
+                        <div class="name">HeadScratchers</div>
+                        <div class="role">Founder & Developer</div>
+                    </div>
+                    <div class="duration">June 2023 - August 2025</div>
+                    <div class="description">
+                        Built the HeadScratchers' product from the ground up, including systems design, backend web infrastructure, database management & UI/UX design.
+                    </div>
+                </div>
+                <div class="experience">
+                    <div class="details">
+                        <div class="name">BeGeekedLabs</div>
+                        <div class="role">Software Developer</div>
+                    </div>
+                    <div class="duration">March 2023 - December 2024</div>
+                    <div class="description">
+                        Contract Software Developer for BGL, providing expertise in large scale systems design for an advertising platform, building out and designing internal & customer facing tooling for a streamlined onboarding flow.
+                    </div>
+                </div>
+                <div class="experience">
+                    <div class="details">
+                        <div class="name">swanHack Hacking Society</div>
+                        <div class="role">Tech Admin</div>
+                    </div>
+                    <div class="duration">September 2023 - July 2024</div>
+                    <div class="description">
+                        Elected by peers to be the tech administrator for the Swansea University Student Union hacking society, swanHack. Gave technical talks on programming, and led practical workshops and events.
+                    </div>
+                </div>
+                <div class="experience">
+                    <div class="details">
+                        <div class="name">PNLY</div>
+                        <div class="role">Quality Assurance Tester</div>
+                    </div>
+                    <div class="duration">January 2023 - February 2025</div>
+                    <div class="description">
+                        Quality assurance for large scale systems used by Warner Media Group, NASCAR and Discord provided by PNLY.
+                    </div>
+                </div>
+                <div class="experience">
+                    <div class="details">
+                        <div class="name">Shapes AI</div>
+                        <div class="role">Software Developer</div>
+                    </div>
+                    <div class="duration">September 2022 - December 2022</div>
+                    <div class="description">
+                        Contracted by Shapes AI for 4 months to aid the core development team during a large-scale upgrade to their codebase and infrastructure, providing vital insight, guidance, and support throughout.
+                    </div>
+                </div>
+                <div class="experience">
+                    <div class="details">
+                        <div class="name">Swansea University Students' Union</div>
+                        <div class="role">Student Representative</div>
+                    </div>
+                    <div class="duration">September 2022 - July 2025</div>
+                    <div class="description">
+                        Elected by peers to serve as a student representative for three years, and a subject rep for one.
+                    </div>
+                </div>
+                <div class="experience">
+                    <div class="details">
+                        <div class="name">LunaPhoebe</div>
+                        <div class="role">Founder, CTO</div>
+                    </div>
+                    <div class="duration">June 2018 - Present</div>
+                    <div class="description">
+                        Freelance contract full-stack developer for 300+ clients across the world, solving unique challenges and ensuring customer satisfaction in a wide range of fields from fintech to entertainment.
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div style="font-size: 20px; font-weight: 600; padding-top: 10px; display: flex; margin-top: -5px">
+            <div style="font-size: 20px; font-weight: 600; padding-top: 0px;">
+                awards
+            </div>
+            <div style="border-top: 2px rgba(42, 26, 38, 0.7) solid; width: 100%; margin-top: 9px; margin-left: 10px;"></div>
+        </div>
+        <div class="container" style="display: flex">
+            <div class="art" style="width: 5%; border-left: 2px rgba(42, 26, 38, 0.7) solid; margin: 5px 0px; border-style: none none none dotted; margin-left: 5px; margin-top: 5px"></div>
+            <div class="thi1" style="margin-top: 5px">
+                <div class="award">
+                    <div class="name">Bachelor's Degree, First Class with Honours</div>
+                </div>
+                <div class="award">
+                    <div class="meta">
+                        <div class="name">& Bachelor's Thesis, First Class with Honours</div>
+                    </div>
+                    <div class="info">* The highest possible academic award for graduate students in the UK</div>
+                </div>
+                <div class="award">
+                    <div class="meta">
+                        <div class="name">Fly a Rocket!</div>
+                    </div>
+                    <div class="info">Completed the prestigious Fly a Rocket! educational program, ran in partnership with the <strong>European Space Agency, Andøya Space & The Norwegian Space Agency</strong>, achieving a final grade of 85%.</div>
+                </div>
+                <div class="award">
+                    <div class="meta">
+                        <div class="name">Maths & Physics Gold British Olympiad Awards</div>
+                    </div>
+                </div>
+                <div class="award">
+                    <div class="meta">
+                        <div class="name">Bronze, Silver and Gold CREST Project Awards</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div style="font-size: 20px; font-weight: 600; padding-top: 7px; display: flex;">
+            <div style="font-size: 20px; font-weight: 600; padding-top: 0px;">
+                projects
+            </div>
+            <div style="border-top: 2px rgba(42, 26, 38, 0.7) solid; width: 100%; margin-top: 9px; margin-left: 10px;"></div>
+        </div>
+        <div class="container" style="display: flex">
+            <div class="art" style="width: 5%; border-left: 2px rgba(42, 26, 38, 0.7) solid; margin: 5px 0px; border-style: none none none dotted; margin-left: 5px; margin-top: 5px; margin-right: 0px; padding-right: 0px;"></div>
+            <div class="thi2" style="padding-top: 10px; margin-left: -20px; padding-left: -10px;">
+                <div class="project">
+                    <div class="name">PyGeoLocate</div>
+                    <div class="link">https://pypi.org/project/pygeolocate/</div>
+                    <div class="information">A Python library for geolocation, used by tens of thousands of developers worldwide.</div>
+                </div>
+                <div class="project">
+                    <div class="name">HTTPCord</div>
+                    <div class="link">https://pypi.org/project/httpcord/</div>
+                    <div class="information">A Python library for non-gateway Discord HTTP interaction clients.</div>
+                </div>
+                <div class="project">
+                    <div class="name">Youtube Music Desktop SDK</div>
+                    <div class="link">https://pypi.org/project/ytmdpy/</div>
+                    <div class="information">A Python library for the Youtube Music Desktop Application.</div>
+                </div>
+                <div class="project">
+                    <div class="name">~50 other OSS Projects</div>
+                    <div class="link">https://github.com/ijsbol?tab=repositories</div>
+                    <div class="information">Many more examples on my GitHub, including a Spotify now playing API mirror.</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
