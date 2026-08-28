@@ -29,17 +29,6 @@
     --nav-bg-hover: rgb(70, 55, 95);
 }
 
-[data-theme="dark"] .post-entry .tags .tag {
-    background-color: var(--nav-bg);
-    color: var(--duck);
-}
-
-[data-theme="dark"] .post-entry .title,
-[data-theme="dark"] .post-entry .duration,
-[data-theme="dark"] .post-entry {
-    color: rgb(245, 240, 250);
-}
-
 [data-theme="dark"] .pages a {
     background-color: var(--nav-bg);
     color: var(--duck);
@@ -641,8 +630,6 @@ strong {
     }
 }
 
-/* ---------- real-time presence / cursors ---------- */
-
 .cursor-overlay {
     position: fixed;
     inset: 0;
@@ -806,30 +793,12 @@ strong {
     visibility: visible;
 }
 
-.post-presence-badge {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    padding: 3px 7px;
-    border-radius: 999px;
-    background-color: var(--goose);
-    color: var(--flightless-bird);
-    font-size: 10px;
-    font-weight: 700;
-    line-height: 1;
-    white-space: nowrap;
-    flex-shrink: 0;
-    margin-left: 8px;
-    box-sizing: border-box;
-    transition: background-color var(--colorTransitionTime), color var(--colorTransitionTime);
-}
-
 .presence-count {
     font-size: 10px;
     opacity: 0.4;
     text-align: center;
     margin-top: 6px;
-    font-family: 'Akkurat Mono', ui-monospace, monospace;
+    font-family: ui-monospace, monospace;
     letter-spacing: 0.02em;
     color: var(--duck);
     transition: color var(--colorTransitionTime);
