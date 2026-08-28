@@ -42,8 +42,8 @@ class TemplateServer(Jinja2Templates):
                 if file_ext not in (".png", ".jpg", ".jpeg", ".gif"):
                     continue
 
-                avif_file_path = f"_served/static/images/{rel_dir}/{file_name}.avif"
-                if Path(avif_file_path).exists():
+                avif_file_path = f"static/images/{rel_dir}/{file_name}.avif"
+                if Path(f"_served/{avif_file_path}").exists():
                     self._served_files[os.path.normpath(f"public/images/{rel_dir}/{file}")] = avif_file_path
                     continue
 
