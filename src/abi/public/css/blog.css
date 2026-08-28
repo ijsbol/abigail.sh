@@ -73,3 +73,8 @@
     text-decoration: none;
     color: inherit;
 }
+
+.blog-content img {
+    max-width: 100%;
+    height: auto;
+}
