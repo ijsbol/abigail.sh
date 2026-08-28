@@ -66,6 +66,7 @@ async def home_page(request: Request) -> Response:
                 None: "public/images/buttons/vanity/macos.png",
                 "https://exploreabyss.org/": "public/images/buttons/vanity/abyss.png",
                 "https://uwu.gal": "public/images/buttons/vanity/uwugal.png",
+                "https://250kb.club/abigail-short": "public/images/buttons/vanity/250kb.png",
             },
         },
     )
