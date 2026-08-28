@@ -35,7 +35,6 @@ def add_routes(app: FastAPI) -> None:
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    os.makedirs("_served/static", exist_ok=True)
     templates.load()
     await render_resume_pdf()
     app.mount(

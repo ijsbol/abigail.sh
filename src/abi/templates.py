@@ -42,7 +42,7 @@ class TemplateServer(Jinja2Templates):
                 if file_ext not in (".png", ".jpg", ".jpeg", ".gif"):
                     continue
 
-                avif_file_path = f"static/images/{rel_dir}/{file_name}.avif"
+                avif_file_path = f"_served/static/images/{rel_dir}/{file_name}.avif"
                 if Path(avif_file_path).exists():
                     self._served_files[os.path.normpath(f"public/images/{rel_dir}/{file}")] = avif_file_path
                     continue
@@ -53,10 +53,13 @@ class TemplateServer(Jinja2Templates):
 
                 avif_image = Image.open(avif_path)
                 pub_key = os.path.normpath(f"public/images/{rel_dir}/{file}")
+
                 if avif_image.size > image.size:
+                    # if the AVIF image is larger than the original, we will serve the original instead.
                     os.remove(avif_path)
                     image.save(os.path.join(out_dir, file), optimize=True, quality=50)
                     self._served_files[pub_key] = os.path.normpath(f"static/images/{rel_dir}/{file}")
+
                 else:
                     self._served_files[pub_key] = os.path.normpath(avif_file_path)
 
@@ -116,10 +119,15 @@ class TemplateServer(Jinja2Templates):
                 self._served_files["public/data/" + file] = f"static/data/{file}"
 
     def load(self) -> None:
+        print("[templates:start] loading templates and serving static files...")
         self._serve_images()
+        print(f"[templates:images] served {len(self._served_files)} static files.")
         self._serve_css()
+        print(f"[templates:css] served {len(self._served_files)} static files.")
         self._serve_js()
+        print(f"[templates:js] served {len(self._served_files)} static files.")
         self._serve_misc()
+        print(f"[templates:misc] served {len(self._served_files)} static files.")
 
     def _get_file(self, file_path: str) -> str:
         path = self._served_files.get(file_path, "")

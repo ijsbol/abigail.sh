@@ -26,6 +26,9 @@ def get_file(file_path: str) -> str:
 
 
 async def render_resume_pdf() -> None:
+    if OUT_PATH.exists():
+        print(f"[render-resume] skipping render, file already exists → {OUT_PATH}")
+        return
     from playwright.async_api import async_playwright
 
     env = Environment(loader=FileSystemLoader(TEMPLATES_DIR))
