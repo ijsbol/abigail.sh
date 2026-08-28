@@ -7,7 +7,7 @@ User=root
 Group=www-data
 WorkingDirectory=/opt/websites/abigail.sh
 ExecStartPre=/opt/websites/abigail.sh/.venv/bin/playwright install chromium
-ExecStart=/opt/websites/abigail.sh/.venv/bin/uvicorn src.abi:app --host 127.0.0.1 --port 7867
+ExecStart=/opt/websites/abigail.sh/.venv/bin/uvicorn src.abi:app --host 127.0.0.1 --port 7867 --ws websockets
 
 [Install]
 WantedBy=multi-user.target
