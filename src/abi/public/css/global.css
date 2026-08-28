@@ -433,7 +433,7 @@ strong {
     color: var(--duck);
     text-decoration: none;
     transition: color var(--colorTransitionTime);
-    margin-bottom: 40px;
+    margin-bottom: 10px;
 }
 
 .pages a {
@@ -646,8 +646,12 @@ strong {
 }
 
 .header-toggles {
-    display: flex;
-    align-items: center;
+	display: flex;
+	flex-direction: row;
+	flex-wrap: nowrap;
+	justify-content: space-around;
+	align-items: center;
+	align-content: stretch;
     gap: 4px;
     margin-top: 6px;
     padding: 4px 6px;
