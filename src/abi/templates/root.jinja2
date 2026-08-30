@@ -173,7 +173,11 @@
                             <a href="{{ href }}" class="{% if id == current_page %}selected{% endif %}">{{ label }}</a>
                         {% endfor %}
                     </div>
-                    <div class="commit-info">commit [<a href="https://github.com/ijsbol/abigail.sh" target="_blank" rel="noopener noreferrer">{{ most_recent_commit_hash }}</a>]</div>
+
+                    <div id="innerCircleWebRing"></div>
+                    <script src="https://the.inner-circle.fyi/ring/ring.js"></script>
+                    <script>loadWebRing("abigail.sh");</script>
+
                     <div class="header-toggles">
                         <button type="button" aria-label="toggle light / dark mode" class="theme-toggle">
                             <span class="theme-toggle__moon" aria-hidden="true"
@@ -222,6 +226,7 @@
                             </svg>
                         </button>
                     </div>
+                    <div class="commit-info">commit [<a href="https://github.com/ijsbol/abigail.sh" target="_blank" rel="noopener noreferrer">{{ most_recent_commit_hash }}</a>]</div>
                 </div>
             </div>
         </div>

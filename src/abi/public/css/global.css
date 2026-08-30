@@ -454,6 +454,11 @@ strong {
     background-color: var(--duck);
 }
 
+#innerCircleWebRing {
+    width: fit-content;
+    margin: 10px auto;
+}
+
 .section-header-item {
     color: var(--dove);
     text-decoration: underline;
