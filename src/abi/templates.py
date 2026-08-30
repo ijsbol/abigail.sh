@@ -20,8 +20,12 @@ __all__: tuple[str, ...] = (
 
 
 SPECIFICALLY_INCLDUED_FILES: Final[list[str]] = [
+    # website link styling
     "images/external-link-svgrepo-com.svg",
     "images/download-button-svgrepo-com.svg",
+    # github hotlinking, github doesn't like avif links for some reason??
+    "images/buttons/vanity/abyss.png",
+    "images/buttons/vanity/the-inner-circle.png",
 ]
 
 
