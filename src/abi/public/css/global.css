@@ -500,23 +500,50 @@ strong {
 
 @media (max-width: 768px) {
     .page {
-        grid-template-columns: 1fr;
-        grid-template-rows: auto auto;
+        display: flex;
+        flex-direction: column;
         height: auto;
     }
 
-    .focused-area {
-        grid-column: 1;
-        grid-row: 2;
-        font-size: 12px;
+    .meta-column {
+        display: contents;
     }
 
     .pages {
-        grid-column: 1;
-        grid-row: 1;
-        flex-direction: row;
-        flex-wrap: wrap;
-        height: auto;
+        order: 1;
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 6px;
+        width: 100%;
+        margin-bottom: 0;
+    }
+
+    .pages a {
+        padding: 8px 6px;
+        font-size: 12px;
+        white-space: nowrap;
+        justify-content: center;
+    }
+
+    .focused-area {
+        order: 2;
+        font-size: 12px;
+    }
+
+    #innerCircleWebRing {
+        order: 3;
+    }
+
+    .header-toggles {
+        order: 4;
+    }
+
+    .commit-info {
+        order: 5;
+    }
+
+    .presence-count {
+        order: 6;
     }
 
     .hugs {
