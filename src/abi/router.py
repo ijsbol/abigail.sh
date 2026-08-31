@@ -67,6 +67,7 @@ async def home_page(request: Request) -> Response:
                 "https://exploreabyss.org/": "public/images/buttons/vanity/abyss.png",
                 "https://the.inner-circle.fyi/": "public/images/buttons/vanity/the-inner-circle.png",
                 "https://uwu.gal": "public/images/buttons/vanity/uwugal.png",
+                "https://250kb.club/abigail-short": "public/images/buttons/vanity/250kb.png",
             },
         },
     )
