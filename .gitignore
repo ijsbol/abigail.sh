@@ -5,6 +5,10 @@ src/abi/public/images/buttons/friends/*
 src/abi/data/friend-buttons.json
 /data/
 /_served
+src/abi/~/*
+!src/abi/~/README.md
+!src/abi/~/my-name.html
+!src/abi/~/pgp.txt
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

@@ -2,6 +2,7 @@ import asyncio
 from hashlib import sha1
 from http import HTTPStatus
 import json
+import mimetypes
 from pathlib import Path
 import random
 from typing import Final
@@ -205,4 +206,28 @@ async def profile_page(request: Request) -> Response:
                 "recentTracksMax": 50,
             }),
         },
+    )
+
+
+@router.get("/~/{tilde}")
+async def tilde_redirect(request: Request, tilde: str | None) -> Response:
+    if not tilde:
+        return Response(status_code=HTTPStatus.NOT_FOUND)
+
+    tilde_directory = Path(__file__).parent / "~"
+    tilde_file = next(
+        (
+            path
+            for path in sorted(tilde_directory.iterdir())
+            if path.is_file() and path.stem == tilde
+        ),
+        None,
+    )
+    if tilde_file is None:
+        return Response(status_code=HTTPStatus.NOT_FOUND)
+
+    media_type, _ = mimetypes.guess_type(tilde_file.name)
+    return Response(
+        content=tilde_file.read_bytes(),
+        media_type=media_type or "application/octet-stream",
     )

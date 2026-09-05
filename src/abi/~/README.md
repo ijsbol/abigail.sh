@@ -1,0 +1,1 @@
+/~/ are not typically committed, my-name.html and pgp.txt are exceptions
