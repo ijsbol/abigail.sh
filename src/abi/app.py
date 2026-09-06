@@ -32,7 +32,7 @@ def add_routes(app: FastAPI) -> None:
     app.include_router(blog_router)
     app.include_router(guestbook_router)
     app.include_router(watch_list_router)
-    load_private_routers(app)
+    load_private_routers(app, templates)
 
 
 @asynccontextmanager

@@ -234,6 +234,13 @@ class TemplateServer(Jinja2Templates):
         )
 
 
+os.makedirs("_served/templates", exist_ok=True)
+for file in os.listdir("src/abi/templates"):
+    shutil.copyfile(f"src/abi/templates/{file}", f"_served/templates/{file}")
+for file in os.listdir("src/abi/private/templates"):
+    shutil.copyfile(f"src/abi/private/templates/{file}", f"_served/templates/priv__{file}")
+
+
 templates = TemplateServer(
-    directory="src/abi/templates",
+    directory="_served/templates",
 )
