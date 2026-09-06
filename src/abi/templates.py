@@ -145,27 +145,28 @@ class TemplateServer(Jinja2Templates):
                 f.write(str(minified_js))
             self._served_files["public/js/" + file] = f"static/js/{new_file_name}"
 
-    def _serve_misc_public(self) -> None:
-        fonts_dir = "src/abi/public/fonts"
+    def _serve_misc(self) -> None:
+        for file in SPECIFICALLY_INCLUDED_FILES:
+            shutil.copyfile(f"src/abi/public/{file}", f"_served/static/{file}")
+            self._served_files[file] = f"static/{file}"
+
+    def _serve_private(self) -> None:
+        fonts_dir = "src/abi/private/public/fonts"
         os.makedirs("_served/static/fonts", exist_ok=True)
         for file in os.listdir(fonts_dir):
             if not file.endswith((".woff", ".woff2", ".ttf", ".otf")):
                 continue
             shutil.copyfile(f"{fonts_dir}/{file}", f"_served/static/fonts/{file}")
-            self._served_files["public/fonts/" + file] = f"static/fonts/{file}"
-        for file in SPECIFICALLY_INCLUDED_FILES:
-            shutil.copyfile(f"src/abi/public/{file}", f"_served/static/{file}")
-            self._served_files[file] = f"static/{file}"
-        data_dir = "src/abi/public/data"
+            self._served_files["private/public/fonts/" + file] = f"static/fonts/{file}"
+        data_dir = "src/abi/private/public/data"
         if os.path.isdir(data_dir):
             os.makedirs("_served/static/data", exist_ok=True)
             for file in os.listdir(data_dir):
                 if not file.endswith(".json"):
                     continue
                 shutil.copyfile(f"{data_dir}/{file}", f"_served/static/data/{file}")
-                self._served_files["public/data/" + file] = f"static/data/{file}"
+                self._served_files["public/public/data/" + file] = f"static/data/{file}"
 
-    def _serve_misc_private(self) -> None:
         # serve the raw public/writing directory
         writing_dir = "src/abi/private/public/writing"
         if os.path.isdir(writing_dir):
@@ -188,8 +189,8 @@ class TemplateServer(Jinja2Templates):
             self._serve_js(loc)
             print(f"[{loc}] [templates:js] served {len(self._served_files)} static files.")
 
-        self._serve_misc_public()
-        self._serve_misc_private()
+        self._serve_private()
+        self._serve_misc()
 
     def _get_file(self, file_path: str) -> str:
         if "/images/" in file_path and not file_path.endswith((":png", ":avif", ":anim")):

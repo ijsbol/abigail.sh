@@ -1,1 +1,0 @@
-fonts are distributed under their own license(s) and do not fall under the CC-BY-NA-SA-4.0-INT license that the wider repository is licensed under.
