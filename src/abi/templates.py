@@ -5,11 +5,11 @@ from pathlib import Path
 import random
 import shutil
 import subprocess
-from typing import Final
+from typing import Final, Union
 
 from fastapi import Response
 from fastapi.templating import Jinja2Templates
-from PIL import Image
+from PIL import Image, ImageSequence
 from rcssmin import cssmin
 from rjsmin import jsmin
 
@@ -19,13 +19,10 @@ __all__: tuple[str, ...] = (
 )
 
 
-SPECIFICALLY_INCLDUED_FILES: Final[list[str]] = [
+SPECIFICALLY_INCLUDED_FILES: Final[list[str]] = [
     # website link styling
     "images/external-link-svgrepo-com.svg",
     "images/download-button-svgrepo-com.svg",
-    # github hotlinking, github doesn't like avif links for some reason??
-    "images/buttons/vanity/abyss.png",
-    "images/buttons/vanity/the-inner-circle.png",
 ]
 
 
@@ -39,6 +36,29 @@ def _get_most_recent_commit_hash() -> str:
         ).stdout.strip() or "unknown"
     except (subprocess.CalledProcessError, FileNotFoundError):
         return "unknown"
+
+
+# Source - https://stackoverflow.com/a/79032686
+# Posted by Angy, modified by community. See post 'Timeline' for change history
+# Retrieved 2026-09-06, License - CC BY-SA 4.0
+def is_animation(file_or_bytes: Union[str, bytes]) -> bool:
+    """
+    Check if the given image file or bytes is an animation.
+
+    Args:
+        file_or_bytes (Union[str, bytes]): Path to the image file or image bytes.
+
+    Returns:
+        bool: True if the image is an animation; False otherwise.
+    """
+    try:
+        with Image.open(file_or_bytes) as img:
+            # Check if the image has more than one frame
+            return len(ImageSequence.all_frames(img)) > 1
+    except (IOError, ValueError) as e:
+        # Handle errors related to file opening and invalid image formats
+        print(f"Error opening image: {e}")
+        return False
 
 
 class TemplateServer(Jinja2Templates):
@@ -63,25 +83,31 @@ class TemplateServer(Jinja2Templates):
                     continue
 
                 avif_file_path = f"static/images/{rel_dir}/{file_name}.avif"
-                if Path(f"_served/{avif_file_path}").exists():
-                    self._served_files[os.path.normpath(f"public/images/{rel_dir}/{file}")] = avif_file_path
+                png_file_path = f"static/images/{rel_dir}/{file_name}.png"
+                anim_file_path = f"static/images/{rel_dir}/{file_name}:anim.avif"
+
+                if Path(f"_served/{anim_file_path}").exists():
+                    self._served_files[os.path.normpath(f"public/images/{rel_dir}/{file}:anim")] = anim_file_path
+
+                self._served_files[os.path.normpath(f"public/images/{rel_dir}/{file}:png")] = png_file_path
+                self._served_files[os.path.normpath(f"public/images/{rel_dir}/{file}:avif")] = avif_file_path
+
+                if (
+                    Path(f"_served/{avif_file_path}").exists()
+                    and Path(f"_served/{png_file_path}").exists()
+                ):
                     continue
 
                 image = Image.open(os.path.join(dirpath, file))
                 avif_path = os.path.join(out_dir, f"{file_name}.avif")
-                image.save(avif_path, optimize=True, quality=50, format="AVIF", save_all=True)
+                png_path = os.path.join(out_dir, f"{file_name}.png")
+                if is_animation(os.path.join(dirpath, file)):
+                    anim_path = os.path.join(out_dir, f"{file_name}:anim.avif")
+                    image.save(anim_path, optimize=True, quality=50, format="AVIF", save_all=True)
+                    self._served_files[os.path.normpath(f"public/images/{rel_dir}/{file}:anim")] = anim_path
 
-                avif_image = Image.open(avif_path)
-                pub_key = os.path.normpath(f"public/images/{rel_dir}/{file}")
-
-                if avif_image.size > image.size:
-                    # if the AVIF image is larger than the original, we will serve the original instead.
-                    os.remove(avif_path)
-                    image.save(os.path.join(out_dir, file), optimize=True, quality=50)
-                    self._served_files[pub_key] = os.path.normpath(f"static/images/{rel_dir}/{file}")
-
-                else:
-                    self._served_files[pub_key] = os.path.normpath(avif_file_path)
+                image.save(avif_path, optimize=True, quality=50, format="AVIF", save_all=False)
+                image.save(png_path, optimize=True, quality=100, format="PNG", save_all=True)
 
         # specific legacy override for people hot-linking my button on their sites.
         shutil.copyfile("src/abi/public/images/button.png", "_served/static/images/button.png")
@@ -126,7 +152,7 @@ class TemplateServer(Jinja2Templates):
                 continue
             shutil.copyfile(f"{fonts_dir}/{file}", f"_served/static/fonts/{file}")
             self._served_files["public/fonts/" + file] = f"static/fonts/{file}"
-        for file in SPECIFICALLY_INCLDUED_FILES:
+        for file in SPECIFICALLY_INCLUDED_FILES:
             shutil.copyfile(f"src/abi/public/{file}", f"_served/static/{file}")
             self._served_files[file] = f"static/{file}"
         data_dir = "src/abi/public/data"
@@ -159,7 +185,10 @@ class TemplateServer(Jinja2Templates):
         print(f"[templates:misc] served {len(self._served_files)} static files.")
 
     def _get_file(self, file_path: str) -> str:
-        path = self._served_files.get(file_path, "")
+        if "/images/" in file_path and not file_path.endswith((":png", ":avif", ":anim")):
+            path = self._served_files.get(f"{file_path}:avif", "")
+        else:
+            path = self._served_files.get(file_path, "")
         return f"/{path}" if path else ""
 
     def _get_file_type(self, file_path: str) -> str:

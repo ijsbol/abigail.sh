@@ -61,7 +61,7 @@ async def home_page(request: Request) -> Response:
             "vanity_buttons": {
                 None: "public/images/buttons/vanity/blink.png",
                 None: "public/images/buttons/vanity/firefox.png",
-                None: "public/images/buttons/vanity/nft.gif",
+                None: "public/images/buttons/vanity/nft.gif:anim",
                 None: "public/images/buttons/vanity/miku.png",
                 None: "public/images/buttons/vanity/owntwopaws.png",
                 None: "public/images/buttons/vanity/macos.png",
