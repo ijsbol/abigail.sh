@@ -15,7 +15,7 @@ router = APIRouter()
 
 def _load_friend_button_hosts() -> set[str]:
     try:
-        with open("src/abi/data/friend-buttons.json") as f:
+        with open("src/abi/private/friend-buttons.json") as f:
             data = json.load(f)
         return {urlparse(url).netloc for url in data if urlparse(url).netloc}
     except Exception:

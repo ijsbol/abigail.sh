@@ -15,34 +15,19 @@ from abi.api.lanyard import fetch_lanyard, LANYARD_REVALIDATE
 from abi.api.lastfm import fetch_recent_tracks, LASTFM_REVALIDATE, LASTFM_FETCH_LIMIT
 from abi.templates import templates
 from abi.data import load_projects, load_travel_data
+from abi.private.photography import PHOTOGRAPHY_SHOTS
 
 
 router = APIRouter()
 
+TILDE_DIRECTORIES: Final[tuple[Path, ...]] = (
+    Path(__file__).parent / "~",
+    Path(__file__).parent / "private" / "~",
+)
 
-with open("src/abi/data/friend-buttons.json", "r") as f:
+
+with open("src/abi/private/friend-buttons.json", "r") as f:
     friend_buttons = json.load(f)
-
-
-PHOTOGRAPHY_SHOTS: Final[list[tuple[str, str]]] = [
-    ("public/images/photography/img_17.jpeg", "solar eclipse, spain 2026"),
-    ("public/images/photography/img_10.jpg", "a self portrait. no editing. it took a long time."),
-    ("public/images/photography/img_1.jpg", "tokyo as seen from skytree"),
-    ("public/images/photography/img_2.jpg", "some pretty blue lights"),
-    ("public/images/photography/img_3.jpg", "an art gallery with rainbows"),
-    ("public/images/photography/img_4.jpg", "pretty pink flowers on a blue background"),
-    ("public/images/photography/img_5.jpg", "i'll be honest i forgot what this one is"),
-    ("public/images/photography/img_6.jpg", "this one too, looks cool tho"),
-    ("public/images/photography/img_7.jpg", "a street lamp in aomori"),
-    ("public/images/photography/img_8.jpg", "rain on the plane that took me to my new home"),
-    ("public/images/photography/img_9.jpg", "a lantern in nara"),
-    ("public/images/photography/img_11.jpg", "i think this one is from an art museum"),
-    ("public/images/photography/img_12.jpg", "aurora borealis in iceland"),
-    ("public/images/photography/img_13.jpg", "a sculpture at CERN"),
-    ("public/images/photography/img_14.png", "eindhoven christmas tree 2025"),
-    ("public/images/photography/img_15.png", "person walking in snow storm"),
-    ("public/images/photography/img_16.png", "the sky is falling"),
-]
 
 
 @router.get("/")
@@ -214,18 +199,18 @@ async def tilde_redirect(request: Request, tilde: str | None) -> Response:
     if not tilde:
         return Response(status_code=HTTPStatus.NOT_FOUND)
 
-    tilde_directory = Path(__file__).parent / "~"
-    tilde_file = next(
-        (
-            path
-            for path in sorted(tilde_directory.iterdir())
-            if path.is_file() and path.stem == tilde
-        ),
-        None,
-    )
-    if tilde_file is None:
+    tilde_files = [
+        path
+        for directory in TILDE_DIRECTORIES
+        for path in sorted(directory.iterdir())
+        if path.is_file() and path.stem == tilde
+    ]
+    if len(tilde_files) > 1:
+        raise ValueError(f"multiple tilde files found for {tilde!r}: {tilde_files}")
+    if not tilde_files:
         return Response(status_code=HTTPStatus.NOT_FOUND)
 
+    tilde_file = tilde_files[0]
     media_type, _ = mimetypes.guess_type(tilde_file.name)
     return Response(
         content=tilde_file.read_bytes(),

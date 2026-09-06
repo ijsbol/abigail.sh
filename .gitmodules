@@ -1,0 +1,3 @@
+[submodule "src/abi/abigail.sh-private"]
+	path = src/abi/private
+	url = https://github.com/ijsbol/abigail.sh-private

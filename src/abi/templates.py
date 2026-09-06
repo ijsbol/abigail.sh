@@ -68,8 +68,8 @@ class TemplateServer(Jinja2Templates):
         super().__init__(directory=directory)
         self.env.filters["intcomma"] = lambda x: f"{int(x):,}"
 
-    def _serve_images(self) -> None:
-        image_dir = "src/abi/public/images"
+    def _serve_images(self, loc: str) -> None:
+        image_dir = f"{loc}/images"
         for dirpath, _, filenames in os.walk(image_dir):
             rel_dir = os.path.relpath(dirpath, image_dir)
             if rel_dir == "writing":
@@ -110,10 +110,11 @@ class TemplateServer(Jinja2Templates):
                 image.save(png_path, optimize=True, quality=100, format="PNG", save_all=True)
 
         # specific legacy override for people hot-linking my button on their sites.
-        shutil.copyfile("src/abi/public/images/button.png", "_served/static/images/button.png")
+        if loc == "src/abi/public":
+            shutil.copyfile(f"{loc}/images/button.png", "_served/static/images/button.png")
 
-    def _serve_css(self) -> None:
-        css_dir = "src/abi/public/css"
+    def _serve_css(self, loc: str) -> None:
+        css_dir = f"{loc}/css"
         os.makedirs("_served/static/css", exist_ok=True)
         for file in os.listdir(css_dir):
             if not file.endswith(".css"):
@@ -128,8 +129,8 @@ class TemplateServer(Jinja2Templates):
                 f.write(str(minified_css))
             self._served_files["public/css/" + file] = f"static/css/{new_file_name}"
 
-    def _serve_js(self) -> None:
-        js_dir = "src/abi/public/js"
+    def _serve_js(self, loc: str) -> None:
+        js_dir = f"{loc}/js"
         os.makedirs("_served/static/js", exist_ok=True)
         for file in os.listdir(js_dir):
             if not file.endswith(".js"):
@@ -144,7 +145,7 @@ class TemplateServer(Jinja2Templates):
                 f.write(str(minified_js))
             self._served_files["public/js/" + file] = f"static/js/{new_file_name}"
 
-    def _serve_misc(self) -> None:
+    def _serve_misc_public(self) -> None:
         fonts_dir = "src/abi/public/fonts"
         os.makedirs("_served/static/fonts", exist_ok=True)
         for file in os.listdir(fonts_dir):
@@ -164,25 +165,31 @@ class TemplateServer(Jinja2Templates):
                 shutil.copyfile(f"{data_dir}/{file}", f"_served/static/data/{file}")
                 self._served_files["public/data/" + file] = f"static/data/{file}"
 
+    def _serve_misc_private(self) -> None:
         # serve the raw public/writing directory
-        writing_dir = "src/abi/public/writing"
+        writing_dir = "src/abi/private/public/writing"
         if os.path.isdir(writing_dir):
             os.makedirs("_served/static/writing", exist_ok=True)
             for file in os.listdir(writing_dir):
                 shutil.copyfile(f"{writing_dir}/{file}", f"_served/static/writing/{file}")
                 self._served_files["public/writing/" + file] = f"static/writing/{file}"
 
-
     def load(self) -> None:
-        print("[templates:start] loading templates and serving static files...")
-        self._serve_images()
-        print(f"[templates:images] served {len(self._served_files)} static files.")
-        self._serve_css()
-        print(f"[templates:css] served {len(self._served_files)} static files.")
-        self._serve_js()
-        print(f"[templates:js] served {len(self._served_files)} static files.")
-        self._serve_misc()
-        print(f"[templates:misc] served {len(self._served_files)} static files.")
+        locations: list[str] = [
+            "src/abi/public",
+            "src/abi/private/public",
+        ]
+        for loc in locations:
+            print(f"[{loc}] [templates:start] loading templates and serving static files...")
+            self._serve_images(loc)
+            print(f"[{loc}] [templates:images] served {len(self._served_files)} static files.")
+            self._serve_css(loc)
+            print(f"[{loc}] [templates:css] served {len(self._served_files)} static files.")
+            self._serve_js(loc)
+            print(f"[{loc}] [templates:js] served {len(self._served_files)} static files.")
+
+        self._serve_misc_public()
+        self._serve_misc_private()
 
     def _get_file(self, file_path: str) -> str:
         if "/images/" in file_path and not file_path.endswith((":png", ":avif", ":anim")):

@@ -22,6 +22,7 @@ def add_routes(app: FastAPI) -> None:
     from abi.blog.router import router as blog_router
     from abi.guestbook.router import router as guestbook_router
     from abi.watch_list.router import router as watch_list_router
+    from abi.private.router import load_private_routers
 
     app.include_router(root_router)
     app.include_router(lanyard_router)
@@ -31,6 +32,7 @@ def add_routes(app: FastAPI) -> None:
     app.include_router(blog_router)
     app.include_router(guestbook_router)
     app.include_router(watch_list_router)
+    load_private_routers(app)
 
 
 @asynccontextmanager
