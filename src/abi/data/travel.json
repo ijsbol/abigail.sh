@@ -1,17 +1,16 @@
 {
   "default_current_country_num": 528,
   "next_up_trips": [
+  ],
+  "countries": [
     {
       "num": 208,
       "iso3": "DNK",
       "name": "denmark",
       "endonym": "danmark",
-      "status": "next",
-      "depart": "2026-09-04T13:00:00Z",
-      "note": "meeting up with some friends in copenhagen, lmk if you're around and wanna meetup :3"
-    }
-  ],
-  "countries": [
+      "status": "visited",
+      "cities": ["copenhagen"]
+    },
     {
       "num": 392,
       "iso3": "JPN",
