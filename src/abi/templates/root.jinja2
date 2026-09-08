@@ -175,59 +175,67 @@
                         {% endfor %}
                     </div>
 
-                    <div id="innerCircleWebRing"></div>
-                    <script src="https://the.inner-circle.fyi/ring/ring.js"></script>
-                    <script>loadWebRing("abigail.sh");</script>
+                    <div class="info-col">
+                        <div id="innerCircleWebRing"></div>
+                        <script src="https://the.inner-circle.fyi/ring/ring.js"></script>
+                        <script>loadWebRing("abigail.sh");</script>
 
-                    <div class="header-toggles">
-                        <button type="button" aria-label="toggle light / dark mode" class="theme-toggle">
-                            <span class="theme-toggle__moon" aria-hidden="true"
-                                ><svg
-                                    width="24"
-                                    height="24"
-                                    viewBox="0 0 24 24"
-                                    fill="none"
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    aria-hidden="true"
-                                >
-                                    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79Z" fill="currentColor"></path></svg></span
-                            ><span class="theme-toggle__sakura" aria-hidden="true"
-                                ><svg
-                                    width="26"
-                                    height="26"
-                                    viewBox="0 0 64 64"
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    aria-hidden="true"
-                                    fill="currentColor"
-                                >
-                                    <ellipse cx="32" cy="16" rx="8" ry="12" transform="rotate(0 32 32)"></ellipse>
-                                    <ellipse cx="32" cy="16" rx="8" ry="12" transform="rotate(72 32 32)"></ellipse>
-                                    <ellipse cx="32" cy="16" rx="8" ry="12" transform="rotate(144 32 32)"></ellipse>
-                                    <ellipse cx="32" cy="16" rx="8" ry="12" transform="rotate(216 32 32)"></ellipse>
-                                    <ellipse cx="32" cy="16" rx="8" ry="12" transform="rotate(288 32 32)"></ellipse>
-                                    <circle cx="32" cy="32" r="4" fill="#ffd1e0"></circle></svg
-                            ></span></button
-                        ><button type="button" aria-label="disable cursor sharing" class="presence-toggle">
-                            <svg
-                                width="22"
-                                height="22"
-                                viewBox="0 0 24 24"
-                                fill="none"
-                                xmlns="http://www.w3.org/2000/svg"
-                                aria-hidden="true"
-                            >
-                                <path
-                                    d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"
-                                    stroke="currentColor"
-                                    stroke-width="2"
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                ></path>
-                                <circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="2"></circle>
-                            </svg>
-                        </button>
+                        <div class="header-toggles">
+                            <div class="toggle-button">
+                                <button type="button" aria-label="toggle light / dark mode" aria-pressed="true" class="theme-toggle">
+                                    <span class="theme-toggle__moon" aria-hidden="true"
+                                        ><svg
+                                            width="24"
+                                            height="24"
+                                            viewBox="0 0 24 24"
+                                            fill="none"
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            aria-hidden="true"
+                                        >
+                                            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79Z" fill="currentColor"></path></svg></span
+                                    ><span class="theme-toggle__sakura" aria-hidden="true"
+                                        ><svg
+                                            width="26"
+                                            height="26"
+                                            viewBox="0 0 64 64"
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            aria-hidden="true"
+                                            fill="currentColor"
+                                        >
+                                            <ellipse cx="32" cy="16" rx="8" ry="12" transform="rotate(0 32 32)"></ellipse>
+                                            <ellipse cx="32" cy="16" rx="8" ry="12" transform="rotate(72 32 32)"></ellipse>
+                                            <ellipse cx="32" cy="16" rx="8" ry="12" transform="rotate(144 32 32)"></ellipse>
+                                            <ellipse cx="32" cy="16" rx="8" ry="12" transform="rotate(216 32 32)"></ellipse>
+                                            <ellipse cx="32" cy="16" rx="8" ry="12" transform="rotate(288 32 32)"></ellipse>
+                                            <circle cx="32" cy="32" r="4" fill="#ffd1e0"></circle></svg
+                                    ></span></button>
+                                <span class="toggle-label">theme</span>
+                            </div>
+                            <div class="toggle-button">
+                                <button type="button" aria-label="disable cursor sharing" aria-pressed="true" class="presence-toggle">
+                                    <svg
+                                        width="22"
+                                        height="22"
+                                        viewBox="0 0 24 24"
+                                        fill="none"
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        aria-hidden="true"
+                                    >
+                                        <path
+                                            d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"
+                                            stroke="currentColor"
+                                            stroke-width="2"
+                                            stroke-linecap="round"
+                                            stroke-linejoin="round"
+                                        ></path>
+                                        <circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="2"></circle>
+                                    </svg>
+                                </button>
+                                <span class="toggle-label">cursor sharing</span>
+                            </div>
+                        </div>
+                        <div class="commit-info">commit [<a href="https://github.com/ijsbol/abigail.sh" target="_blank" rel="noopener noreferrer">{{ most_recent_commit_hash }}</a>]</div>
                     </div>
-                    <div class="commit-info">commit [<a href="https://github.com/ijsbol/abigail.sh" target="_blank" rel="noopener noreferrer">{{ most_recent_commit_hash }}</a>]</div>
                 </div>
             </div>
         </div>

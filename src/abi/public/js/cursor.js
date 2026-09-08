@@ -190,6 +190,7 @@
     function syncToggleBtn() {
         if (!toggleBtn) return;
         toggleBtn.setAttribute('aria-label', enabled ? 'disable cursor sharing' : 'enable cursor sharing');
+        toggleBtn.setAttribute('aria-pressed', String(enabled));
         toggleBtn.innerHTML = enabled ? EYE_OPEN : EYE_CLOSED;
     }
 
@@ -239,7 +240,7 @@
 
     function getCountEl() {
         if (countEl) return countEl;
-        var col = document.querySelector('.meta-column');
+        var col = document.querySelector('.info-col');
         if (!col) return null;
         countEl = document.createElement('div');
         countEl.className = 'presence-count';
@@ -434,8 +435,11 @@
 
     var themeBtn = document.querySelector('.theme-toggle');
     if (themeBtn) {
+        themeBtn.setAttribute('aria-pressed', String(document.documentElement.getAttribute('data-theme') === 'dark'));
         themeBtn.addEventListener('click', function () {
-            applyTheme(document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
+            var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+            applyTheme(isDark ? 'light' : 'dark');
+            themeBtn.setAttribute('aria-pressed', String(!isDark));
         });
     }
 

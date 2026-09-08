@@ -498,6 +498,34 @@ strong {
     align-content: center;
 }
 
+.toggle-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    min-width: 0;
+    font-size: 12px;
+    white-space: nowrap;
+}
+
+/* .toggle-button span {
+    padding-right: 60px;
+} */
+
+.toggle-label {
+    color: var(--duck);
+    font-size: 10px;
+    line-height: 1;
+}
+
+.info-col {
+    padding: 10px 0px;
+    margin: 0px;
+    color: var(--duck);
+    background-color: #1a19191e;
+    text-decoration: none;
+    background-color: var(--nav-bg);
+}
+
 @media (max-width: 768px) {
     .page {
         display: flex;
@@ -679,40 +707,79 @@ strong {
 
 .header-toggles {
 	display: flex;
-	flex-direction: row;
+	flex-direction: column;
 	flex-wrap: nowrap;
 	justify-content: space-around;
-	align-items: center;
+	align-items: flex-start;
 	align-content: stretch;
-    gap: 4px;
-    margin-top: 6px;
+    gap: 6px;
+    margin: 6px 0px 0px 6px;
     padding: 4px 6px;
 }
 
+.theme-toggle,
 .presence-toggle {
     z-index: 1100;
-    background: transparent;
-    border: none;
+    position: relative;
+    top: auto;
+    right: auto;
+    width: 36px;
+    height: 22px;
+    box-sizing: border-box;
+    border: 1px solid var(--geko);
+    border-radius: 999px;
+    background: var(--geko);
     cursor: pointer;
-    color: var(--themeIcon);
-    padding: 4px;
-    line-height: 0;
+    color: var(--duck);
+    padding: 0;
+    line-height: 1;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    transition: transform 0.2s ease, opacity 0.2s ease;
-    opacity: 0.85;
-}
-
-.presence-toggle:hover {
+    transition: background-color 0.2s ease, border-color 0.2s ease;
     opacity: 1;
-    transform: scale(1.06);
 }
 
+.theme-toggle::before,
+.presence-toggle::before {
+    content: '';
+    position: absolute;
+    width: 16px;
+    height: 16px;
+    left: 2px;
+    border-radius: 50%;
+    background: var(--flightless-bird);
+    box-shadow: 0 1px 3px var(--boxShadow);
+    transition: transform 0.2s ease, background-color var(--colorTransitionTime);
+}
+
+.theme-toggle[aria-pressed="true"]::before,
+.presence-toggle[aria-pressed="true"]::before {
+    transform: translateX(16px);
+}
+
+.theme-toggle:hover,
+.presence-toggle:hover {
+    border-color: var(--dove);
+    background: var(--dove);
+}
+
+.theme-toggle:focus-visible,
 .presence-toggle:focus-visible {
-    outline: 2px solid var(--themeIcon);
+    outline: 2px solid var(--dove);
     outline-offset: 2px;
-    border-radius: 4px;
+}
+
+.theme-toggle > *,
+.presence-toggle > * {
+    position: relative;
+    z-index: 1;
+}
+
+.theme-toggle svg,
+.presence-toggle svg {
+    width: 14px;
+    height: 14px;
 }
 
 .presence-popup {
