@@ -79,6 +79,7 @@ class TemplateServer(Jinja2Templates):
 
             for file in filenames:
                 file_name, file_ext = os.path.splitext(file)
+                print(f"[{loc}] [templates:images] processing {file}...")
                 if file_ext not in (".png", ".jpg", ".jpeg", ".gif"):
                     continue
 
