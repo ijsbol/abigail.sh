@@ -16,6 +16,7 @@ from abi.api.lastfm import fetch_recent_tracks, LASTFM_REVALIDATE, LASTFM_FETCH_
 from abi.templates import templates
 from abi.data import load_projects, load_travel_data
 from abi.private.photography import PHOTOGRAPHY_SHOTS
+from abi.api.weather import get_weather_indicator
 
 
 router = APIRouter()
@@ -36,6 +37,13 @@ async def home_page(request: Request) -> Response:
     random.shuffle(shuffled_friend_buttons)
     shuffled_friend_buttons = dict(shuffled_friend_buttons)
     travel = load_travel_data()
+    missing_weather = object()
+    weather = getattr(getattr(request, "state", None), "weather", missing_weather)
+    if weather is missing_weather:
+        try:
+            weather = await get_weather_indicator()
+        except Exception:
+            weather = None
     return templates.serve_template(
         template_name="home_page.jinja2",
         status_code=HTTPStatus.OK,
@@ -43,6 +51,7 @@ async def home_page(request: Request) -> Response:
             "request": request,
             "friend_buttons": shuffled_friend_buttons,
             "visited_count": travel["visited_count"],
+            "weather": weather,
             "vanity_buttons": {
                 None: "public/images/buttons/vanity/blink.png",
                 None: "public/images/buttons/vanity/firefox.png",

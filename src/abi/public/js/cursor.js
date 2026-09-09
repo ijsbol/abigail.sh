@@ -240,6 +240,8 @@
 
     function getCountEl() {
         if (countEl) return countEl;
+        countEl = document.querySelector('.footer-meta .presence-count');
+        if (countEl) return countEl;
         var col = document.querySelector('.info-col');
         if (!col) return null;
         countEl = document.createElement('div');

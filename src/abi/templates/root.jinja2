@@ -163,7 +163,7 @@
                 </table>
             </div>
             <hr />
-            <div class="page">
+            <div class="page{% if current_page == 'home' %} page--home{% endif %}">
                 <div class="focused-area">
                     {% block page_content %} {% endblock %}
                 </div>
@@ -174,12 +174,51 @@
                             <a href="{{ href }}" class="{% if id == current_page %}selected{% endif %}">{{ label }}</a>
                         {% endfor %}
                     </div>
+                    {% if current_page == "home" %}
+                        <div class="page-views page-views--desktop">
+                            <div class="subtitle">page views</div>
+                            <img src="https://counter.abigail.sh/@abigail.sh:views?theme=moebooru&padding=0&offset=0&align=top&scale=1&pixelated=1&darkmode=0" alt="page views" />
+                        </div>
+                    {% endif %}
+                </div>
 
-                    <div class="info-col">
+            </div>
+
+            <footer class="info-col">
+                <div class="footer-primary">
+                    <div class="footer-entry footer-entry--webring">
                         <div id="innerCircleWebRing"></div>
                         <script src="https://the.inner-circle.fyi/ring/ring.js"></script>
                         <script>loadWebRing("abigail.sh");</script>
+                    </div>
 
+                    <span class="footer-separator" aria-hidden="true">·</span>
+
+                    <div class="footer-entry footer-entry--weather">
+                        {% set current_weather = weather|default(request.state.weather|default(none)) %}
+                        {% if current_weather %}
+                            <div
+                                class="weather-indicator"
+                                aria-label="Weather in {{ current_weather.location }}: {{ current_weather.description }}, {{ current_weather.temperature }} degrees Celsius"
+                            >
+                                <span
+                                    class="weather-icon weather-icon--{{ current_weather.icon }}"
+                                    aria-hidden="true"
+                                >{{ current_weather.symbol }}</span>
+                                <span class="weather-copy">
+                                    <span class="weather-location">{{ current_weather.location|lower }}</span>
+                                    <span class="weather-reading">
+                                        <strong>{{ current_weather.temperature }}°C</strong>
+                                        <span>{{ current_weather.description }}</span>
+                                    </span>
+                                </span>
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <span class="footer-separator" aria-hidden="true">·</span>
+
+                    <div class="footer-entry footer-entry--toggles">
                         <div class="header-toggles">
                             <div class="toggle-button">
                                 <button type="button" aria-label="toggle light / dark mode" aria-pressed="true" class="theme-toggle">
@@ -234,10 +273,22 @@
                                 <span class="toggle-label">cursor sharing</span>
                             </div>
                         </div>
-                        <div class="commit-info">commit [<a href="https://github.com/ijsbol/abigail.sh" target="_blank" rel="noopener noreferrer">{{ most_recent_commit_hash }}</a>]</div>
                     </div>
+
                 </div>
-            </div>
+
+                <div class="footer-meta">
+                    <div class="commit-info">commit [<a href="https://github.com/ijsbol/abigail.sh" target="_blank" rel="noopener noreferrer">{{ most_recent_commit_hash }}</a>]</div>
+                    <div class="presence-count" aria-live="polite"></div>
+                </div>
+            </footer>
+
+            {% if current_page == "home" %}
+                <div class="page-views page-views--mobile">
+                    <div class="subtitle">page views</div>
+                    <img src="https://counter.abigail.sh/@abigail.sh:views?theme=moebooru&padding=0&offset=0&align=top&scale=1&pixelated=1&darkmode=0" alt="page views" />
+                </div>
+            {% endif %}
         </div>
     </body>
 </html>

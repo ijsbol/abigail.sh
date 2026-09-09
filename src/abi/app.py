@@ -2,7 +2,7 @@ from contextlib import asynccontextmanager
 import os
 import shutil
 
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
 from fastapi.staticfiles import StaticFiles
 
 from abi.scripts.render_resume import render_resume_pdf
@@ -19,6 +19,7 @@ def add_routes(app: FastAPI) -> None:
     from abi.api.lastfm import router as lastfm_router
     from abi.api.proxy import router as proxy_router
     from abi.api.cursors import router as cursors_router
+    from abi.api.weather import router as weather_router
     from abi.blog.router import router as blog_router
     from abi.guestbook.router import router as guestbook_router
     from abi.watch_list.router import router as watch_list_router
@@ -32,6 +33,7 @@ def add_routes(app: FastAPI) -> None:
     app.include_router(blog_router)
     app.include_router(guestbook_router)
     app.include_router(watch_list_router)
+    app.include_router(weather_router)
     load_private_routers(app, templates)
 
 
@@ -58,3 +60,17 @@ app = FastAPI(
     lifespan=lifespan,
     title="abigail.sh",
 )
+
+
+@app.middleware("http")
+async def add_weather_context(request: Request, call_next):
+    """Load weather once on the server so templates never need browser-side API calls."""
+    if request.method == "GET" and not request.url.path.startswith(("/api/", "/static/")):
+        try:
+            from abi.api.weather import get_weather_indicator
+
+            request.state.weather = await get_weather_indicator()
+        except Exception:
+            # Weather is supplemental; an upstream outage must not break page renders.
+            request.state.weather = None
+    return await call_next(request)

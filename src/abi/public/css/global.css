@@ -202,6 +202,10 @@ hr {
     padding: max(min(25px, 2vw), 15px);
     max-width: 1000px;
     margin: auto;
+    min-height: 100vh;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
 }
 
 .tagline-container {
@@ -382,11 +386,25 @@ a.download:after {
     max-width: 100%;
     margin: 0;
     box-sizing: border-box;
+    flex: 1;
+}
+
+.page--home {
+    flex: none;
+}
+
+.meta-column {
+    grid-column: 2;
+    grid-row: 1 / 3;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    min-height: 0;
 }
 
 .focused-area {
     grid-column: 1;
-    grid-row: 1 / 3;
+    grid-row: 1;
     background-color: transparent;
     display: block;
     color: var(--duck);
@@ -423,9 +441,8 @@ strong {
 }
 
 .pages {
+    order: 2;
     margin: 0;
-    grid-column: 2;
-    grid-row: 1;
     display: flex;
     flex-direction: column;
     font-size: 14px;
@@ -459,6 +476,98 @@ strong {
     margin: 10px auto;
 }
 
+.weather-indicator {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    width: fit-content;
+    max-width: 100%;
+    box-sizing: border-box;
+    margin: 8px auto 10px;
+    padding: 5px 8px;
+    border-top: 1px solid color-mix(in srgb, var(--duck) 35%, transparent);
+    border-bottom: 1px solid color-mix(in srgb, var(--duck) 35%, transparent);
+    color: var(--duck);
+    font-size: 10px;
+    line-height: 1.25;
+    text-align: left;
+}
+
+.weather-icon {
+    display: inline-flex;
+    flex: 0 0 1.25em;
+    align-items: center;
+    justify-content: center;
+    width: 1.25em;
+    height: 1.25em;
+    font-family: system-ui, sans-serif;
+    font-size: 20px;
+    line-height: 1;
+}
+
+.weather-icon--clear {
+    color: #f4b942;
+}
+
+.weather-icon--partly-cloudy,
+.weather-icon--cloudy {
+    color: #85a9bd;
+}
+
+.weather-icon--fog,
+.weather-icon--drizzle,
+.weather-icon--freezing-drizzle {
+    color: #8a9cac;
+}
+
+.weather-icon--rain,
+.weather-icon--showers,
+.weather-icon--freezing-rain {
+    color: #6d9fc5;
+}
+
+.weather-icon--snow,
+.weather-icon--snow-showers {
+    color: #b8d8e8;
+}
+
+.weather-icon--thunderstorm {
+    color: #e4b85c;
+}
+
+.weather-copy {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    gap: 2px;
+}
+
+.weather-location {
+    color: var(--dove);
+    font-size: 9px;
+    font-weight: bold;
+    letter-spacing: 0.04em;
+    line-height: 1;
+}
+
+.weather-reading {
+    display: flex;
+    align-items: baseline;
+    gap: 5px;
+    white-space: nowrap;
+}
+
+.weather-reading strong {
+    font-size: 12px;
+}
+
+@media (max-width: 768px) {
+    .weather-indicator {
+        margin: 0;
+    }
+}
+
 .section-header-item {
     color: var(--dove);
     text-decoration: underline;
@@ -472,12 +581,35 @@ strong {
 }
 
 .hugs {
-    grid-column: 2;
-    grid-row: 2;
+    order: 1;
     background-color: transparent;
     display: flex;
     align-items: flex-end;
     justify-content: flex-end;
+}
+
+.page-views {
+    order: 3;
+    margin-top: auto;
+    padding-top: 10px;
+    text-align: center;
+}
+
+.page-views--mobile {
+    display: none;
+}
+
+.page-views .subtitle {
+    margin: 0 0 5px;
+    font-size: 12px;
+}
+
+.page-views img {
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    image-rendering: pixelated;
 }
 
 .hugs img {
@@ -518,19 +650,77 @@ strong {
 }
 
 .info-col {
-    padding: 10px 0px;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 10px 10px 10px;
     margin: 0px;
     color: var(--duck);
-    background-color: #1a19191e;
-    text-decoration: none;
     background-color: var(--nav-bg);
+    text-decoration: none;
+}
+
+.footer-primary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    width: 100%;
+}
+
+.footer-entry {
+    display: flex;
+    min-width: 0;
+    align-items: center;
+    justify-content: center;
+}
+
+.footer-separator {
+    color: var(--dove);
+    font-size: 12px;
+    line-height: 1;
+}
+
+.footer-entry #innerCircleWebRing,
+.footer-entry .weather-indicator {
+    margin: 0;
+}
+
+.footer-entry--toggles .header-toggles {
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 6px;
+    margin: 0;
+    padding: 0;
+}
+
+.footer-meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    width: 100%;
+    margin-top: 8px;
+    padding: 0 8px;
+    box-sizing: border-box;
+}
+
+.footer-meta .commit-info {
+    margin-right: auto;
+    text-align: left;
+}
+
+.footer-meta .presence-count {
+    margin-left: auto;
+    text-align: right;
 }
 
 @media (max-width: 768px) {
     .page {
         display: flex;
-        flex-direction: column;
+        order: 1;
         height: auto;
+        flex: none;
     }
 
     .meta-column {
@@ -558,20 +748,52 @@ strong {
         font-size: 12px;
     }
 
-    #innerCircleWebRing {
+    .page-views--desktop {
+        display: none;
+    }
+
+    .page-views--mobile {
+        display: block;
         order: 3;
+        width: fit-content;
+        align-self: flex-end;
+        margin-right: 10px;
+        margin-top: 10px;
+        padding-top: 0;
+        text-align: right;
     }
 
-    .header-toggles {
-        order: 4;
+    .info-col {
+        order: 2;
+        padding: 20px 10px 10px;
     }
 
-    .commit-info {
-        order: 5;
+    .footer-primary {
+        gap: 6px;
     }
 
-    .presence-count {
-        order: 6;
+    .footer-meta {
+        margin-top: 6px;
+        padding: 0;
+    }
+
+    .footer-entry--toggles .header-toggles {
+        gap: 8px;
+    }
+
+    .footer-entry--toggles .toggle-button {
+        flex-direction: row;
+        align-items: center;
+    }
+
+    .footer-entry--toggles .toggle-label {
+        font-size: 9px;
+    }
+
+    .info-col {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
     }
 
     .hugs {
@@ -586,6 +808,21 @@ strong {
 
     .focused-area .smaller {
         font-size: 8px;
+    }
+}
+
+@media (max-width: 500px) {
+    .footer-primary {
+        flex-direction: column;
+        gap: 5px;
+    }
+
+    .footer-entry {
+        width: 100%;
+    }
+
+    .footer-separator {
+        justify-self: center;
     }
 }
 
@@ -899,8 +1136,8 @@ strong {
 .presence-count {
     font-size: 10px;
     opacity: 0.4;
-    text-align: center;
-    margin-top: 6px;
+    text-align: right;
+    margin: 0;
     font-family: ui-monospace, monospace;
     letter-spacing: 0.02em;
     color: var(--duck);
@@ -910,8 +1147,8 @@ strong {
 .commit-info {
     font-size: 12px;
     opacity: 0.6;
-    text-align: center;
-    margin-top: 6px;
+    text-align: left;
+    margin: 0;
     letter-spacing: 0.02em;
     color: var(--duck);
     transition: color var(--colorTransitionTime);
