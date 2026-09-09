@@ -718,6 +718,7 @@ strong {
 @media (max-width: 768px) {
     .page {
         display: flex;
+        flex-direction: column;
         order: 1;
         height: auto;
         flex: none;
