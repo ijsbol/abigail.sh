@@ -70,16 +70,21 @@
         ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
         ctx.lineCap = 'round';
 
-        var speed = h / 7500; // px per ms; trunk finishes ~5s, twigs trail to ~10s
-        var count = 1;
-        var branches = [{
-            x: w * (0.4 + Math.random() * 0.2),
-            y: 0,
-            angle: DOWN + (Math.random() - 0.5) * 0.2,
-            left: h * (0.62 + Math.random() * 0.13),
-            width: 2.7,
-            depth: 0,
-        }];
+        var speed = h / 7500; // px per ms; trunks finish ~5s, twigs trail to ~10s
+        var count = 0;
+        var branches = [];
+        var trunks = 2 + Math.floor(Math.random() * 3);
+        for (var t = 0; t < trunks; t++) {
+            count++;
+            branches.push({
+                x: w * ((t + 0.2 + Math.random() * 0.6) / trunks),
+                y: 0,
+                angle: DOWN + (Math.random() - 0.5) * 0.2,
+                left: h * (0.62 + Math.random() * 0.13),
+                width: 2.2,
+                depth: 0,
+            });
+        }
 
         function tick(dt) {
             for (var i = branches.length - 1; i >= 0; i--) {
@@ -112,7 +117,7 @@
                     && count < MAX_BRANCHES
                     && b.y > 30
                     && b.left > 12;
-                if (canBranch && Math.random() < step * (0.05 - b.depth * 0.008)) {
+                if (canBranch && Math.random() < step * (0.022 - b.depth * 0.003)) {
                     count++;
                     branches.push({
                         x: b.x,
