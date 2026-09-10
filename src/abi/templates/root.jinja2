@@ -47,6 +47,7 @@
         <meta name="twitter:image" content="{{ get_file('public/images/icon.png') }}" />
         {% block head %}{% endblock %}
         <script src="{{ get_file('public/js/cursor.js') }}" defer></script>
+        <script src="{{ get_file('public/js/branches.js') }}" defer></script>
     </head>
     <body>
         <div class="content">
@@ -168,12 +169,13 @@
                     {% block page_content %} {% endblock %}
                 </div>
                 <div class="meta-column">
-                    <div class="hugs"><img src="{{ get_file('public/images/hugs.png') }}" alt="Hug icon" /></div>
+                    <div class="hugs"><img src="{{ get_file('public/images/hugs.png') }}" alt="Hug icon" width="526" height="568" /></div>
                     <div class="pages">
                         {% for href, id, label in pages %}
                             <a href="{{ href }}" class="{% if id == current_page %}selected{% endif %}">{{ label }}</a>
                         {% endfor %}
                     </div>
+                    <canvas class="branch-canvas" aria-hidden="true"></canvas>
                     {% if current_page == "home" %}
                         <div class="page-views page-views--desktop">
                             <div class="subtitle">page views</div>
