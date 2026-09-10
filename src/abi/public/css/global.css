@@ -10,6 +10,7 @@
     --goose: rgb(165, 76, 122);
     --duck: #2a1a26;
     --flightless-bird: rgb(250, 222, 232);
+    --angel-without-wings: rgb(239, 189, 206);
     --geko: rgb(232, 190, 210);
     --dove: rgb(150, 30, 90);
     --boxShadow: rgba(80, 0, 40, 0.25);
@@ -21,6 +22,7 @@
     --duck: rgb(240, 230, 238);
     --dove-muted: rgb(244, 169, 182);
     --flightless-bird: rgb(30, 25, 46);
+    --angel-without-wings: rgb(16, 11, 33);
     --geko: rgb(70, 55, 95);
     --dove: rgb(255, 130, 150);
     --boxShadow: rgba(0, 0, 0, 0.6);
@@ -120,12 +122,15 @@ body {
 body {
     font-family: 'JMH Typewriter', sans-serif;
     color: var(--duck);
-    background-color: var(--flightless-bird);
     margin: 0;
     width: 100%;
-    height: 100%;
+    min-height: 100vh;
+    box-sizing: border-box;
     overflow-x: hidden;
     transition: background-color var(--colorTransitionTime), color var(--colorTransitionTime);
+    display: flex;
+    align-items: center;
+    background-color: var(--angel-without-wings);
 }
 
 h1,
@@ -202,10 +207,10 @@ hr {
     padding: max(min(25px, 2vw), 15px);
     max-width: 1000px;
     margin: auto;
-    min-height: 100vh;
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
+    background-color: var(--flightless-bird);
 }
 
 .tagline-container {
@@ -713,6 +718,16 @@ strong {
 .footer-meta .presence-count {
     margin-left: auto;
     text-align: right;
+}
+
+@media (min-width: 1000px) {
+    body {
+        padding: 15px 0;
+    }
+    .content {
+        box-shadow: 0px 0px 7px var(--geko);
+        border-radius: 6px;
+    }
 }
 
 @media (max-width: 768px) {

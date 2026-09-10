@@ -218,7 +218,7 @@ class TemplateServer(Jinja2Templates):
             "get_file": self._get_file,
             "get_file_type": self._get_file_type,
             "most_recent_commit_hash": self._most_recent_commit_hash,
-            "hotlink_domain": random.choice(["abigail", "phoebe", "abigail.phoebe", "murph", "abigail.phoebe.murph"]),
+            "hotlink_domain": random.choice(["abigail", "phoebe", "abigail.phoebe"]),
             "media_proxy_url": media_proxy_url,
             "avatar_url": avatar_url,
             "avatar_decoration_url": avatar_decoration_url,

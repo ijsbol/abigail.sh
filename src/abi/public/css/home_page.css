@@ -6,7 +6,7 @@
     align-items: flex-start;
     align-content: flex-start;
     gap: 10px 20px;
-    background-color: var(--geko);
+    background-color: var(--nav-bg);
     padding: 10px;
 }
 
