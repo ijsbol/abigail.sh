@@ -18,6 +18,7 @@ dependencies = [
     "rcssmin>=1.2.2",
     "rjsmin>=1.2.5",
     "uvicorn>=0.52.4",
+    "watchfiles>=1.0.0",
     "websockets>=17.1",
 ]
 
