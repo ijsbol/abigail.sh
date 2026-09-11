@@ -7,18 +7,19 @@ import shutil
 import subprocess
 from typing import Final, Union
 
-from fastapi import Response
+from fastapi import Request, Response
 from fastapi.templating import Jinja2Templates
 from PIL import Image, ImageSequence
 from rcssmin import cssmin
 from rjsmin import jsmin
+from functools import partial
 
 
 __all__: tuple[str, ...] = (
     "templates",
 )
 
-
+EIGHTY_EIGHT_THIRTY_ONE_SCRAPER_AGENT: Final[str] = "eightyeightthirtyone"
 SPECIFICALLY_INCLUDED_FILES: Final[list[str]] = [
     # website link styling
     "images/external-link-svgrepo-com.svg",
@@ -108,7 +109,7 @@ class TemplateServer(Jinja2Templates):
                     self._served_files[os.path.normpath(f"public/images/{rel_dir}/{file}:anim")] = anim_path
 
                 image.save(avif_path, optimize=True, quality=50, format="AVIF", save_all=False)
-                image.save(png_path, optimize=True, quality=100, format="PNG", save_all=True)
+                image.save(png_path, optimize=True, quality=95, format="PNG", save_all=True)
 
         # specific legacy override for people hot-linking my button on their sites.
         if loc == "src/abi/public":
@@ -193,14 +194,20 @@ class TemplateServer(Jinja2Templates):
         self._serve_private()
         self._serve_misc()
 
-    def _get_file(self, file_path: str) -> str:
+    def _get_file(self, request: Request, file_path: str) -> str:
+        if (
+            "/buttons/" in file_path
+            and request.headers.get("User-Agent") == EIGHTY_EIGHT_THIRTY_ONE_SCRAPER_AGENT
+            and not file_path.endswith(":png")
+        ):
+            return self._served_files.get(file_path.split(":")[0] + ":png", "")
         if "/images/" in file_path and not file_path.endswith((":png", ":avif", ":anim")):
             path = self._served_files.get(f"{file_path}:avif", "")
         else:
             path = self._served_files.get(file_path, "")
         return f"/{path}" if path else ""
 
-    def _get_file_type(self, file_path: str) -> str:
+    def _get_file_type(self, request: Request, file_path: str) -> str:
         import mimetypes
 
         mime_type, _ = mimetypes.guess_type(file_path)
@@ -215,8 +222,8 @@ class TemplateServer(Jinja2Templates):
 
         template = self.get_template(template_name)
         template.globals.update({
-            "get_file": self._get_file,
-            "get_file_type": self._get_file_type,
+            "get_file": partial(self._get_file, context['request']),
+            "get_file_type": partial(self._get_file_type, context['request']),
             "most_recent_commit_hash": self._most_recent_commit_hash,
             "hotlink_domain": random.choice(["abigail", "phoebe", "abigail.phoebe"]),
             "media_proxy_url": media_proxy_url,
