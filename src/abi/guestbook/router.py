@@ -1,5 +1,4 @@
 import json
-import os
 from http import HTTPStatus
 from typing import Final
 from urllib.parse import quote
