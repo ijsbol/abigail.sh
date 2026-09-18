@@ -16,7 +16,7 @@
     {% endif %}
 
     {% if configured %}
-    <a class="admin-discord-button" href="/api/blog/auth/login">continue with discord</a>
+    <a class="admin-discord-button" href="{{ login_url or '/api/blog/auth/login' }}">continue with discord</a>
     {% else %}
     <p class="admin-error">
         discord login isn't configured. set DISCORD_CLIENT_ID,

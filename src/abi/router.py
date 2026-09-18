@@ -5,7 +5,7 @@ import json
 import mimetypes
 from pathlib import Path
 import random
-from typing import Final
+from typing import Awaitable, Callable, Final
 
 from fastapi import Request, Response, APIRouter
 
@@ -20,6 +20,13 @@ from abi.api.weather import get_weather_indicator
 
 
 router = APIRouter()
+
+
+TILDE_HANDLERS: dict[str, Callable[[Request], Awaitable[Response]]] = {}
+
+
+def register_tilde_handler(name: str, handler: Callable[[Request], Awaitable[Response]]) -> None:
+    TILDE_HANDLERS[name] = handler
 
 TILDE_DIRECTORIES: Final[tuple[Path, ...]] = (
     Path(__file__).parent / "~",
@@ -207,6 +214,10 @@ async def profile_page(request: Request) -> Response:
 async def tilde_redirect(request: Request, tilde: str | None) -> Response:
     if not tilde:
         return Response(status_code=HTTPStatus.NOT_FOUND)
+
+    handler = TILDE_HANDLERS.get(tilde)
+    if handler is not None:
+        return await handler(request)
 
     tilde_files = [
         path

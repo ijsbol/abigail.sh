@@ -2,6 +2,7 @@ import json
 import os
 from http import HTTPStatus
 from typing import Final
+from urllib.parse import quote
 
 from fastapi import APIRouter, Request, Response
 from fastapi.responses import JSONResponse, RedirectResponse
@@ -11,9 +12,12 @@ from abi.auth import admin as admin_auth
 from abi.auth import guestbook as guestbook_auth
 from abi.guestbook import store as guestbook_store
 from abi.templates import templates
+from abi.utils import safe_local_path
 
 
 router = APIRouter()
+
+AUTH_RETURN_COOKIE: Final[str] = "abigail_guestbook_return_to"
 
 
 AUTH_ERRORS: Final[dict[str, str]] = {
@@ -72,7 +76,7 @@ async def guestbook_page(request: Request, auth: str = "") -> Response:
 
 
 @router.get("/api/guestbook/auth/login")
-async def guestbook_auth_login(request: Request) -> Response:
+async def guestbook_auth_login(request: Request, next: str = "") -> Response:
     if not guestbook_auth.discord_configured():
         return RedirectResponse("/guestbook?auth=unconfigured", status_code=302)
     state = auth.random_state()
@@ -83,14 +87,25 @@ async def guestbook_auth_login(request: Request) -> Response:
         guestbook_auth.state_cookie, state,
         httponly=True, samesite="lax", path="/", max_age=600,
     )
+    return_to = safe_local_path(next)
+    if return_to:
+        response.set_cookie(
+            AUTH_RETURN_COOKIE, return_to,
+            httponly=True, samesite="lax", path="/", max_age=600,
+        )
+    else:
+        response.delete_cookie(AUTH_RETURN_COOKIE)
     return response
 
 
 @router.get("/api/guestbook/auth/callback")
 async def guestbook_auth_callback(request: Request, code: str = "", state: str = "") -> Response:
     def fail(reason: str) -> Response:
-        r = RedirectResponse(f"/guestbook?auth={reason}", status_code=302)
+        return_to = safe_local_path(request.cookies.get(AUTH_RETURN_COOKIE))
+        suffix = f"&next={quote(return_to, safe='')}" if return_to else ""
+        r = RedirectResponse(f"/guestbook?auth={reason}{suffix}", status_code=302)
         r.delete_cookie(guestbook_auth.state_cookie)
+        r.delete_cookie(AUTH_RETURN_COOKIE)
         return r
 
     if not guestbook_auth.discord_configured():
@@ -116,8 +131,10 @@ async def guestbook_auth_callback(request: Request, code: str = "", state: str =
         {"userId": user_id, "username": username, "displayName": display_name}
     )
 
-    response = RedirectResponse("/guestbook", status_code=HTTPStatus.FOUND)
+    return_to = safe_local_path(request.cookies.get(AUTH_RETURN_COOKIE)) or "/guestbook"
+    response = RedirectResponse(return_to, status_code=HTTPStatus.FOUND)
     response.delete_cookie(guestbook_auth.state_cookie)
+    response.delete_cookie(AUTH_RETURN_COOKIE)
     response.set_cookie(
         guestbook_auth.session_cookie, session_token,
         httponly=True, samesite="lax", path="/",

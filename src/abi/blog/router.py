@@ -2,6 +2,7 @@ import re
 from dataclasses import asdict
 from http import HTTPStatus
 from typing_extensions import Final
+from urllib.parse import quote
 
 from fastapi import APIRouter, Request, Response
 from fastapi.responses import JSONResponse, RedirectResponse
@@ -10,9 +11,12 @@ from abi import auth
 from abi.auth import admin as admin_auth
 from abi.blog import store as blog_store
 from abi.templates import templates
+from abi.utils import safe_local_path
 
 
 router = APIRouter()
+
+ADMIN_RETURN_COOKIE: Final[str] = "abigail_admin_return_to"
 
 MONTHS: Final[list[str]] = [
     "Jan", "Feb", "Mar", "Apr", "May", "Jun",
@@ -122,11 +126,12 @@ async def blog_index(request: Request) -> Response:
 
 
 @router.get("/blog/admin/login")
-async def blog_admin_login(request: Request, error: str = "") -> Response:
+async def blog_admin_login(request: Request, error: str = "", next: str = "") -> Response:
     session = admin_auth.get_session(request)
     if session:
-        return RedirectResponse("/admin", status_code=302)
+        return RedirectResponse(safe_local_path(next) or "/admin", status_code=302)
     configured = admin_auth.discord_configured()
+    return_to = safe_local_path(next)
     return templates.serve_template(
         "blog_admin_login.jinja2",
         HTTPStatus.OK,
@@ -135,6 +140,7 @@ async def blog_admin_login(request: Request, error: str = "") -> Response:
             "current_page": "blog",
             "configured": configured,
             "error_msg": ERRORS.get(error, ""),
+            "login_url": "/api/blog/auth/login" + (f"?next={quote(return_to, safe='')}" if return_to else ""),
         },
     )
 
@@ -227,7 +233,7 @@ async def blog_post(request: Request, slug: str) -> Response:
 
 
 @router.get("/api/blog/auth/login")
-async def auth_login(request: Request) -> Response:
+async def auth_login(request: Request, next: str = "") -> Response:
     if not admin_auth.discord_configured():
         return RedirectResponse("/blog/admin/login?error=unconfigured", status_code=302)
     state = auth.random_state()
@@ -238,14 +244,25 @@ async def auth_login(request: Request) -> Response:
         admin_auth.state_cookie, state,
         httponly=True, samesite="lax", path="/", max_age=600,
     )
+    return_to = safe_local_path(next)
+    if return_to:
+        response.set_cookie(
+            ADMIN_RETURN_COOKIE, return_to,
+            httponly=True, samesite="lax", path="/", max_age=600,
+        )
+    else:
+        response.delete_cookie(ADMIN_RETURN_COOKIE)
     return response
 
 
 @router.get("/api/blog/auth/callback")
 async def auth_callback(request: Request, code: str = "", state: str = "") -> Response:
     def fail(reason: str) -> Response:
-        r = RedirectResponse(f"/blog/admin/login?error={reason}", status_code=302)
+        return_to = safe_local_path(request.cookies.get(ADMIN_RETURN_COOKIE))
+        suffix = f"&next={quote(return_to, safe='')}" if return_to else ""
+        r = RedirectResponse(f"/blog/admin/login?error={reason}{suffix}", status_code=302)
         r.delete_cookie(admin_auth.state_cookie)
+        r.delete_cookie(ADMIN_RETURN_COOKIE)
         return r
 
     if not admin_auth.discord_configured():
@@ -270,8 +287,10 @@ async def auth_callback(request: Request, code: str = "", state: str = "") -> Re
     username = user.get("global_name") or user.get("username", "")
     session_token = admin_auth.create_session_token({"userId": user["id"], "username": username})
 
-    response = RedirectResponse("/admin", status_code=302)
+    return_to = safe_local_path(request.cookies.get(ADMIN_RETURN_COOKIE)) or "/admin"
+    response = RedirectResponse(return_to, status_code=302)
     response.delete_cookie(admin_auth.state_cookie)
+    response.delete_cookie(ADMIN_RETURN_COOKIE)
     response.set_cookie(
         admin_auth.session_cookie, session_token,
         httponly=True, samesite="lax", path="/",
