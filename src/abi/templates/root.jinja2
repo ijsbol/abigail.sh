@@ -194,8 +194,6 @@
                         <script>loadWebRing("abigail.sh");</script>
                     </div>
 
-                    <span class="footer-separator" aria-hidden="true">·</span>
-
                     <div class="footer-entry footer-entry--weather">
                         {% set current_weather = weather|default(request.state.weather|default(none)) %}
                         {% if current_weather %}
@@ -217,8 +215,6 @@
                             </div>
                         {% endif %}
                     </div>
-
-                    <span class="footer-separator" aria-hidden="true">·</span>
 
                     <div class="footer-entry footer-entry--toggles">
                         <div class="header-toggles">
