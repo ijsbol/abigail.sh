@@ -3,10 +3,7 @@
 
     var WS_URL = (location.protocol === 'https:' ? 'wss:' : 'ws:') + '//' + location.host + '/ws/cursors';
     var STORAGE_KEY = 'cursors-enabled';
-    var COOKIE_NAME = 'cursors-popup-seen';
-    var COOKIE_MAX_AGE = 30 * 24 * 60 * 60;
     var MOVE_INTERVAL_MS = 33;
-    var AUTO_DISMISS_MS = 60000;
     var RECONNECT_BASE = 1000;
     var RECONNECT_MAX = 30000;
 
@@ -213,29 +210,6 @@
         document.cookie = name + '=' + encodeURIComponent(value) + '; max-age=' + maxAge + '; path=/; SameSite=Lax';
     }
 
-    var popup = null;
-    var popupTimer = null;
-
-    function showPopup() {
-        if (readCookie(COOKIE_NAME) || popup) return;
-        popup = document.createElement('button');
-        popup.type = 'button';
-        popup.className = 'presence-popup';
-        popup.setAttribute('aria-label', 'dismiss cursor sharing notice');
-        popup.textContent = "your cursor's position is shared with everyone currently on the website :3 ask your friends to try it out!";
-        document.body.appendChild(popup);
-        popup.addEventListener('click', dismissPopup);
-        popupTimer = setTimeout(dismissPopup, AUTO_DISMISS_MS);
-    }
-
-    function dismissPopup() {
-        if (!popup) return;
-        writeCookie(COOKIE_NAME, '1', COOKIE_MAX_AGE);
-        popup.remove();
-        popup = null;
-        if (popupTimer) { clearTimeout(popupTimer); popupTimer = null; }
-    }
-
     var countEl = null;
 
     function getCountEl() {
@@ -333,7 +307,6 @@
         ws.onopen = function () {
             reconnectDelay = RECONNECT_BASE;
             ws.send(JSON.stringify({ type: 'page', page: currentPage }));
-            showPopup();
         };
 
         ws.onmessage = function (e) {
