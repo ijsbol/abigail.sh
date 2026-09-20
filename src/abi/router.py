@@ -162,7 +162,7 @@ async def resume_print_page(request: Request) -> Response:
 @router.get("/profile")
 async def profile_page(request: Request) -> Response:
     ANILIST_REVALIDATE = 3600
-    WATCH_HISTORY_LIMIT = 36
+    WATCH_HISTORY_LIMIT = 35
 
     async def safe(coro):
         try:

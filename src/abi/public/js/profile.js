@@ -13,7 +13,7 @@
     const LANYARD_POLL_MS = 30_000;
     const LASTFM_POLL_MS = 30_000;
     const CLOCK_TICK_MS = 1_000;
-    const WATCH_STEP = 6;
+    const WATCH_STEP = 5;
     const TRACKS_STEP = 6;
 
     function esc(str) {
@@ -419,7 +419,7 @@
         var btn = document.getElementById('loadMoreWatch');
         if (!btn) return;
         var tiles = document.querySelectorAll('#watchGrid .watch-tile');
-        var watchVisible = parseInt(btn.dataset.initialVisible || '6', 10);
+        var watchVisible = parseInt(btn.dataset.initialVisible || '5', 10);
 
         function refresh() {
             for (var i = 0; i < tiles.length; i++) {

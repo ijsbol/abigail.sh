@@ -256,10 +256,10 @@
                 </a>
             {% endfor %}
         </div>
-        {% if watch_history|length > 6 %}
+        {% if watch_history|length > 5 %}
             <div class="load-more-wrap">
-                <button type="button" class="load-more" id="loadMoreWatch" data-initial-visible="6">
-                    load more ({{ watch_history|length - 6 }} left)
+                <button type="button" class="load-more" id="loadMoreWatch" data-initial-visible="5">
+                    load more ({{ watch_history|length - 5 }} left)
                 </button>
             </div>
         {% endif %}
