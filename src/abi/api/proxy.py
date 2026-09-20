@@ -1,6 +1,7 @@
 import base64
 from http import HTTPStatus
 import json
+from pathlib import Path
 from typing import Final
 from urllib.parse import urlparse
 
@@ -24,6 +25,9 @@ def _load_friend_button_hosts() -> set[str]:
 
 FRIEND_BUTTON_HOSTS: Final[set[str]] = _load_friend_button_hosts()
 PROXY_CACHE_SECONDS: Final[int] = 7 * 24 * 60 * 60
+INVALID_MEDIA: Final[bytes] = (
+    Path(__file__).resolve().parents[1] / "public/images/missing-media.png"
+).read_bytes()
 PROXIED_HOSTS: Final[set[str]] = {
     "cdn.discordapp.com",
     "media.discordapp.net",
@@ -76,20 +80,22 @@ async def api_media_proxy(hash: str) -> Response:
         )
 
     async def fetch():
-        async with httpx.AsyncClient() as client:
-            resp = await client.get(target, timeout=15, follow_redirects=True)
-            if not resp.is_success:
-                return None
-            return resp.content, resp.headers.get("content-type", "application/octet-stream")
+        try:
+            async with httpx.AsyncClient() as client:
+                resp = await client.get(target, timeout=15, follow_redirects=True)
+                if not resp.is_success:
+                    return None
+                return resp.content, resp.headers.get("content-type", "application/octet-stream")
+        except httpx.HTTPError:
+            return None
 
     result = await cache_bytes_get_or_fetch(f"media:{hash}", PROXY_CACHE_SECONDS, fetch)
-    if result is None:
-        return Response(
-            status_code=HTTPStatus.BAD_GATEWAY,
-            content="failed to fetch media",
-        )
+    if result is not None:
+        content, content_type, _ = result
+    else:
+        content = INVALID_MEDIA
+        content_type = "image/png"
 
-    content, content_type, _ = result
     return Response(
         content=content,
         media_type=content_type,
