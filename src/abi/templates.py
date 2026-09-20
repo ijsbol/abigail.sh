@@ -14,6 +14,8 @@ from rcssmin import cssmin
 from rjsmin import jsmin
 from functools import partial
 
+from abi.api.weather import WeatherIndicator
+
 
 __all__: tuple[str, ...] = (
     "templates",
@@ -64,6 +66,7 @@ def is_animation(file_or_bytes: Union[str, bytes]) -> bool:
 
 class TemplateServer(Jinja2Templates):
     def __init__(self, directory: str) -> None:
+        self.weather: WeatherIndicator | None = None
         self._served_files: dict[str, str] = {}
         self._most_recent_commit_hash = _get_most_recent_commit_hash()
         super().__init__(directory=directory)
@@ -219,7 +222,6 @@ class TemplateServer(Jinja2Templates):
             avatar_url, avatar_decoration_url, banner_url,
             guild_badge_url, activity_asset_url, int_to_hex,
         )
-
         template = self.get_template(template_name)
         template.globals.update({
             "get_file": partial(self._get_file, context['request']),
@@ -233,6 +235,7 @@ class TemplateServer(Jinja2Templates):
             "guild_badge_url": guild_badge_url,
             "activity_asset_url": activity_asset_url,
             "int_to_hex": int_to_hex,
+            "current_weather": self.weather,
         })
         template_content = template.render(context)
         return Response(

@@ -1,12 +1,12 @@
 from contextlib import asynccontextmanager
-import os
-import shutil
+from typing import Any, Coroutine
 
-from fastapi import FastAPI, Request
+from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
 
 from abi.scripts.render_resume import render_resume_pdf
-from abi.templates import templates
+from abi.templates import TemplateServer, templates
+
 
 __all__: tuple[str, ...] = (
     "app",
@@ -40,6 +40,7 @@ def add_routes(app: FastAPI) -> None:
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     templates.load()
+    await create_refetch(refresh_weather(templates), interval=30 * 60)
     await render_resume_pdf()
     app.mount(
         "/static",
@@ -48,6 +49,29 @@ async def lifespan(app: FastAPI):
     )
     add_routes(app)
     yield
+
+
+async def refresh_weather(templates: TemplateServer) -> None:
+    try:
+        from abi.api.weather import get_weather_indicator
+
+        templates.weather = await get_weather_indicator()
+    except Exception:
+        templates.weather = None
+
+
+async def create_refetch(func: Coroutine[Any, Any, Any], interval: int = 60) -> None:
+    import asyncio
+
+    async def _refetch():
+        while True:
+            try:
+                await func
+            except Exception:
+                pass
+            await asyncio.sleep(interval)
+
+    asyncio.create_task(_refetch())
 
 
 app = FastAPI(
@@ -60,17 +84,3 @@ app = FastAPI(
     lifespan=lifespan,
     title="abigail.sh",
 )
-
-
-@app.middleware("http")
-async def add_weather_context(request: Request, call_next):
-    """Load weather once on the server so templates never need browser-side API calls."""
-    if request.method == "GET" and not request.url.path.startswith(("/api/", "/static/")):
-        try:
-            from abi.api.weather import get_weather_indicator
-
-            request.state.weather = await get_weather_indicator()
-        except Exception:
-            # Weather is supplemental; an upstream outage must not break page renders.
-            request.state.weather = None
-    return await call_next(request)

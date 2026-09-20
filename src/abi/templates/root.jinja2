@@ -195,7 +195,6 @@
                     </div>
 
                     <div class="footer-entry footer-entry--weather">
-                        {% set current_weather = weather|default(request.state.weather|default(none)) %}
                         {% if current_weather %}
                             <div
                                 class="weather-indicator"
