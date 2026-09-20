@@ -54,6 +54,18 @@ class LanyardData(TypedDict):
     listeningToSpotify: bool
 
 
+def dedupe_activities(activities: list[dict]) -> list[dict]:
+    seen: set[str] = set()
+    deduped: list[dict] = []
+    for activity in activities:
+        key = str(activity.get("application_id"))
+        if key in seen:
+            continue
+        seen.add(key)
+        deduped.append(activity)
+    return deduped
+
+
 def avatar_url(user: dict, size: int = 256) -> str | None:
     if not user.get("avatar"):
         return None
@@ -128,7 +140,7 @@ async def fetch_lanyard() -> LanyardData:
             sku_id=raw_nameplate.get("sku_id"),
         ) if raw_nameplate else None,
     )
-    activities = d.get("activities", [])
+    activities = dedupe_activities(d.get("activities", []))
     custom_status = next((a for a in activities if a.get("type") == ACTIVITY_TYPE["CUSTOM"]), None)
     return LanyardData(
         user=user,

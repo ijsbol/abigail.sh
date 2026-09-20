@@ -171,8 +171,7 @@
             ? '<span class="dot-sep">·</span><span>' + esc(profile.customStatus.state) + '</span>'
             : '';
 
-        var otherActivities = profile.activities.filter(function (a) { return a.type !== ACTIVITY_CUSTOM && a.name !== 'Spotify'; });
-        var spotifyLive = profile.listeningToSpotify && profile.spotify ? profile.spotify : null;
+        var otherActivities = (profile.activities).filter(function (a) { return a.type !== ACTIVITY_CUSTOM && a.name !== 'Spotify'; });
         var showActivities = otherActivities.length > 0;
         var activitiesHtml = showActivities
             ? '<div class="lanyard-activities">' + otherActivities.map(renderActivityCard).join('') + '</div>'
