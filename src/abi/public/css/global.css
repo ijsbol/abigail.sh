@@ -205,7 +205,9 @@ hr {
 .content {
     font-family: 'JMH Typewriter', sans-serif;
     padding: max(min(25px, 2vw), 15px);
+    width: 100%;
     max-width: 1000px;
+    min-width: 0;
     margin: auto;
     box-sizing: border-box;
     display: flex;
@@ -247,6 +249,11 @@ hr {
     justify-content: flex-start;
     align-items: stretch;
     align-content: stretch;
+    min-width: 0;
+}
+
+.information {
+    min-width: 0;
 }
 
 .avatar img {
@@ -392,6 +399,7 @@ a.download:after {
     margin: 0;
     box-sizing: border-box;
     flex: 1;
+    min-width: 0;
 }
 
 .page--home {
@@ -427,6 +435,8 @@ a.download:after {
     font-size: 13px;
     line-height: 18px;
     max-width: 800px;
+    min-width: 0;
+    overflow-wrap: anywhere;
     transition: color var(--colorTransitionTime);
 }
 
@@ -732,7 +742,7 @@ strong {
 
 @media (min-width: 1000px) {
     body {
-        padding: 15px 0;
+        padding: 40px 0;
     }
     .content {
         box-shadow: 0px 0px 7px var(--geko);
@@ -747,6 +757,7 @@ strong {
         order: 1;
         height: auto;
         flex: none;
+        width: 100%;
     }
 
     .meta-column {
@@ -874,6 +885,7 @@ strong {
     }
 
     .content {
+        width: calc(100% - 30px);
         margin: 15px;
     }
 
@@ -899,6 +911,7 @@ strong {
     }
 
     .content {
+        width: calc(100% - 20px);
         margin: 10px;
     }
 
