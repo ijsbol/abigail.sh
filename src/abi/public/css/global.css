@@ -669,6 +669,7 @@ strong {
 } */
 
 .toggle-label {
+    padding-right: 5px;
     color: var(--duck);
     font-size: 10px;
     line-height: 1;
@@ -712,7 +713,7 @@ strong {
 
 .footer-entry--toggles .header-toggles {
     flex-direction: column;
-    align-items: flex-start;
+    align-items: flex-end;
     justify-content: center;
     gap: 6px;
     margin: 0;
@@ -990,7 +991,7 @@ strong {
 	flex-direction: column;
 	flex-wrap: nowrap;
 	justify-content: space-around;
-	align-items: flex-start;
+	align-items: flex-end;
 	align-content: stretch;
     gap: 6px;
     margin: 6px 0px 0px 6px;
