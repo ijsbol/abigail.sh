@@ -16,6 +16,16 @@ _db: sqlite3.Connection | None = None
 _lock = Lock()
 
 
+def _clean_bool(inp: str) -> bool:
+    return (
+        inp.lower() == "yes"
+        or inp.lower() == "y"
+        or inp.lower() == "true"
+        or inp.lower() == "t"
+        or inp == "1"
+    );
+
+
 def _db_conn() -> sqlite3.Connection:
     global _db
     with _lock:
@@ -96,7 +106,7 @@ def parse_reminders(raw: list[dict]) -> dict:
             group["items"].append({
                 "title": text,
                 "notes": notes,
-                "isCompleted": bool(reminder.get("isCompleted")),
+                "isCompleted": _clean_bool(reminder.get("isCompleted", "false")),
                 "isPinned": is_pinned,
             })
             break
