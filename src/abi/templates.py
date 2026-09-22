@@ -41,6 +41,14 @@ def _get_most_recent_commit_hash() -> str:
         return "unknown"
 
 
+def _get_file_hash(file_path: str | Path) -> str:
+    digest = hashlib.md5()
+    with open(file_path, "rb") as file:
+        for chunk in iter(lambda: file.read(1024 * 1024), b""):
+            digest.update(chunk)
+    return digest.hexdigest()[:6]
+
+
 # Source - https://stackoverflow.com/a/79032686
 # Posted by Angy, modified by community. See post 'Timeline' for change history
 # Retrieved 2026-09-06, License - CC BY-SA 4.0
@@ -87,36 +95,47 @@ class TemplateServer(Jinja2Templates):
                 if file_ext not in (".png", ".jpg", ".jpeg", ".gif"):
                     continue
 
-                avif_file_path = f"static/images/{rel_dir}/{file_name}.avif"
-                png_file_path = f"static/images/{rel_dir}/{file_name}.png"
-                anim_file_path = f"static/images/{rel_dir}/{file_name}:anim.avif"
-
-                if Path(f"_served/{anim_file_path}").exists():
-                    self._served_files[os.path.normpath(f"public/images/{rel_dir}/{file}:anim")] = anim_file_path
-
-                self._served_files[os.path.normpath(f"public/images/{rel_dir}/{file}:png")] = png_file_path
-                self._served_files[os.path.normpath(f"public/images/{rel_dir}/{file}:avif")] = avif_file_path
+                source_path = Path(dirpath) / file
+                version = _get_file_hash(source_path)
+                output_dir = Path("static/images")
+                if rel_dir != ".":
+                    output_dir /= rel_dir
+                output_stem = f"{file_name}.{version}"
+                avif_file_path = (output_dir / f"{output_stem}.avif").as_posix()
+                png_file_path = (output_dir / f"{output_stem}.png").as_posix()
+                anim_file_path = (output_dir / f"{output_stem}:anim.avif").as_posix()
+                avif_path = Path("_served") / avif_file_path
+                png_path = Path("_served") / png_file_path
+                anim_path = Path("_served") / anim_file_path
+                animated = is_animation(str(source_path))
 
                 if (
-                    Path(f"_served/{avif_file_path}").exists()
-                    and Path(f"_served/{png_file_path}").exists()
+                    not avif_path.exists()
+                    or not png_path.exists()
+                    or (animated and not anim_path.exists())
                 ):
-                    continue
+                    with Image.open(source_path) as image:
+                        if animated:
+                            image.save(anim_path, optimize=True, quality=50, format="AVIF", save_all=True)
+                        image.save(avif_path, optimize=True, quality=50, format="AVIF", save_all=False)
+                        image.save(png_path, optimize=True, quality=95, format="PNG", save_all=True)
 
-                image = Image.open(os.path.join(dirpath, file))
-                avif_path = os.path.join(out_dir, f"{file_name}.avif")
-                png_path = os.path.join(out_dir, f"{file_name}.png")
-                if is_animation(os.path.join(dirpath, file)):
-                    anim_path = os.path.join(out_dir, f"{file_name}:anim.avif")
-                    image.save(anim_path, optimize=True, quality=50, format="AVIF", save_all=True)
-                    self._served_files[os.path.normpath(f"public/images/{rel_dir}/{file}:anim")] = anim_path
-
-                image.save(avif_path, optimize=True, quality=50, format="AVIF", save_all=False)
-                image.save(png_path, optimize=True, quality=95, format="PNG", save_all=True)
+                public_path = os.path.normpath(f"public/images/{rel_dir}/{file}")
+                self._served_files[f"{public_path}:png"] = png_file_path
+                self._served_files[f"{public_path}:avif"] = avif_file_path
+                if animated:
+                    self._served_files[f"{public_path}:anim"] = anim_file_path
 
         # specific legacy override for people hot-linking my button on their sites.
         if loc == "src/abi/public":
             shutil.copyfile(f"{loc}/images/button.png", "_served/static/images/button.png")
+
+    def _version_css_asset_references(self, css_content: str) -> str:
+        for asset in SPECIFICALLY_INCLUDED_FILES:
+            versioned_path = self._served_files.get(asset)
+            if versioned_path:
+                css_content = css_content.replace(f"/static/{asset}", f"/{versioned_path}")
+        return css_content
 
     def _serve_css(self, loc: str) -> None:
         css_dir = f"{loc}/css"
@@ -126,7 +145,7 @@ class TemplateServer(Jinja2Templates):
                 continue
             file_name, _ = os.path.splitext(file)
             with open(f"{css_dir}/{file}", "r") as f:
-                css_content = f.read()
+                css_content = self._version_css_asset_references(f.read())
             minified_css = str(cssmin(css_content))
             md5hash = hashlib.md5(css_content.encode()).hexdigest()[:6]
             new_file_name = f"{file_name}.{md5hash}.css"
@@ -152,8 +171,24 @@ class TemplateServer(Jinja2Templates):
 
     def _serve_misc(self) -> None:
         for file in SPECIFICALLY_INCLUDED_FILES:
-            shutil.copyfile(f"src/abi/public/{file}", f"_served/static/{file}")
-            self._served_files[file] = f"static/{file}"
+            source_path = Path("src/abi/public") / file
+            source_hash = _get_file_hash(source_path)
+            source_stem = source_path.stem
+            source_suffix = source_path.suffix
+            versioned_file = source_path.with_name(f"{source_stem}.{source_hash}{source_suffix}")
+            versioned_path = Path("static") / versioned_file.relative_to("src/abi/public")
+            versioned_destination = Path("_served") / versioned_path
+            versioned_destination.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copyfile(source_path, versioned_destination)
+
+            # keep the old URL working for existing links
+            stable_destination = Path("_served/static") / file
+            stable_destination.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copyfile(source_path, stable_destination)
+
+            served_path = versioned_path.as_posix()
+            self._served_files[file] = served_path
+            self._served_files[os.path.normpath(f"public/{file}")] = served_path
 
     def _serve_private(self) -> None:
         fonts_dir = "src/abi/private/public/fonts"
@@ -181,6 +216,7 @@ class TemplateServer(Jinja2Templates):
                 self._served_files["public/writing/" + file] = f"static/writing/{file}"
 
     def load(self) -> None:
+        self._serve_misc()
         locations: list[str] = [
             "src/abi/public",
             "src/abi/private/public",
@@ -195,8 +231,6 @@ class TemplateServer(Jinja2Templates):
             print(f"[{loc}] [templates:js] served {len(self._served_files)} static files.")
 
         self._serve_private()
-        self._serve_misc()
-
     def _get_file(self, request: Request, file_path: str) -> str:
         if (
             "/buttons/" in file_path
@@ -204,7 +238,9 @@ class TemplateServer(Jinja2Templates):
             and not file_path.endswith(":png")
         ):
             return self._served_files.get(file_path.split(":")[0] + ":png", "")
-        if "/images/" in file_path and not file_path.endswith((":png", ":avif", ":anim")):
+        if file_path in self._served_files:
+            path = self._served_files[file_path]
+        elif "/images/" in file_path and not file_path.endswith((":png", ":avif", ":anim")):
             path = self._served_files.get(f"{file_path}:avif", "")
         else:
             path = self._served_files.get(file_path, "")

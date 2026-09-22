@@ -22,11 +22,8 @@ server {
         access_log off;
         tcp_nodelay off;
         sendfile on;
-        location ~* \.(css|js|woff2?|ttf|otf)$ {
+        location ~* \.(css|js|woff2?|ttf|otf|avif|png|jpe?g|gif|svg|webp|json)$ {
             add_header Cache-Control "public, max-age=31536000, immutable";
-        }
-        location ~* \.(avif|png|jpe?g|gif|svg|webp|json)$ {
-            add_header Cache-Control "public, max-age=86400";
         }
     }
 

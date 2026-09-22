@@ -1212,3 +1212,11 @@ strong {
         transition: opacity 0.2s ease;
     }
 }
+
+#innerCircleWebRing a {text-decoration: none;}
+#innerCircleWebRingNavHome {transition: transform 0.4s; vertical-align: middle; image-rendering: pixelated;}
+#innerCircleWebRingNavHome:hover {transform: scale(1.05) translateY(-2px);}
+#innerCircleWebRingNavBackwards {rotate: 90deg; color: #ffa9fc;}
+#innerCircleWebRingNavForwards {rotate: -90deg; color: #a8eefe;}
+#innerCircleWebRingNavBackwards, #innerCircleWebRingNavForwards {transition: transform 0.4s; display: inline-block; aspect-ratio: 1; vertical-align: middle; transform: scale(0.8);}
+#innerCircleWebRingNavBackwards:hover, #innerCircleWebRingNavForwards:hover {transform: scale(0.84) translateY(10px);}
