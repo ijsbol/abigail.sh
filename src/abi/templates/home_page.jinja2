@@ -3,6 +3,7 @@
 {% set title = "home" %}
 {% set description = "hello, world! my name is abigail, i use she/they pronouns. i'm a computer scientist and scientific researcher." %}
 {% set current_page = "home" -%}
+{% set age = 23 %}
 
 {% block head %}
     <link rel="stylesheet" href="{{ get_file('public/css/home_page.css') }}" />
@@ -23,7 +24,7 @@
             target="_blank"
             aria-label="See: Singular they / them pronouns"
         ><span class="pronouns" aria-label="they them">she / they</span></a>
-        pronouns. i&apos;m a computer scientist and scientific researcher.
+        pronouns. i&apos;m a {{ age }} year old computer scientist and scientific researcher.
         i have been programming as a hobby since i was 6 years old, and
         professionally since i was 14.
     </p>
@@ -43,26 +44,6 @@
             aria-label="Prifysgol Abertawe"
         >swansea university</a>,
         and previously studied quantum computing with a scholarship from IBM.
-    </p>
-    <p>
-        over the course of my bachelors, my peers elected me to be their student
-        representative for 3 years in a row, where i advocated for better teaching
-        conditions and raised concerns with university management. i was also
-        elected as the tech admin for the swansea university hacking society <a
-            class="external"
-            href="https://swacksoc.github.io/"
-            target="_blank"
-        >swan_hack</a>, and worked as a laboratory technician where i helped first
-        and second years with assignments and study.
-    </p>
-    <p>
-        while i was studying for my igcse's in the UK, i founded a <a
-            class="external"
-            href="https://www.crestawards.org/"
-            target="_blank"
-        >CREST club</a> for a-level and igcse students, supporting my peers through their bronze,
-        silver, and gold CREST awards. i also campaigned for a new igcse subject built around
-        STEM-focused projects and certifications; which is still offered at the school today.
     </p>
     <p>
         my thesis is in collaboration with the
