@@ -167,15 +167,6 @@
             loading="lazy"
             style="image-rendering:pixelated"
         />
-        <a href="https://tilde.town" target="_blank">
-            <img
-            src="{{ get_file('public/images/buttons/vanity/tildetown.gif:anim') }}"
-            alt="tilde.town 88x31px button"
-            width="88"
-            height="31"
-            loading="lazy"
-            style="image-rendering:pixelated"
-        /></a>
 
         {% for url, image in friend_buttons.items() %}
             <a href="{{ url }}" target="_blank">
@@ -190,7 +181,7 @@
             </a>
         {% endfor %}
 
-        {% for url, image in vanity_buttons.items() %}
+        {% for url, image in vanity_buttons %}
             {% if url != None %}
             <a href="{{ url }}" target="_blank">
                 <img

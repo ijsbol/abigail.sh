@@ -16,13 +16,25 @@ from abi.api.lastfm import fetch_recent_tracks, LASTFM_REVALIDATE, LASTFM_FETCH_
 from abi.templates import templates
 from abi.data import load_projects, load_travel_data
 from abi.private.photography import PHOTOGRAPHY_SHOTS
-from abi.api.weather import get_weather_indicator
 
 
 router = APIRouter()
 
 
 TILDE_HANDLERS: dict[str, Callable[[Request], Awaitable[Response]]] = {}
+VANITY_BUTTONS: Final[tuple[tuple[str | None, str], ...]] = (
+    (None, "public/images/buttons/vanity/blink.gif:anim"),
+    (None, "public/images/buttons/vanity/firefox.png"),
+    (None, "public/images/buttons/vanity/nft.gif:anim"),
+    (None, "public/images/buttons/vanity/miku.gif"),
+    (None, "public/images/buttons/vanity/owntwopaws.png"),
+    (None, "public/images/buttons/vanity/macos.png"),
+    ("https://tilde.town/", "public/images/buttons/vanity/tildetown.gif:anim"),
+    ("https://osmium.chat/", "public/images/buttons/vanity/osmium.png"),
+    ("https://exploreabyss.org/", "public/images/buttons/vanity/abyss.png"),
+    ("https://the.inner-circle.fyi/", "public/images/buttons/vanity/the-inner-circle.png"),
+    ("https://uwu.gal", "public/images/buttons/vanity/uwugal.png"),
+)
 
 
 def register_tilde_handler(name: str, handler: Callable[[Request], Awaitable[Response]]) -> None:
@@ -51,17 +63,7 @@ async def home_page(request: Request) -> Response:
             "request": request,
             "friend_buttons": shuffled_friend_buttons,
             "visited_count": travel["visited_count"],
-            "vanity_buttons": {
-                None: "public/images/buttons/vanity/blink.png",
-                None: "public/images/buttons/vanity/firefox.png",
-                None: "public/images/buttons/vanity/nft.gif:anim",
-                None: "public/images/buttons/vanity/miku.png",
-                None: "public/images/buttons/vanity/owntwopaws.png",
-                None: "public/images/buttons/vanity/macos.png",
-                "https://exploreabyss.org/": "public/images/buttons/vanity/abyss.png",
-                "https://the.inner-circle.fyi/": "public/images/buttons/vanity/the-inner-circle.png",
-                "https://uwu.gal": "public/images/buttons/vanity/uwugal.png",
-            },
+            "vanity_buttons": VANITY_BUTTONS,
         },
     )
 
