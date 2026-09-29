@@ -116,7 +116,15 @@ class TemplateServer(Jinja2Templates):
                 ):
                     with Image.open(source_path) as image:
                         if animated:
-                            image.save(anim_path, optimize=True, quality=50, format="AVIF", save_all=True)
+                            durations = [frame.info.get("duration", 0) for frame in ImageSequence.Iterator(image)]
+                            image.save(
+                                anim_path,
+                                optimize=True,
+                                quality=50,
+                                format="AVIF",
+                                save_all=True,
+                                duration=durations,
+                            )
                         image.save(avif_path, optimize=True, quality=50, format="AVIF", save_all=False)
                         image.save(png_path, optimize=True, quality=95, format="PNG", save_all=True)
 
