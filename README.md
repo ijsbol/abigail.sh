@@ -1,6 +1,6 @@
 # abigail.sh
 
-this is the code behind [abigail.sh](https://abigail.sh).
+this is the code behind [abigail.sh](https://abigail.sh) (now also available on [abi.pet](https://abi.pet)!).
 
 if you are familiar with fastapi, or websites in general, you may think that this is a disgustingly over-engineered and unnecessary way to run a mostly static website, you would be correct. i wrote this website this way largely for fun, not for practical reasons; and you should probably not take inspiration from it.
 
