@@ -5,7 +5,7 @@ from pathlib import Path
 import random
 import shutil
 import subprocess
-from typing import Final, Union
+from typing import Final, Literal, Union
 
 from fastapi import Request, Response
 from fastapi.templating import Jinja2Templates
@@ -13,6 +13,7 @@ from PIL import Image, ImageSequence
 from rcssmin import cssmin
 from rjsmin import jsmin
 from functools import partial
+import mimetypes
 
 from abi.api.weather import WeatherIndicator
 
@@ -27,6 +28,24 @@ SPECIFICALLY_INCLUDED_FILES: Final[list[str]] = [
     "images/external-link-svgrepo-com.svg",
     "images/download-button-svgrepo-com.svg",
 ]
+NAV_BAR: list[tuple[str, str, str]] =[
+    ('/', 'home', 'home'),
+    ('/profile', 'profile', 'profile'),
+    ('/resume', 'resume', 'resume / cv'),
+    ('/blog', 'blog', 'blog'),
+    ('/projects', 'projects', 'projects'),
+    ('/photography', 'photography', 'photography'),
+    ('/travel', 'travel', 'travel'),
+    ('/watch-list', 'watch-list', 'watch list'),
+    ('/guestbook', 'guestbook', 'guestbook'),
+    ('/buttons', 'buttons', '88x31 maker')
+]
+DEFAULT_STYLE_HOST: Final[Literal["abigail.sh"]] = "abigail.sh"
+APPROVED_STYLE_HOSTS: Final[set[str]] = {
+    DEFAULT_STYLE_HOST,
+    "abigail.sh",
+    "abi.pet",
+}
 
 
 def _get_most_recent_commit_hash() -> str:
@@ -70,6 +89,13 @@ def is_animation(file_or_bytes: Union[str, bytes]) -> bool:
         # Handle errors related to file opening and invalid image formats
         print(f"Error opening image: {e}")
         return False
+
+
+def extract_host(request: Request) -> str:
+    host = request.headers.get("Host", "abigail.sh")
+    if host not in APPROVED_STYLE_HOSTS:
+        return DEFAULT_STYLE_HOST
+    return host
 
 
 class TemplateServer(Jinja2Templates):
@@ -239,6 +265,7 @@ class TemplateServer(Jinja2Templates):
             print(f"[{loc}] [templates:js] served {len(self._served_files)} static files.")
 
         self._serve_private()
+
     def _get_file(self, request: Request, file_path: str) -> str:
         if (
             "/buttons/" in file_path
@@ -255,8 +282,6 @@ class TemplateServer(Jinja2Templates):
         return f"/{path}" if path else ""
 
     def _get_file_type(self, request: Request, file_path: str) -> str:
-        import mimetypes
-
         mime_type, _ = mimetypes.guess_type(file_path)
         return mime_type or "application/octet-stream"
 
@@ -266,6 +291,9 @@ class TemplateServer(Jinja2Templates):
             avatar_url, avatar_decoration_url, banner_url,
             guild_badge_url, activity_asset_url, int_to_hex,
         )
+
+        host = extract_host(context["request"])
+
         template = self.get_template(template_name)
         template.globals.update({
             "get_file": partial(self._get_file, context['request']),
@@ -280,7 +308,10 @@ class TemplateServer(Jinja2Templates):
             "activity_asset_url": activity_asset_url,
             "int_to_hex": int_to_hex,
             "current_weather": self.weather,
+            "pages": NAV_BAR,
+            "host": host,
         })
+
         template_content = template.render(context)
         return Response(
             content=template_content,

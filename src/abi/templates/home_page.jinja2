@@ -1,12 +1,19 @@
-{% extends "root.jinja2" %}
+{% extends "_" + host + ".jinja2" %}
 
 {% set title = "home" %}
-{% set description = "hello, world! my name is abigail, i use she/they pronouns. i'm a computer scientist and scientific researcher." %}
+{% if host == "abi.pet" %}
+    {% set description = "meow meow, meow meow :3 meow." %}
+{% else %}
+    {% set description = "hello, world! my name is abigail, i use she/they pronouns. i'm a computer scientist and scientific researcher." %}
+{% endif %}
 {% set current_page = "home" -%}
 {% set age = 23 %}
 
 {% block head %}
-    <link rel="stylesheet" href="{{ get_file('public/css/home_page.css') }}" />
+    {% if host == "abi.pet"%}
+    {% else %}
+        <link rel="stylesheet" href="{{ get_file('public/css/home_page.css') }}" />
+    {% endif %}
 {% endblock %}
 
 {% block page_content %}
