@@ -1,7 +1,7 @@
 server {
     listen 80;
     listen 443 ssl;
-    server_name abigail.sh murph.sh phoebe.sh abigail.phoebe.sh abigail.phoebe.murph.sh;
+    server_name abigail.sh murph.sh phoebe.sh abigail.phoebe.sh abigail.phoebe.murph.sh abi.pet;
     ssl_certificate /var/www/cert.pem;
     ssl_certificate_key /var/www/key.pem;
     client_max_body_size 15m;
