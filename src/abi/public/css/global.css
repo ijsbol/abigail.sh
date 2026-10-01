@@ -435,7 +435,7 @@ a.download:after {
     font-size: 13px;
     line-height: 18px;
     max-width: 800px;
-    min-width: min(800px, 95vw);
+    min-width: 0;
     overflow-wrap: anywhere;
     transition: color var(--colorTransitionTime);
 }
