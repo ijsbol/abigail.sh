@@ -29,6 +29,7 @@ VANITY_BUTTONS: Final[tuple[tuple[str | None, str], ...]] = (
     (None, "public/images/buttons/vanity/miku.gif"),
     (None, "public/images/buttons/vanity/owntwopaws.png"),
     (None, "public/images/buttons/vanity/macos.png"),
+    ("https://pxlarea.com/x69y67", "public/images/buttons/vanity/pixel-area-88-x69y67.png"),
     ("https://tilde.town/", "public/images/buttons/vanity/tildetown.gif:anim"),
     ("https://osmium.chat/", "public/images/buttons/vanity/osmium.png"),
     ("https://exploreabyss.org/", "public/images/buttons/vanity/abyss.png"),
