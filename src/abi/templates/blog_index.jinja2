@@ -9,18 +9,21 @@
 {% block page_content %}
 <p>
     long and short form writing - technical breakdowns of projects and
-    research alongside shorter, more informal notes. this merges what used
-    to live under <code>/writing</code> and <code>/notes</code>; old links
-    to either still resolve here.
+    research alongside shorter, more informal notes.
+
+    <br>
+
+    <a href="/blog.rss" target="_blank" style="display: block; margin-top: 15px; margin-bottom: 15px;">
+        <img
+            src="{{ get_file("public/images/buttons/vanity/rss.png") }}"
+            alt="vanity 88x31px button"
+            width="88"
+            height="31"
+            loading="lazy"
+            style="image-rendering:pixelated"
+        />
+    </a>
 </p>
-<p>new posts coming soon:</p>
-<ul>
-    <li>From Hobby Project to 40 Million User Reach</li>
-    <li>Writing an RFC for Specifying Pronouns Over DNS</li>
-    <li>Creating a Simple Image Model to Remove JPEG Artifacts</li>
-    <li>(research project) Developing Brain Tractograph Trace Filtering</li>
-    <li>(research project) Datamining My Own Health</li>
-</ul>
 <br />
 <div class="post-gallery">
     {% for post in posts %}

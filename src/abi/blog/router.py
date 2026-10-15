@@ -1,3 +1,4 @@
+import datetime
 import re
 from dataclasses import asdict
 from http import HTTPStatus
@@ -6,6 +7,9 @@ from urllib.parse import quote
 
 from fastapi import APIRouter, Request, Response
 from fastapi.responses import JSONResponse, RedirectResponse
+from fastapi_rss import (
+    GUID, RSSFeed, RSSResponse, Item, Category, CategoryAttrs,
+)
 
 from abi import auth
 from abi.auth import admin as admin_auth
@@ -117,13 +121,46 @@ async def redirect_notes(slug: str) -> Response:
 
 @router.get("/blog")
 async def blog_index(request: Request) -> Response:
-    posts = blog_store.list_posts()
+    posts = blog_store.list_posts(
+        include_drafts=False,
+        include_unlisted=False,
+    )
     return templates.serve_template(
         "blog_index.jinja2",
         HTTPStatus.OK,
         {"request": request, "posts": posts, "current_page": "blog"},
     )
 
+
+@router.get("/blog.rss")
+async def blog_rss_feed(_: Request) -> RSSResponse:
+    posts = blog_store.list_posts(
+        include_drafts=False,
+        include_unlisted=False,
+    )
+    return RSSResponse(RSSFeed(
+        title="abigail phoebe's blog",
+        link="http://abigail.sh/blog",
+        description="long and short form writing - technical breakdowns of projects and research alongside shorter, more informal notes. this merges what used",
+        language="en-us",
+        copyright="Copyright 2025-Present abigail phoebe",
+        managing_editor='abigail@phoebe.sh',
+        webmaster='abigail@phoebe.sh',
+        ttl=60,
+        item=[
+            Item(
+                title=post.title,
+                link=f"https://abigail.sh/blog/{post.slug}",
+                description=post.description,
+                pub_date=datetime.datetime.fromtimestamp(
+                    timestamp=post.created_at,
+                    tz=datetime.timezone.utc,
+                ),
+                guid=GUID(content=post.slug),
+            )
+            for post in posts
+        ],
+    ))
 
 @router.get("/blog/admin/login")
 async def blog_admin_login(request: Request, error: str = "", next: str = "") -> Response:
