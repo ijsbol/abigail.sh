@@ -23,18 +23,18 @@ router = APIRouter()
 
 TILDE_HANDLERS: dict[str, Callable[[Request], Awaitable[Response]]] = {}
 VANITY_BUTTONS: Final[tuple[tuple[str | None, str], ...]] = (
-    (None, "public/images/buttons/vanity/blink.gif:anim"),
-    (None, "public/images/buttons/vanity/firefox.png"),
-    (None, "public/images/buttons/vanity/nft.gif:anim"),
-    (None, "public/images/buttons/vanity/miku.gif"),
-    (None, "public/images/buttons/vanity/owntwopaws.png"),
-    (None, "public/images/buttons/vanity/macos.png"),
-    ("https://github.com/ijsbol/abigail.sh/blob/main/LICENSE", "public/images/buttons/vanity/cc-by-nc-sa.png"),
+    ("https://helium.computer", "public/images/buttons/vanity/heliumcomputer.png"),
     ("https://pxlarea.com/x69y67", "public/images/buttons/vanity/pixel-area-88-x69y67.png"),
     ("https://tilde.town/", "public/images/buttons/vanity/tildetown.gif:anim"),
     ("https://osmium.chat/", "public/images/buttons/vanity/osmium.png"),
     ("https://exploreabyss.org/", "public/images/buttons/vanity/abyss.png"),
     ("https://the.inner-circle.fyi/", "public/images/buttons/vanity/the-inner-circle.png"),
+    (None, "public/images/buttons/vanity/blink.gif:anim"),
+    (None, "public/images/buttons/vanity/nft.gif:anim"),
+    (None, "public/images/buttons/vanity/miku.gif"),
+    (None, "public/images/buttons/vanity/owntwopaws.png"),
+    (None, "public/images/buttons/vanity/macos.png"),
+    ("https://github.com/ijsbol/abigail.sh/blob/main/LICENSE", "public/images/buttons/vanity/cc-by-nc-sa.png"),
     ("https://uwu.gal", "public/images/buttons/vanity/uwugal.png"),
 )
 
