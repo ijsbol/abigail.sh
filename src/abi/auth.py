@@ -154,17 +154,8 @@ class Authenticator:
     def get_session(self, request: Request) -> dict | None:
         return self.verify_session_token(request.cookies.get(self.session_cookie))
 
-    def redirect_uri(self, request: Request) -> str:
-        explicit = os.environ.get(self.redirect_env)
-        if explicit:
-            return explicit
-        proto = request.headers.get("x-forwarded-proto") or request.url.scheme
-        host = (
-            request.headers.get("x-forwarded-host")
-            or request.headers.get("host")
-            or request.url.netloc
-        )
-        return f"{proto}://{host}{self.callback_path}"
+    def redirect_uri(self) -> str:
+        return os.environ.get(self.redirect_env, "")
 
 
 def _valid_admin_session(session: dict) -> bool:

@@ -274,7 +274,7 @@ async def auth_login(request: Request, next: str = "") -> Response:
     if not admin_auth.discord_configured():
         return RedirectResponse("/blog/admin/login?error=unconfigured", status_code=302)
     state = auth.random_state()
-    redirect = admin_auth.redirect_uri(request)
+    redirect = admin_auth.redirect_uri()
     url = auth.authorize_url(state, redirect)
     response = RedirectResponse(url, status_code=302)
     response.set_cookie(
@@ -309,7 +309,7 @@ async def auth_callback(request: Request, code: str = "", state: str = "") -> Re
     if not code or not state or not state_cookie or state != state_cookie:
         return fail("state")
 
-    redirect = admin_auth.redirect_uri(request)
+    redirect = admin_auth.redirect_uri()
     token = await auth.exchange_code(code, redirect)
     if not token:
         return fail("exchange")
