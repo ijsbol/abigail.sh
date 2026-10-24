@@ -13,7 +13,7 @@ __all__: tuple[str, ...] = (
 
 OUT_PATH = Path("_served/static/resume.pdf")
 INPUTS_PATH = OUT_PATH.with_suffix(".inputs")
-TEMPLATES_DIR = "src/abi/templates"
+TEMPLATES_DIR = "src/abi/private/templates"
 PUBLIC_DIR = Path("src/abi/public")
 PRIVATE_PUBLIC_DIR = Path("src/abi/private/public")
 RENDERER_VERSION = "4"
